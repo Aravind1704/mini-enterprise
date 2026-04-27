@@ -15,6 +15,7 @@ Project Structure
 
 
 Mini Enterprise/
+
 ├── backend/
 │   ├── app/
 │   │   ├── core/
@@ -203,78 +204,6 @@ API Test Values
 
 Register Users
 
-```json
-// Admin
-{ "name": "Aravind Admin", "email": "admin@test.com", "password": "admin123", "role": "admin" }
-
-// Manager
-{ "name": "Ravi Manager", "email": "manager@test.com", "password": "manager123", "role": "manager" }
-
-// Employee
-{ "name": "Priya Employee", "email": "employee@test.com", "password": "employee123", "role": "employee" }
-```
-
-Login
-
-```json
-{ "email": "admin@test.com", "password": "admin123" }
-```
-
-Create Task
-
-json
-{
-  "title": "Design Login Page",
-  "description": "Create the UI for login screen",
-  "priority": "high",
-  "due_date": "2025-05-01T10:00:00",
-  "assigned_to_id": 3
-}
-
-
-Update Task
-
-json
-{ "status": "in_progress" }
-
-
-Assign Task
-
-json
-{ "assigned_to_id": 3 }
-
-
-
-
-Database Models
-
-User
-
-| Field | Type | Description |
-|-------|------|-------------|
-| id | Integer | Primary key |
-| name | String | Full name |
-| email | String | Unique email |
-| hashed_password | String | Bcrypt hashed |
-| role | String | admin / manager / employee |
-| is_active | Boolean | Account status |
-| created_at | DateTime | Timestamp |
-| updated_at | DateTime | Timestamp |
-
-Task
-
-| Field | Type | Description |
-|-------|------|-------------|
-| id | Integer | Primary key |
-| title | String | Task title |
-| description | Text | Task details |
-| status | String | todo / in_progress / done |
-| priority | String | low / medium / high |
-| due_date | DateTime | Deadline |
-| created_by_id | Integer | FK → users |
-| assigned_to_id | Integer | FK → users |
-| created_at | DateTime | Timestamp |
-| updated_at | DateTime | Timestamp |
 
 
 
