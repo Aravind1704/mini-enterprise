@@ -57,8 +57,6 @@ Mini Enterprise/
     └── package.json
 
 
-
-
 Prerequisites
 
 - Python 3.10+
