@@ -238,4 +238,184 @@ Deliverables
  Dashboard
  GitHub repository
 
-Frontend runs at: `http://localhost:3000`
+Frontend runs at: `http://localhost:3000`-
+
+Backend Code Placement
+
+1. `core/` → Configuration & Security
+
+```text
+app/core/
+```
+
+Put here:
+
+* `config.py` → environment variables (.env)
+* `database.py` → DB connection
+* `dependencies.py` → auth + roles (get_current_user, require_role)
+* `security.py` → JWT token creation, password hashing
+
+--
+
+2. `models/` → Database Tables
+
+```text
+app/models/
+```
+Put here:
+
+SQLAlchemy classes
+
+Example:
+
+```python
+class Task(Base):
+    __tablename__ = "tasks"
+```
+
+---
+
+3. `schemas/` → Request & Response
+
+```text
+app/schemas/
+```
+
+Put here:
+
+* Pydantic models
+
+Example:
+
+```python
+class TaskCreate(BaseModel):
+    title: str
+```
+
+---
+
+4. `services/` → Business Logic (MOST IMPORTANT)
+
+```text
+app/services/
+```
+
+Put here:
+
+* All logic (NOT in routers)
+
+Examples:
+
+* status validation
+* approval rules
+* DB operations
+
+Example:
+
+```python
+def update_task_status(db, task, new_status):
+```
+
+---
+
+5. `routers/` → API Endpoints
+
+```text
+app/routers/
+```
+
+Put here:
+
+* FastAPI routes only
+
+Example:
+
+```python
+@router.post("/tasks")
+```
+
+ Router should only call services, not contain logic.
+
+---
+
+ 6. `main.py` → Entry Point
+
+```text
+app/main.py
+```
+
+Put here:
+
+```python
+app.include_router(auth.router)
+app.include_router(tasks.router)
+```
+
+---
+
+FULL FLOW (Understand This)
+
+```text
+Client → Router → Service → Model → DB
+                 ↑
+              Schema
+```
+
+---
+
+Example (Complete Flow)
+
+Router
+
+```python
+@router.patch("/{task_id}/status")
+def update_status(task_id: int, status: str, db: Session = Depends(get_db)):
+    return update_task_status(db, task_id, status)
+```
+
+---
+
+Service
+
+```python
+def update_task_status(db, task_id, status):
+    task = db.query(Task).get(task_id)
+
+    validate_status_transition(task.status, status)
+
+    task.status = status
+    db.commit()
+
+    return task
+```
+
+---
+
+Model
+
+```python
+class Task(Base):
+    status = Column(String)
+```
+
+---
+
+Frontend Code Placement
+
+`src/api/`
+
+Axios config
+
+ `components/`
+
+UI components
+Kanban cards, comments, approvals
+
+ `pages/`
+
+Full pages (Dashboard, Login, Kanban)
+
+ `context/`
+
+Auth state
+
