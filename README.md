@@ -1,6 +1,6 @@
 Mini Enterprise 
-
-A full-stack enterprise task management system with role-based access control, JWT authentication, and a React dashboard.
+A full-stack enterprise workflow and task management system built with modern technologies.
+This project demonstrates real-world backend architecture, workflow logic, and collaboration features.
 
 
 Tech Stack
@@ -16,7 +16,6 @@ mini-enterprise/
 │
 ├── backend/
 │   ├── app/
-│   │
 │   │   ├── core/                    
 │   │   │   ├── config.py
 │   │   │   ├── database.py
