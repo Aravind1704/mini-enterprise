@@ -1,16 +1,11 @@
 Mini Enterprise 
-A full-stack enterprise workflow and task management system built with modern technologies.
-This project demonstrates real-world backend architecture, workflow logic, and collaboration features.
-
-
+The Mini Enterprise Collaboration System is a full-stack enterprise-grade application designed to simulate real-world workflow management systems.
+This Phase 2 upgrade transforms the application into a workflow-driven collaboration platform with Kanban tracking, approvals, comments, and analytics.
 Tech Stack
 
 Backend:FastAPI, SQLAlchemy, MySQL, JWT, bcrypt  
 Frontend:React.js, Axios, React Router DOM  
 Tools:Swagger UI, VS Code
-
-
-
 
 mini-enterprise/
 │
@@ -206,7 +201,7 @@ Mandatory comments on rejection
 Full audit history
 
 
-📊 Dashboard
+  Dashboard
 Total tasks
 Tasks by status
 Pending approvals
