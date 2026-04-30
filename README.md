@@ -7,33 +7,36 @@ Backend:FastAPI, SQLAlchemy, MySQL, JWT, bcrypt
 Frontend:React.js, Axios, React Router DOM  
 Tools:Swagger UI, VS Code
 
+Project Structure
+
+```
 mini-enterprise/
 │
 ├── backend/
 │   ├── app/
-│   │   ├── core/                    
+│   │   ├── core/
 │   │   │   ├── config.py
 │   │   │   ├── database.py
 │   │   │   ├── dependencies.py
 │   │   │   ├── security.py
 │   │   │   └── __init__.py
-│   │
-│   │   ├── models/                  
+│   │   │
+│   │   ├── models/
 │   │   │   ├── user.py
 │   │   │   ├── task.py
 │   │   │   ├── comment.py
 │   │   │   ├── approval.py
 │   │   │   ├── approval_history.py
 │   │   │   └── __init__.py
-│   │
-│   │   ├── schemas/               
+│   │   │
+│   │   ├── schemas/
 │   │   │   ├── user.py
 │   │   │   ├── task.py
 │   │   │   ├── comment.py
 │   │   │   ├── approval.py
 │   │   │   └── __init__.py
-│   │
-│   │   ├── services/               
+│   │   │
+│   │   ├── services/
 │   │   │   ├── auth_service.py
 │   │   │   ├── user_service.py
 │   │   │   ├── task_service.py
@@ -41,8 +44,8 @@ mini-enterprise/
 │   │   │   ├── approval_service.py
 │   │   │   ├── dashboard_service.py
 │   │   │   └── __init__.py
-│   │
-│   │   ├── routers/                
+│   │   │
+│   │   ├── routers/
 │   │   │   ├── auth.py
 │   │   │   ├── users.py
 │   │   │   ├── tasks.py
@@ -50,7 +53,9 @@ mini-enterprise/
 │   │   │   ├── approvals.py
 │   │   │   ├── dashboard.py
 │   │   │   └── __init__.py
-│   │   └── main.py                 
+│   │   │
+│   │   └── main.py
+│   │
 │   ├── requirements.txt
 │   ├── .env
 │   └── .gitignore
@@ -59,16 +64,16 @@ mini-enterprise/
 │   ├── public/
 │   │
 │   ├── src/
-│   │   ├── api/                   
+│   │   ├── api/
 │   │   │   └── axios.js
-│   │
+│   │   │
 │   │   ├── components/
 │   │   │   ├── common/
 │   │   │   ├── Kanban/
 │   │   │   ├── Approval/
 │   │   │   ├── Comments/
 │   │   │   └── Dashboard/
-│   │
+│   │   │
 │   │   ├── pages/
 │   │   │   ├── Login.jsx
 │   │   │   ├── Register.jsx
@@ -76,9 +81,10 @@ mini-enterprise/
 │   │   │   ├── ApprovalPage.jsx
 │   │   │   ├── Dashboard.jsx
 │   │   │   └── TaskDetails.jsx
-│   │
-│   │   ├── context/               
+│   │   │
+│   │   ├── context/
 │   │   │   └── AuthContext.jsx
+│   │   │
 │   │   ├── App.jsx
 │   │   ├── main.jsx
 │   │   └── routes.jsx
@@ -89,7 +95,7 @@ mini-enterprise/
 │
 ├── README.md
 └── .gitignore
-
+```
 
 Prerequisites
 
