@@ -110,7 +110,7 @@ Backend Setup
 1. Clone the repository
 
 bash
-git clone https://github.com/your-username/mini-enterprise.git
+git clone https://github.com/Aravind1704/mini-enterprise.git
 cd mini-enterprise/backend
 
 
