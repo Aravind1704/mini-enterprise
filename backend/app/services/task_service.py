@@ -6,7 +6,7 @@ from app.schemas.task import TaskCreate, TaskUpdate
 
 
 def create_task(data: TaskCreate, created_by_id: int, db: Session):
-    # Validate assigned user exists if provided
+
     if data.assigned_to_id:
         user = db.query(User).filter(User.id == data.assigned_to_id).first()
         if not user:

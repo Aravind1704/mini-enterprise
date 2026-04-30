@@ -5,7 +5,7 @@ class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
-    role: str  # admin / manager / employee
+    role: str  
 
 class UserOut(BaseModel):
     id: int

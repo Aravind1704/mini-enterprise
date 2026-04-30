@@ -12,5 +12,6 @@ class Task(Base):
     due_date = Column(DateTime, nullable=True)
     created_by_id = Column(Integer, ForeignKey("users.id"))
     assigned_to_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    updated_by = Column(Integer, ForeignKey("users.id"), nullable=True)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())

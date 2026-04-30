@@ -44,6 +44,14 @@ export default function Dashboard() {
           <span style={styles.logo}>⚡ TaskManager</span>
           <span style={styles.roleBadge}>{user?.role?.toUpperCase()}</span>
         </div>
+
+        {/* Navigation Links - CENTER */}
+        <div style={styles.navCenter}>
+          <Link to="/stats" style={styles.navLink}>📊 Analytics</Link>
+          <Link to="/kanban" style={styles.navLink}>⚡ Kanban</Link>
+          <Link to="/approvals" style={styles.navLink}>✅ Approvals</Link>
+        </div>
+
         <div style={styles.navRight}>
           <span style={styles.userName}>{user?.name}</span>
           {(user?.role === "admin" || user?.role === "manager") && (
@@ -92,6 +100,7 @@ export default function Dashboard() {
 
                 <div style={styles.cardActions}>
                   <Link to={`/tasks/edit/${task.id}`} style={styles.editBtn}>Edit</Link>
+                  <Link to={`/tasks/${task.id}/comments`} style={styles.commentBtn}>💬 Comments</Link>
                   {(user?.role === "admin" || user?.role === "manager") && (
                     <button onClick={() => handleDelete(task.id)} style={styles.deleteBtn}>Delete</button>
                   )}
@@ -107,10 +116,12 @@ export default function Dashboard() {
 
 const styles = {
   container: { minHeight: "100vh", background: "#f0f2f5", fontFamily: "sans-serif" },
-  navbar: { background: "#fff", padding: "0 32px", height: "60px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 4px rgba(0,0,0,0.08)" },
+  navbar: { background: "#fff", padding: "0 32px", height: "70px", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 1px 4px rgba(0,0,0,0.08)" },
   navLeft: { display: "flex", alignItems: "center", gap: "12px" },
   logo: { fontSize: "18px", fontWeight: "700", color: "#4f46e5" },
   roleBadge: { background: "#eef2ff", color: "#4f46e5", padding: "2px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: "700" },
+  navCenter: { display: "flex", gap: "24px", flex: 1, justifyContent: "center" },
+  navLink: { color: "#555", textDecoration: "none", fontSize: "13px", fontWeight: "600" },
   navRight: { display: "flex", alignItems: "center", gap: "12px" },
   userName: { fontSize: "14px", color: "#555" },
   createBtn: { background: "#4f46e5", color: "#fff", padding: "8px 16px", borderRadius: "8px", textDecoration: "none", fontSize: "13px", fontWeight: "600" },
@@ -128,7 +139,8 @@ const styles = {
   cardDesc: { margin: "0 0 12px", fontSize: "13px", color: "#666", lineHeight: "1.5" },
   dueDate: { fontSize: "12px", color: "#888", margin: "0 0 4px" },
   assignedTo: { fontSize: "12px", color: "#888", margin: "0 0 16px" },
-  cardActions: { display: "flex", gap: "8px", marginTop: "16px" },
+  cardActions: { display: "flex", gap: "8px", marginTop: "16px", flexWrap: "wrap" },
   editBtn: { background: "#eef2ff", color: "#4f46e5", padding: "7px 16px", borderRadius: "8px", textDecoration: "none", fontSize: "13px", fontWeight: "600" },
+  commentBtn: { background: "#f0fdf4", color: "#059669", padding: "7px 16px", borderRadius: "8px", textDecoration: "none", fontSize: "13px", fontWeight: "600" },
   deleteBtn: { background: "#fde8e8", color: "#c0392b", padding: "7px 16px", borderRadius: "8px", border: "none", cursor: "pointer", fontSize: "13px", fontWeight: "600" },
 };
