@@ -50,6 +50,12 @@ export default function Dashboard() {
           <Link to="/stats" style={styles.navLink}>📊 Analytics</Link>
           <Link to="/kanban" style={styles.navLink}>⚡ Kanban</Link>
           <Link to="/approvals" style={styles.navLink}>✅ Approvals</Link>
+          <Link to="/documents" style={styles.navLink}>📄 Documents</Link>
+          <Link to="/notifications" style={styles.navLink}>🔔 Notifications</Link>
+          <Link to="/ai-insights" style={styles.navLink}>🤖 AI</Link>
+            {user?.role === "admin" && (
+          <Link to="/audit-logs" style={styles.navLink}>🔍 Audit</Link>
+)}
         </div>
 
         <div style={styles.navRight}>

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
 from app.models import user, task, comment, approval
-
+from app.routers import auth, users, tasks, kanban, comments, approvals, dashboard, documents, audit, notifications, ai
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Enterprise Task Manager - Phase 2")
@@ -24,6 +24,10 @@ app.include_router(kanban.router)
 app.include_router(comments.router)
 app.include_router(approvals.router)
 app.include_router(dashboard.router)
+app.include_router(documents.router)
+app.include_router(audit.router)
+app.include_router(notifications.router)
+app.include_router(ai.router)
 
 @app.get("/")
 def root():

@@ -1,17 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.models.task import Task  # ← ADD THIS LINE
+from app.models.task import Task
 from app.schemas.task import TaskCreate, TaskUpdate, TaskAssign, TaskOut
 from app.core.dependencies import get_current_user, require_role
 from app.services.task_service import (
     create_task, get_all_tasks, get_task_by_id,
     update_task, delete_task, assign_task
 )
+from app.services.notification_service import notify_task_assigned
 
 router = APIRouter(prefix="/tasks", tags=["Tasks"])
 
-# KANBAN ROUTE FIRST
 @router.get("/kanban")
 def get_kanban(db: Session = Depends(get_db), _=Depends(get_current_user)):
     tasks = db.query(Task).all()
@@ -53,5 +53,16 @@ def delete(id: int, db: Session = Depends(get_db), _=Depends(require_role("admin
     return delete_task(id, db)
 
 @router.patch("/{id}/assign", response_model=TaskOut)
-def assign(id: int, data: TaskAssign, db: Session = Depends(get_db), _=Depends(require_role("admin", "manager"))):
-    return assign_task(id, data.assigned_to_id, db)
+def assign(id: int, data: TaskAssign, db: Session = Depends(get_db), current_user=Depends(require_role("admin", "manager"))):
+    task = assign_task(id, data.assigned_to_id, db)
+    
+    
+    if task.assigned_to_id:
+        notify_task_assigned(
+            task_id=task.id,
+            assigned_to_id=task.assigned_to_id,
+            assigned_by_name=current_user.name,
+            db=db
+        )
+    
+    return task

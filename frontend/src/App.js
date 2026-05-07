@@ -10,6 +10,12 @@ import Approvals from "./pages/Approvals";
 import TaskComments from "./pages/TaskComments";
 import DashboardStats from "./pages/DashboardStats";
 import PrivateRoute from "./components/PrivateRoute";
+import DocumentManager from "./pages/DocumentManager";
+import AuditLogs from "./pages/AuditLogs";
+import NotificationCenter from "./pages/NotificationCenter";
+import AIInsights from "./pages/AIInsights";
+
+// Inside Routes:
 
 export default function App() {
   return (
@@ -25,6 +31,10 @@ export default function App() {
           <Route path="/approvals" element={<PrivateRoute><Approvals /></PrivateRoute>} />
           <Route path="/tasks/:id/comments" element={<PrivateRoute><TaskComments /></PrivateRoute>} />
           <Route path="/stats" element={<PrivateRoute><DashboardStats /></PrivateRoute>} />
+          <Route path="/documents" element={<PrivateRoute><DocumentManager /></PrivateRoute>} />
+          <Route path="/audit-logs" element={<PrivateRoute><AuditLogs /></PrivateRoute>} />
+          <Route path="/notifications" element={<PrivateRoute><NotificationCenter /></PrivateRoute>} />
+          <Route path="/ai-insights" element={<PrivateRoute><AIInsights /></PrivateRoute>} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>

@@ -2,9 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.approval import Approval, ApprovalHistory
+from app.models.user import User
 from app.core.dependencies import get_current_user, require_role
 from pydantic import BaseModel
 from typing import Optional
+from app.services.notification_service import notify_approval_requested
 
 class ApprovalCreate(BaseModel):
     title: str
@@ -22,6 +24,20 @@ def submit_approval(data: ApprovalCreate, db: Session = Depends(get_db), current
     db.add(approval)
     db.commit()
     db.refresh(approval)
+    
+    manager = db.query(User).filter(User.role == "manager").first()
+    if not manager:
+        manager = db.query(User).filter(User.role == "admin").first()
+    
+    
+    if manager:
+        notify_approval_requested(
+            approval_id=approval.id,
+            approver_id=manager.id,
+            requester_name=current_user.name,
+            db=db
+        )
+    
     return {"id": approval.id, "title": approval.title, "description": approval.description, "requested_by": approval.requested_by, "status": approval.status, "current_level": approval.current_level, "created_at": approval.created_at}
 
 @router.get("/")
