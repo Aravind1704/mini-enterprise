@@ -1,6 +1,6 @@
 from fastapi import HTTPException
 
-# Define allowed transitions
+
 VALID_TRANSITIONS = {
     "todo": ["in_progress"],
     "in_progress": ["review", "todo"],

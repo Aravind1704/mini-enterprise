@@ -29,24 +29,24 @@ def process_approval(approval_id: int, data: ApprovalAction, user, db: Session):
     if not approval:
         raise HTTPException(status_code=404, detail="Approval not found")
 
-    # Validate rejection has comment
+    
     if data.action == "rejected" and not data.comment:
         raise HTTPException(status_code=400, detail="Comment is required for rejection")
 
-    # Role-based action control
+  
     if user.role == "manager" and approval.current_level != "manager":
         raise HTTPException(status_code=403, detail="Not your level to approve")
 
-    # Update approval
+  
     if data.action == "approved" and approval.current_level == "manager":
-        approval.current_level = "admin"   # escalate to admin
+        approval.current_level = "admin"  
         approval.status = "pending"
     elif data.action == "approved" and approval.current_level == "admin":
         approval.status = "approved"
     else:
-        approval.status = data.action  # rejected or hold
+        approval.status = data.action 
 
-    # Log history
+
     history = ApprovalHistory(
         approval_id=approval_id,
         action_by=user.id,

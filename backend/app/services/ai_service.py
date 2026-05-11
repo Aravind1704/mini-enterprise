@@ -26,18 +26,18 @@ def generate_summary(high_priority, pending, overdue, approvals):
     messages = []
     
     if high_priority:
-        messages.append(f"⚠️ {len(high_priority)} high priority tasks need attention")
+        messages.append(f" {len(high_priority)} high priority tasks need attention")
     
     if pending:
-        messages.append(f"📋 {len(pending)} tasks pending")
+        messages.append(f"{len(pending)} tasks pending")
     
     if overdue:
-        messages.append(f"🔴 {len(overdue)} tasks are overdue")
+        messages.append(f"{len(overdue)} tasks are overdue")
     
     if approvals:
-        messages.append(f"✅ {len(approvals)} approvals waiting")
+        messages.append(f"{len(approvals)} approvals waiting")
     
     if not messages:
-        messages.append("✨ All systems nominal!")
+        messages.append(" All systems nominal!")
     
     return " | ".join(messages)

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
+
 
 class DocumentOut(BaseModel):
     id: int
@@ -8,7 +8,7 @@ class DocumentOut(BaseModel):
     file_path: str
     version: int
     uploaded_by: int
-    task_id: Optional[int]
+    task_id: int
     created_at: datetime
 
     class Config:

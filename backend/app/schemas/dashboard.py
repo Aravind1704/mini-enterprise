@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class DashboardSummary(BaseModel):
     total_tasks: int
     todo: int
@@ -7,6 +8,7 @@ class DashboardSummary(BaseModel):
     review: int
     done: int
     pending_approvals: int
+
 
 class TaskDistribution(BaseModel):
     status: str

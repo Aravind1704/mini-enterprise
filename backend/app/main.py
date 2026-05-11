@@ -5,7 +5,7 @@ from app.models import user, task, comment, approval
 from app.routers import auth, users, tasks, kanban, comments, approvals, dashboard, documents, audit, notifications, ai
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Enterprise Task Manager - Phase 2")
+app = FastAPI(title="Enterprise Task Manager - Phase 3")
 
 app.add_middleware(
     CORSMiddleware,

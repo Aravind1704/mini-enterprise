@@ -1,45 +1,68 @@
-from sqlalchemy.orm import Session
-from fastapi import UploadFile, HTTPException
-import shutil
 import os
+import shutil
+
+from sqlalchemy.orm import Session
+
 from app.models.document import Document
-from app.models.audit import AuditLog
 
 UPLOAD_DIR = "uploads"
 
-def upload_document(file: UploadFile, task_id: int, user_id: int, db: Session):
-    if not os.path.exists(UPLOAD_DIR):
-        os.makedirs(UPLOAD_DIR)
-    
-    file_path = f"{UPLOAD_DIR}/{file.filename}"
-    
-    try:
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-    except Exception as e:
-        raise HTTPException(status_code=400, detail="File upload failed")
-    
+
+def upload_document(
+    file,
+    task_id,
+    user_id,
+    db: Session
+):
+
+    os.makedirs(
+        UPLOAD_DIR,
+        exist_ok=True
+    )
+
+    latest = db.query(Document).filter(
+        Document.task_id == task_id
+    ).order_by(
+        Document.version.desc()
+    ).first()
+
+    version = 1
+
+    if latest:
+        version = latest.version + 1
+
+    file_path = f"{UPLOAD_DIR}/v{version}_{file.filename}"
+
+    with open(file_path, "wb") as buffer:
+
+        shutil.copyfileobj(
+            file.file,
+            buffer
+        )
+
     document = Document(
         file_name=file.filename,
         file_path=file_path,
+        version=version,
         uploaded_by=user_id,
-        task_id=task_id,
-        version=1
+        task_id=task_id
     )
+
     db.add(document)
-    
-    # Log action
-    audit = AuditLog(
-        user_id=user_id,
-        action="uploaded",
-        entity="Document",
-        entity_id=0,  # Will update after commit
-        details=f"Uploaded {file.filename}"
-    )
-    db.add(audit)
+
     db.commit()
+
     db.refresh(document)
+
     return document
 
-def get_task_documents(task_id: int, db: Session):
-    return db.query(Document).filter(Document.task_id == task_id).all()
+
+
+
+def get_all_documents(
+    db: Session
+):
+
+    return db.query(Document).order_by(
+        Document.created_at.desc()
+    ).all()

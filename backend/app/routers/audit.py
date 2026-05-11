@@ -1,15 +1,36 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-from app.database import get_db
-from app.core.dependencies import require_role
-from app.services.audit_service import get_audit_logs, get_recent_activity
+from fastapi import (
+    APIRouter,
+    Depends
+)
 
-router = APIRouter(prefix="/audit-logs", tags=["Audit"])
+from sqlalchemy.orm import Session
+
+from app.database import get_db
+
+from app.core.dependencies import (
+    get_current_user
+)
+
+from app.services.audit_service import (
+    get_audit_logs
+)
+
+router = APIRouter(
+
+    prefix="/audit-logs",
+
+    tags=["Audit Logs"]
+
+)
+
 
 @router.get("/")
-def list_audit_logs(db: Session = Depends(get_db), _=Depends(require_role("admin"))):
-    return get_audit_logs(db)
+def list_audit_logs(
 
-@router.get("/activity")
-def recent_activity(days: int = 7, db: Session = Depends(get_db), _=Depends(require_role("admin"))):
-    return get_recent_activity(days, db)
+    db: Session = Depends(get_db),
+
+    current_user=Depends(get_current_user)
+
+):
+
+    return get_audit_logs(db)

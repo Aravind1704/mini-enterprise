@@ -1,158 +1,453 @@
 import { useEffect, useState } from "react";
+
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+
 import api from "../api/axios";
 
-export default function DocumentManager() {
-  const { user } = useAuth();
-  const [documents, setDocuments] = useState([]);
-  const [taskId, setTaskId] = useState("");
-  const [file, setFile] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+export default function Documents() {
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
+  const [documents, setDocuments] = useState([]);
+
+  const [file, setFile] = useState(null);
+
+  const [taskId, setTaskId] = useState("");
+
+  const [loading, setLoading] = useState(false);
+
+
+  // ----------------------------
+  // FETCH DOCUMENTS
+  // ----------------------------
+
+  const fetchDocuments = async () => {
+
+    try {
+
+      const res = await api.get(
+        "/documents/"
+      );
+
+      setDocuments(res.data);
+
+    } catch (err) {
+
+      console.error(err);
+
+    }
   };
 
+
+  // ----------------------------
+  // LOAD DATA
+  // ----------------------------
+
+  useEffect(() => {
+
+    fetchDocuments();
+
+  }, []);
+
+
+  // ----------------------------
+  // UPLOAD DOCUMENT
+  // ----------------------------
+
   const handleUpload = async (e) => {
+
     e.preventDefault();
+
     if (!file) {
-      setError("Please select a file");
+
+      alert("Please select file");
+
       return;
     }
 
-    setLoading(true);
-    setError("");
-    setSuccess("");
-
-    const formData = new FormData();
-    formData.append("file", file);
-    if (taskId) formData.append("task_id", taskId);
-
     try {
-      await api.post("/documents/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      setSuccess("✅ Document uploaded successfully!");
+
+      setLoading(true);
+
+      const formData = new FormData();
+
+      formData.append("file", file);
+
+      formData.append("task_id", taskId);
+
+      await api.post(
+        "/documents/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
+      );
+
+      alert("Document uploaded successfully");
+
       setFile(null);
+
       setTaskId("");
+
       fetchDocuments();
+
     } catch (err) {
-      setError(err.response?.data?.detail || "Upload failed");
+
+      console.error(err);
+
+      alert("Upload failed");
+
     } finally {
+
       setLoading(false);
     }
   };
 
-  const fetchDocuments = async () => {
-    if (!taskId) return;
+
+  // ----------------------------
+  // DOWNLOAD DOCUMENT
+  // ----------------------------
+
+  const handleDownload = (id) => {
+
+    window.open(
+      `http://127.0.0.1:8000/documents/download/${id}`,
+      "_blank"
+    );
+  };
+
+
+  // ----------------------------
+  // DELETE DOCUMENT
+  // ----------------------------
+
+  const handleDelete = async (id) => {
+
+    const confirmDelete = window.confirm(
+      "Delete this document?"
+    );
+
+    if (!confirmDelete) return;
+
     try {
-      const res = await api.get(`/documents/task/${taskId}`);
-      setDocuments(res.data || []);
+
+      await api.delete(
+        `/documents/${id}`
+      );
+
+      alert("Document deleted");
+
+      fetchDocuments();
+
     } catch (err) {
-      setDocuments([]);
+
+      console.error(err);
+
+      alert("Delete failed");
     }
   };
 
-  useEffect(() => {
-    fetchDocuments();
-  }, [taskId]);
+
+  // ----------------------------
+  // UI
+  // ----------------------------
 
   return (
+
     <div style={styles.container}>
+
+
+      {/* HEADER */}
+
       <div style={styles.header}>
-        <h1 style={styles.title}>📄 Document Manager</h1>
-        <Link to="/dashboard" style={styles.backBtn}>← Dashboard</Link>
-      </div>
 
-      {error && <div style={styles.error}>{error}</div>}
-      {success && <div style={styles.success}>{success}</div>}
+        <div>
 
-      {/* Upload Form */}
-      <div style={styles.card}>
-        <h2 style={styles.cardTitle}>📤 Upload Document</h2>
-        <form onSubmit={handleUpload} style={styles.form}>
-          <div style={styles.field}>
-            <label style={styles.label}>Select File *</label>
-            <input
-              type="file"
-              onChange={handleFileChange}
-              style={styles.fileInput}
-              required
-            />
-          </div>
+          <h1 style={styles.title}>
+            📄 Documents
+          </h1>
 
-          <div style={styles.field}>
-            <label style={styles.label}>Task ID (Optional)</label>
-            <input
-              type="number"
-              placeholder="Enter task ID"
-              value={taskId}
-              onChange={(e) => setTaskId(e.target.value)}
-              style={styles.input}
-            />
-          </div>
+          <p style={styles.subtitle}>
+            Upload documents with version control
+          </p>
 
-          <button style={styles.submitBtn} type="submit" disabled={loading}>
-            {loading ? "Uploading..." : "Upload File"}
-          </button>
-        </form>
-      </div>
-
-      {/* Documents List */}
-      {taskId && (
-        <div style={styles.card}>
-          <h2 style={styles.cardTitle}>📋 Task #{taskId} Documents</h2>
-          {documents.length === 0 ? (
-            <p style={styles.empty}>No documents uploaded yet.</p>
-          ) : (
-            <div style={styles.docList}>
-              {documents.map((doc) => (
-                <div key={doc.id} style={styles.docItem}>
-                  <div>
-                    <p style={styles.docName}>📎 {doc.file_name}</p>
-                    <p style={styles.docMeta}>
-                      v{doc.version} • {new Date(doc.created_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <a
-                    href={`/downloads/${doc.id}`}
-                    style={styles.downloadBtn}
-                    download
-                  >
-                    ⬇️ Download
-                  </a>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
-      )}
+
+        <Link
+          to="/dashboard"
+          style={styles.backBtn}
+        >
+          ← Dashboard
+        </Link>
+
+      </div>
+
+
+      {/* UPLOAD BOX */}
+
+      <form
+        onSubmit={handleUpload}
+        style={styles.uploadBox}
+      >
+
+        <h3 style={styles.uploadTitle}>
+          Upload New Document
+        </h3>
+
+        <input
+          type="number"
+          placeholder="Task ID"
+          value={taskId}
+          onChange={(e) =>
+            setTaskId(e.target.value)
+          }
+          style={styles.input}
+        />
+
+        <input
+          type="file"
+          onChange={(e) =>
+            setFile(e.target.files[0])
+          }
+          style={styles.fileInput}
+        />
+
+        <button
+          type="submit"
+          style={styles.uploadBtn}
+        >
+          {
+            loading
+              ? "Uploading..."
+              : "Upload Document"
+          }
+        </button>
+
+      </form>
+
+
+      {/* DOCUMENT LIST */}
+
+      <div style={styles.grid}>
+
+        {
+          documents.length === 0 ? (
+
+            <div style={styles.empty}>
+              No documents uploaded
+            </div>
+
+          ) : (
+
+            documents.map((doc) => (
+
+              <div
+                key={doc.id}
+                style={styles.card}
+              >
+
+                <div style={styles.icon}>
+                  📄
+                </div>
+
+                <h3 style={styles.fileName}>
+                  {doc.file_name}
+                </h3>
+
+                <p style={styles.version}>
+                  Version: v{doc.version}
+                </p>
+
+                <p style={styles.task}>
+                  Task ID: {doc.task_id}
+                </p>
+
+                <p style={styles.date}>
+                  {
+                    new Date(
+                      doc.created_at
+                    ).toLocaleString()
+                  }
+                </p>
+
+
+                <div style={styles.buttonGroup}>
+
+                  <button
+                    style={styles.downloadBtn}
+                    onClick={() =>
+                      handleDownload(doc.id)
+                    }
+                  >
+                    Download
+                  </button>
+
+                  <button
+                    style={styles.deleteBtn}
+                    onClick={() =>
+                      handleDelete(doc.id)
+                    }
+                  >
+                    Delete
+                  </button>
+
+                </div>
+
+              </div>
+
+            ))
+          )
+        }
+
+      </div>
+
     </div>
   );
 }
 
+
 const styles = {
-  container: { minHeight: "100vh", background: "#f0f2f5", padding: "24px", fontFamily: "sans-serif" },
-  header: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" },
-  title: { fontSize: "24px", fontWeight: "700", color: "#1a1a2e", margin: 0 },
-  backBtn: { background: "#fff", color: "#4f46e5", padding: "8px 16px", borderRadius: "8px", textDecoration: "none", fontSize: "13px", fontWeight: "600" },
-  error: { background: "#fff0f0", border: "1px solid #ffcccc", color: "#cc0000", padding: "12px", borderRadius: "8px", marginBottom: "16px" },
-  success: { background: "#d4edda", border: "1px solid #c3e6cb", color: "#155724", padding: "12px", borderRadius: "8px", marginBottom: "16px" },
-  card: { background: "#fff", padding: "24px", borderRadius: "12px", boxShadow: "0 2px 12px rgba(0,0,0,0.07)", marginBottom: "20px" },
-  cardTitle: { margin: "0 0 16px", fontSize: "16px", fontWeight: "700", color: "#1a1a2e" },
-  form: { maxWidth: "400px" },
-  field: { marginBottom: "16px" },
-  label: { display: "block", marginBottom: "6px", fontSize: "13px", fontWeight: "600", color: "#333" },
-  input: { width: "100%", padding: "10px", border: "1px solid #ddd", borderRadius: "8px", fontSize: "14px", boxSizing: "border-box" },
-  fileInput: { width: "100%", padding: "10px", border: "1px solid #ddd", borderRadius: "8px", fontSize: "14px", boxSizing: "border-box" },
-  submitBtn: { width: "100%", padding: "10px", background: "#4f46e5", color: "#fff", border: "none", borderRadius: "8px", fontSize: "14px", fontWeight: "600", cursor: "pointer" },
-  empty: { color: "#aaa", textAlign: "center", padding: "24px" },
-  docList: { display: "flex", flexDirection: "column", gap: "12px" },
-  docItem: { display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px", background: "#f8f9fa", borderRadius: "8px" },
-  docName: { margin: "0 0 4px", fontSize: "14px", fontWeight: "600", color: "#1a1a2e" },
-  docMeta: { margin: 0, fontSize: "12px", color: "#888" },
-  downloadBtn: { background: "#eef2ff", color: "#4f46e5", padding: "6px 12px", borderRadius: "6px", textDecoration: "none", fontSize: "12px", fontWeight: "600" },
+
+  container: {
+    minHeight: "100vh",
+    background: "#f3f4f6",
+    padding: "30px",
+    fontFamily: "Arial"
+  },
+
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "30px"
+  },
+
+  title: {
+    fontSize: "42px",
+    margin: 0,
+    color: "#111827"
+  },
+
+  subtitle: {
+    color: "#6b7280",
+    marginTop: "10px"
+  },
+
+  backBtn: {
+    background: "#4f46e5",
+    color: "#fff",
+    padding: "12px 20px",
+    borderRadius: "10px",
+    textDecoration: "none",
+    fontWeight: "bold"
+  },
+
+  uploadBox: {
+    background: "#fff",
+    padding: "25px",
+    borderRadius: "16px",
+    marginBottom: "30px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.08)"
+  },
+
+  uploadTitle: {
+    marginBottom: "20px"
+  },
+
+  input: {
+    width: "100%",
+    padding: "14px",
+    marginBottom: "15px",
+    border: "1px solid #ddd",
+    borderRadius: "10px"
+  },
+
+  fileInput: {
+    marginBottom: "20px"
+  },
+
+  uploadBtn: {
+    background: "#4f46e5",
+    color: "#fff",
+    border: "none",
+    padding: "14px 20px",
+    borderRadius: "10px",
+    cursor: "pointer",
+    fontWeight: "bold"
+  },
+
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+    gap: "20px"
+  },
+
+  card: {
+    background: "#fff",
+    padding: "24px",
+    borderRadius: "16px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.08)"
+  },
+
+  icon: {
+    fontSize: "40px",
+    marginBottom: "15px"
+  },
+
+  fileName: {
+    margin: 0,
+    marginBottom: "12px",
+    color: "#111827"
+  },
+
+  version: {
+    color: "#4f46e5",
+    fontWeight: "bold",
+    marginBottom: "8px"
+  },
+
+  task: {
+    color: "#374151",
+    marginBottom: "8px"
+  },
+
+  date: {
+    color: "#6b7280",
+    fontSize: "14px",
+    marginBottom: "20px"
+  },
+
+  buttonGroup: {
+    display: "flex",
+    gap: "10px"
+  },
+
+  downloadBtn: {
+    background: "#4f46e5",
+    color: "#fff",
+    border: "none",
+    padding: "12px 16px",
+    borderRadius: "10px",
+    cursor: "pointer",
+    fontWeight: "bold"
+  },
+
+  deleteBtn: {
+    background: "#dc2626",
+    color: "#fff",
+    border: "none",
+    padding: "12px 16px",
+    borderRadius: "10px",
+    cursor: "pointer",
+    fontWeight: "bold"
+  },
+
+  empty: {
+    background: "#fff",
+    padding: "40px",
+    borderRadius: "16px",
+    textAlign: "center",
+    color: "#6b7280"
+  }
+
 };

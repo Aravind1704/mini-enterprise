@@ -2,9 +2,11 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
+
 class CommentCreate(BaseModel):
     content: str
     is_internal: Optional[bool] = False
+
 
 class CommentOut(BaseModel):
     id: int
