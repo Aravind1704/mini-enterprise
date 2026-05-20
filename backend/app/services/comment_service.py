@@ -1,31 +1,96 @@
-from sqlalchemy.orm import Session
 from fastapi import HTTPException
-from app.models.comment import Comment
-from app.schemas.comment import CommentCreate
 
-def add_comment(task_id: int, data: CommentCreate, user_id: int, user_role: str, db: Session):
-   
-   
-    if data.is_internal and user_role == "employee":
-        raise HTTPException(status_code=403, detail="Employees cannot add internal notes")
+from app.repositories import (
+    comment_repo as repo
+)
 
-    comment = Comment(
-        task_id=task_id,
-        user_id=user_id,
-        content=data.content,
-        is_internal=data.is_internal
+from app.services.notification_service import (
+    notify_comment_added
+)
+
+
+# =====================================================
+# CREATE COMMENT
+# =====================================================
+
+def create_comment_service(
+    task_id,
+    data,
+    db,
+    user
+):
+
+    task = repo.get_task_by_id(
+        task_id,
+        db
     )
-    db.add(comment)
-    db.commit()
-    db.refresh(comment)
+
+    if not task:
+
+        raise HTTPException(
+            status_code=404,
+            detail="Task not found"
+        )
+
+    if (
+        data.is_internal
+        and user.role == "employee"
+    ):
+
+        raise HTTPException(
+            status_code=403,
+            detail="Employees cannot add internal notes"
+        )
+
+    comment = repo.create_comment(
+        task_id=task_id,
+        user_id=user.id,
+        content=data.content,
+        is_internal=data.is_internal,
+        db=db
+    )
+
+    if (
+        task.assigned_to_id
+        and task.assigned_to_id != user.id
+    ):
+
+        notify_comment_added(
+            task_id=task.id,
+            task_title=task.title,
+            commenter_name=user.name,
+            assigned_to_id=task.assigned_to_id,
+            db=db
+        )
+
     return comment
 
-def get_comments(task_id: int, user_role: str, db: Session):
-    if user_role in ["admin", "manager"]:
-        return db.query(Comment).filter(Comment.task_id == task_id).all()
-  
 
-    return db.query(Comment).filter(
-        Comment.task_id == task_id,
-        Comment.is_internal == False
-    ).all()
+# =====================================================
+# LIST COMMENTS
+# =====================================================
+
+def list_comments_service(
+    task_id,
+    db,
+    user
+):
+
+    if user.role == "employee":
+
+        return repo.list_comments_for_employee(
+            task_id,
+            db
+        )
+
+    elif user.role == "manager":
+
+        return repo.list_comments_for_manager(
+            task_id,
+            db
+        )
+
+    return repo.list_all_comments(
+        task_id,
+        db
+    )

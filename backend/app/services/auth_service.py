@@ -1,54 +1,55 @@
-from sqlalchemy.orm import Session
-from fastapi import HTTPException,status
-from app.models.user import User
-from app.schemas.user import UserCreate
-from app.core.security import hash_password, verify_password, create_access_token
+from datetime import (
+    datetime,
+    timedelta
+)
+
+from jose import jwt
+
+from app.core.config import settings
 
 
-def register_user(data: UserCreate, db: Session):
-    
-    existing = db.query(User).filter(User.email == data.email).first()
-    if existing:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Email already registered")
+# =====================================================
+# GENERATE RESET TOKEN
+# =====================================================
 
-    
-    if data.role not in ["admin", "manager", "employee"]:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid role. Choose admin, manager, or employee")
+def generate_reset_token(
+    email: str
+):
 
-    user = User(
-        name=data.name,
-        email=data.email,
-        hashed_password=hash_password(data.password),
-        role=data.role
+    expire = datetime.utcnow() + timedelta(
+        minutes=15
     )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+
+    payload = {
+        "sub": email,
+        "exp": expire
+    }
+
+    return jwt.encode(
+        payload,
+        settings.secret_key,
+        algorithm=settings.algorithm
+    )
 
 
-def login_user(email: str, password: str, db: Session):
-    user = db.query(User).filter(User.email == email).first()
+# =====================================================
+# VERIFY RESET TOKEN
+# =====================================================
 
-    if not user:
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+def verify_reset_token(
+    token: str
+):
 
-    if not verify_password(password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Invalid email or password")
+    try:
 
-    if not user.is_active:
-        raise HTTPException(status_code=403, detail="Account is inactive")
+        payload = jwt.decode(
+            token,
+            settings.secret_key,
+            algorithms=[settings.algorithm]
+        )
 
-    token = create_access_token({"sub": user.email})
-    return {"access_token": token, "token_type": "bearer"}
+        return payload.get("sub")
 
+    except Exception:
 
-def get_user_by_id(user_id: int, db: Session):
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user
-
-
-def get_all_users(db: Session):
-    return db.query(User).all()
+        return None

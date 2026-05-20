@@ -26,9 +26,7 @@ router = APIRouter(
 )
 
 
-# ----------------------------
-# GET KANBAN BOARD
-# ----------------------------
+
 
 @router.get("/kanban")
 def get_kanban(
@@ -67,9 +65,6 @@ def get_kanban(
     }
 
 
-# ----------------------------
-# UPDATE TASK STATUS
-# ----------------------------
 
 @router.patch(
     "/{id}/status",

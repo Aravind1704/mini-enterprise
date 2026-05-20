@@ -1,5 +1,7 @@
 Mini Enterprise 
-Mini Enterprise is a comprehensive full-stack task management system built with modern technologies. It includes user authentication, role-based access control, document management, approval workflows, real-time notifications, and AI-powered insights.
+Mini Enterprise is a comprehensive full-stack enterprise task management and SaaS subscription platform built using FastAPI and React.js. It supports role-based access control, task workflows, approvals, notifications, Stripe subscriptions, WebSockets, analytics, AI insights, and modern dashboard features.
+
+
 
 Tech Stack
 Backend
@@ -20,6 +22,16 @@ Charts: Recharts
 Drag & Drop: React Beautiful DnD
 Styling: Inline CSS
 
+Security Features:
+
+JWT Authentication
+Bcrypt Password Hashing
+Role-Based Access Control
+Protected APIs
+SQLAlchemy ORM Protection
+Token Expiry
+Refresh Tokens
+Deployment
 Tools & Infrastructure
 
 Version Control: Git & GitHub
@@ -31,94 +43,141 @@ Package Management: npm, pip
 Project Structure
 
 ```
-mini-enterprise/
+Mini-Enterprise/
 │
 ├── backend/
+│   │
+│   ├── venv/
+│   │
 │   ├── app/
+│   │   │
 │   │   ├── core/
-│   │   │   ├── config.py              (Environment configuration)
-│   │   │   ├── dependencies.py        (JWT & role dependencies)
-│   │   │   └── security.py            (Password & token security)
+│   │   │   ├── config.py
+│   │   │   ├── security.py
+│   │   │   ├── dependencies.py
+│   │   │   ├── stripe_config.py
+│   │   │   ├── websocket_manager.py
+│   │   │   └── limiter.py
 │   │   │
 │   │   ├── models/
-│   │   │   ├── user.py                (User model)
-│   │   │   ├── task.py                (Task model)
-│   │   │   ├── comment.py             (Comment model - Phase 2)
-│   │   │   ├── approval.py            (Approval model - Phase 2)
-│   │   │   ├── document.py            (Document model - Phase 3)
-│   │   │   ├── audit.py               (Audit log model - Phase 3)
-│   │   │   └── notification.py        (Notification model - Phase 3)
-│   │   │
-│   │   ├── routers/
-│   │   │   ├── auth.py                (Authentication endpoints)
-│   │   │   ├── users.py               (User management)
-│   │   │   ├── tasks.py               (Task CRUD & kanban)
-│   │   │   ├── comments.py            (Comments - Phase 2)
-│   │   │   ├── approvals.py           (Approvals - Phase 2)
-│   │   │   ├── kanban.py              (Kanban board - Phase 2)
-│   │   │   ├── dashboard.py           (Analytics - Phase 2)
-│   │   │   ├── documents.py           (Document management - Phase 3)
-│   │   │   ├── audit.py               (Audit logs - Phase 3)
-│   │   │   ├── notifications.py       (Notifications - Phase 3)
-│   │   │   └── ai.py                  (AI insights - Phase 3)
+│   │   │   ├── user.py
+│   │   │   ├── task.py
+│   │   │   ├── comment.py
+│   │   │   ├── approval.py
+│   │   │   ├── document.py
+│   │   │   ├── notification.py
+│   │   │   ├── audit_log.py
+│   │   │   ├── subscription.py
+│   │   │   └── payment.py
 │   │   │
 │   │   ├── schemas/
-│   │   │   ├── user.py                (User schemas)
-│   │   │   ├── task.py                (Task schemas)
-│   │   │   ├── comment.py             (Comment schemas - Phase 2)
-│   │   │   ├── approval.py            (Approval schemas - Phase 2)
-│   │   │   ├── document.py            (Document schemas - Phase 3)
-│   │   │   ├── audit.py               (Audit schemas - Phase 3)
-│   │   │   └── notification.py        (Notification schemas - Phase 3)
+│   │   │   ├── user.py
+│   │   │   ├── task.py
+│   │   │   ├── comment.py
+│   │   │   ├── approval.py
+│   │   │   ├── document.py
+│   │   │   ├── notification.py
+│   │   │   ├── audit_log.py
+│   │   │   ├── analytics.py
+│   │   │   ├── subscription.py
+│   │   │   └── payment.py
+│   │   │
+│   │   ├── routers/
+│   │   │   ├── auth.py
+│   │   │   ├── users.py
+│   │   │   ├── tasks.py
+│   │   │   ├── comments.py
+│   │   │   ├── approvals.py
+│   │   │   ├── kanban.py
+│   │   │   ├── analytics.py
+│   │   │   ├── dashboard.py
+│   │   │   ├── documents.py
+│   │   │   ├── notifications.py
+│   │   │   ├── audit_logs.py
+│   │   │   ├── ai_insights.py
+│   │   │  ├── payment_router.py
+│   │   │  ├── subscription_router.py
+│   │   │  └── websocket_router.py
 │   │   │
 │   │   ├── services/
-│   │   │   ├── auth_service.py        (Auth logic)
-│   │   │   ├── task_service.py        (Task logic)
-│   │   │   ├── document_service.py    (Document management - Phase 3)
-│   │   │   ├── audit_service.py       (Audit logging - Phase 3)
-│   │   │   ├── notification_service.py (Notifications - Phase 3)
-│   │   │   └── ai_service.py          (AI insights - Phase 3)
+│   │   │   ├── auth_service.py
+│   │   │   ├── task_service.py
+│   │   │   ├── comment_service.py
+│   │   │   ├── approval_service.py
+│   │   │   ├── analytics_service.py
+│   │   │   ├── document_service.py
+│   │   │   ├── notification_service.py
+│   │   │   ├── audit_service.py
+│   │   │   ├── ai_service.py
+│   │   │   ├── websocket_service.py
+│   │   │   ├── payment_service.py
+│   │   │   └── stripe_service.py
 │   │   │
-│   │   ├── database.py                (Database connection)
-│   │   └── main.py                    (FastAPI application)
+│   │   ├── websocket/
+│   │   │   └── connection_manager.py
+│   │   │
+│   │   ├── database.py
+│   │   └── main.py
 │   │
-│   ├── .env                           (Environment variables)
-│   ├── requirements.txt               (Python dependencies)
-│   └── README.md
+│   ├── requirements.txt
+│   ├── .env
+│   ├── README.md
+│   └── alembic/
+│
 │
 ├── frontend/
+│   │
+│   ├── node_modules/
+│   │
+│   ├── public/
+│   │   ├── index.html
+│   │   ├── favicon.ico
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   └── manifest.json
+│   │
 │   ├── src/
+│   │   │
 │   │   ├── api/
-│   │   │   └── axios.js               (HTTP client configuration)
+│   │   │   └── axios.js
 │   │   │
 │   │   ├── context/
-│   │   │   └── AuthContext.jsx        (Global auth state)
+│   │   │   └── AuthContext.jsx
 │   │   │
 │   │   ├── components/
-│   │   │   └── PrivateRoute.jsx       (Protected routes)
+│   │   │   ├── Navbar.jsx
+│   │   │   └── PrivateRoute.jsx
 │   │   │
 │   │   ├── pages/
-│   │   │   ├── Login.jsx              (Login page)
-│   │   │   ├── Register.jsx           (Registration page)
-│   │   │   ├── Dashboard.jsx          (Main task dashboard)
-│   │   │   ├── CreateTask.jsx         (Create task form)
-│   │   │   ├── EditTask.jsx           (Edit task form)
-│   │   │   ├── KanbanBoard.jsx        (Kanban board - Phase 2)
-│   │   │   ├── Approvals.jsx          (Approvals page - Phase 2)
-│   │   │   ├── TaskComments.jsx       (Comments page - Phase 2)
-│   │   │   ├── DashboardStats.jsx     (Analytics - Phase 2)
-│   │   │   ├── DocumentManager.jsx    (Documents - Phase 3)
-│   │   │   ├── AuditLogs.jsx          (Audit logs - Phase 3)
-│   │   │   ├── NotificationCenter.jsx (Notifications - Phase 3)
-│   │   │   └── AIInsights.jsx         (AI insights - Phase 3)
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── CreateTask.jsx
+│   │   │   ├── EditTask.jsx
+│   │   │   ├── Kanban.jsx
+│   │   │   ├── Comments.jsx
+│   │   │   ├── Approvals.jsx
+│   │   │   ├── Notifications.jsx
+│   │   │   ├── Documents.jsx
+│   │   │   ├── Analytics.jsx
+│   │   │   ├── AuditLogs.jsx
+│   │   │   ├── AIInsights.jsx
+│   │   │   ├── Pricing.jsx
+│   │   │   ├── Success.jsx
+│   │   │   └── Cancel.jsx
 │   │   │
-│   │   └── App.jsx                    (Main application)
+│   │   ├── services/
+│   │   │   ├── WebSocketClient.js
+│   │   │
+│   │   ├── App.js
+│   │   ├── routes.js
+│   │   └── index.js
 │   │
 │   ├── package.json
 │   ├── package-lock.json
 │   └── README.md
 │
-├── .gitignore                         (Git ignore rules)
+├── .gitignore
 └── README.md
 ```
 
@@ -477,10 +536,86 @@ Phase 3
  Activity tracking
  Full enterprise workflow
 
-Deployment
+
+
+
+🚀 Features
+✅ Authentication & Security
+JWT Authentication
+Refresh Token Support
+Role-Based Access Control
+OAuth Ready
+Password Hashing with Bcrypt
+Protected Routes
+Token-Based Authorization
+
+📋 Task Management
+Create Tasks
+Edit Tasks
+Delete Tasks
+Assign Tasks
+Task Priorities
+Due Dates
+Comments System
+Task Workflow Management
+📊 Dashboard Features
+👨‍💼 Admin Dashboard
+Total Users
+Total Tasks
+Approvals
+Audit Logs
+Full Analytics
+
+
+👨‍💻 Manager Dashboard
+Team Tasks
+Pending Approvals
+Team Analytics
+
+👤 Employee Dashboard
+My Tasks
+Pending Tasks
+Personal Analytics
+
+
+
+🧠 AI Features
+AI Task Insights
+Delay Detection
+High Priority Alerts
+Smart Analytics
+
+
+
+🔔 Notifications
+Real-Time Notifications
+WebSocket Support
+Activity Feed
+Comment Alerts
+Approval Alerts
+
+
+
+
+💳 SaaS Subscription System
+Subscription Plans
+Plan	Price	Credits
+Basic	₹499	100
+Silver	₹1499	500
+Gold	₹3999	2000
+Subscription Features
+Stripe Checkout Integration
+Live Credit Updates
+Live Plan Updates
+Webhook Support
+Subscription Dashboard
+Real-Time Credit Tracking
+
+
 
  GitHub repository
  Complete documentation
  API endpoints tested
  Frontend pages tested
  All features working
+
