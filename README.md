@@ -1,7 +1,7 @@
 Mini Enterprise 
 Mini Enterprise is a comprehensive full-stack enterprise task management and SaaS subscription platform built using FastAPI and React.js. It supports role-based access control, task workflows, approvals, notifications, Stripe subscriptions, WebSockets, analytics, AI insights, and modern dashboard features.
 
-
+```
 Tech Stack
 
 Backend
@@ -50,7 +50,7 @@ Token Expiry
 Refresh Tokens
 Deployment
 Tools & Infrastructure
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
 
 
 Security Features
@@ -67,6 +67,9 @@ Token Expiry Handling
 Secure Password Reset Flow
 SQLAlchemy ORM Protection
 Multi-Tenant Data Isolation
+```
+
+
 
 Project Structure
 
