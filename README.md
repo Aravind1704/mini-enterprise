@@ -1,10 +1,6 @@
 Mini Enterprise 
 Mini Enterprise is a comprehensive full-stack enterprise task management and SaaS subscription platform built using FastAPI and React.js. It supports role-based access control, task workflows, approvals, notifications, Stripe subscriptions, WebSockets, analytics, AI insights, and modern dashboard features.
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
 Tech Stack
 
@@ -30,7 +26,7 @@ AI Processing	Python AI Services
 Frontend
 
 
-<<<<<<< HEAD
+
 Technology	Purpose
 Framework	React.js
 Routing	React Router DOM
@@ -1131,7 +1127,7 @@ Real-Time Credit Tracking
 
 
 
-<<<<<<< HEAD
+
 
 =======
 
