@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from sqlalchemy.orm import Session
 
 from app.repositories import (
@@ -159,4 +160,30 @@ def list_tasks_service(
             user.id
         )
 
+=======
+from app.repositories import (
+    task_repo as repo
+)
+
+
+def list_tasks_service(
+    db,
+    user
+):
+
+    if user.role == "employee":
+
+        return repo.list_tasks_for_employee(
+            db,
+            user.id
+        )
+
+    elif user.role == "manager":
+
+        return repo.list_tasks_for_manager(
+            db,
+            user.id
+        )
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
     return repo.list_all_tasks(db)

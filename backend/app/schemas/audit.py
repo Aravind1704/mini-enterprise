@@ -19,7 +19,22 @@ class AuditLogOut(
 
     details: str
 
+<<<<<<< HEAD
     timestamp: datetime
+=======
+    old_values: Optional[str] = None
+
+    new_values: Optional[str] = None
+
+    changes_summary: Optional[str] = None
+
+    change_reason: Optional[str] = None
+
+    ip_address: Optional[str] = None
+
+    timestamp: datetime
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
     class Config:
 

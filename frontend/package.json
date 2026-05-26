@@ -44,6 +44,10 @@
   "devDependencies": {
     "autoprefixer": "^10.5.0",
     "postcss": "^8.5.15",
+<<<<<<< HEAD
     "tailwindcss": "^3.4.3"
+=======
+    "tailwindcss": "^4.3.0"
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
   }
 }

@@ -260,6 +260,7 @@ export default function Dashboard() {
         {/* CENTER */}
 
         <div style={styles.navCenter}>
+<<<<<<< HEAD
 
           <Link
             to="/kanban"
@@ -393,6 +394,105 @@ export default function Dashboard() {
 
         </div>
 
+=======
+
+          <Link
+            to="/kanban"
+            style={styles.navLink}
+          >
+            ⚡ Kanban
+          </Link>
+
+          <Link
+            to="/approvals"
+            style={styles.navLink}
+          >
+            ✅ Approvals
+          </Link>
+
+          <Link
+            to="/documents"
+            style={styles.navLink}
+          >
+            📄 Documents
+          </Link>
+
+          <Link
+            to="/notifications"
+            style={styles.navLink}
+          >
+            🔔 Notifications
+          </Link>
+
+          <Link
+            to="/ai-insights"
+            style={styles.navLink}
+          >
+            🤖 AI Insights
+          </Link>
+
+          <Link
+            to="/analytics"
+            style={styles.navLink}
+          >
+            📊 Analytics
+          </Link>
+
+          {user?.role === "admin" && (
+
+            <Link
+              to="/audit-logs"
+              style={styles.navLink}
+            >
+              🔍 Audit Logs
+            </Link>
+          )}
+
+        </div>
+
+
+        {/* RIGHT */}
+
+        <div style={styles.navRight}>
+          
+          <button
+            onClick={() => navigate("/pricing")}
+            style={styles.upgradeBtn}
+          >
+            🚀 Upgrade
+          </button>
+          <span style={styles.userName}>
+
+            {user?.name}
+
+          </span>
+
+          {(
+
+            user?.role === "admin" ||
+
+            user?.role === "manager"
+
+          ) && (
+
+            <Link
+              to="/tasks/create"
+              style={styles.createBtn}
+            >
+              + New Task
+            </Link>
+          )}
+
+          <button
+            onClick={handleLogout}
+            style={styles.logoutBtn}
+          >
+            Logout
+          </button>
+
+        </div>
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
       </div>
 
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from sqlalchemy.orm import Session
 from typing import Optional
 
@@ -67,3 +68,36 @@ class AuditRepo:
         return q.order_by(
             AuditLog.timestamp.desc()
         ).all()
+=======
+from sqlalchemy import (
+    select
+)
+
+from sqlalchemy.orm import (
+    Session
+)
+
+from app.models.audit import (
+    AuditLog
+)
+
+
+# =====================================================
+# LIST ALL LOGS
+# =====================================================
+
+def list_all_logs(
+    db: Session
+):
+
+    stmt = (
+        select(AuditLog)
+        .order_by(
+            AuditLog.timestamp.desc()
+        )
+    )
+
+    result = db.execute(stmt)
+
+    return result.scalars().all()
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2

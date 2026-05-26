@@ -10,8 +10,12 @@ import {
 } from "./context/AuthContext";
 
 import PrivateRoute from "./components/PrivateRoute";
+<<<<<<< HEAD
 import ApprovalEscalations from "./pages/ApprovalEscalations";
 import ApprovalDelegations from "./pages/ApprovalDelegations";
+=======
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 // ========================================
 // PAGES
 // ========================================
@@ -34,10 +38,19 @@ import Analytics from "./pages/Analytics";
 import Subscriptions from "./pages/Subscriptions";
 import Billing from "./pages/Billing";
 import Pricing from "./pages/Pricing";
+<<<<<<< HEAD
 import SlaRules from './pages/SlaRules';
 import SlaDashboard from './pages/SlaDashboard';
 
 import BillingSuccess from "./pages/BillingSuccess";
+=======
+
+
+import BillingSuccess from "./pages/BillingSuccess";
+
+import BillingCancel from "./pages/BillingCancel";
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
 import BillingCancel from "./pages/BillingCancel";
 import ForgotPassword from "./components/ForgotPassword";
@@ -71,7 +84,12 @@ export default function App() {
             path="/oauth-success"
             element={<OAuthSuccess />}
           />
+<<<<<<< HEAD
          
+=======
+
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
           {/* =====================================
               PROTECTED ROUTES
           ===================================== */}
@@ -183,7 +201,10 @@ export default function App() {
               </PrivateRoute>
             }
           />
+<<<<<<< HEAD
           
+=======
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
           <Route
             path="/subscriptions"
@@ -210,6 +231,7 @@ export default function App() {
             </PrivateRoute>
           }
         />
+<<<<<<< HEAD
         <Route
           path="/notification-preferences"
           element={
@@ -220,19 +242,30 @@ export default function App() {
         />
         <Route path="/sla-rules" element={<PrivateRoute><SlaRules /></PrivateRoute>} />
         <Route path="/sla-dashboard" element={<PrivateRoute><SlaDashboard /></PrivateRoute>} />
+=======
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
         <Route
           path="/success"
           element={<BillingSuccess />}
         />
+<<<<<<< HEAD
        <Route path="/approval-escalations" element={<ApprovalEscalations />} />
         <Route path="/approval-delegations" element={<ApprovalDelegations />} />
+=======
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
         <Route
           path="/cancel"
           element={<BillingCancel />}
         />
+<<<<<<< HEAD
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+=======
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
           {/* =====================================
               DEFAULT ROUTE
           ===================================== */}

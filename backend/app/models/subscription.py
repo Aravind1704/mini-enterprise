@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from datetime import datetime
 
 from sqlalchemy import (
@@ -99,18 +100,35 @@ class Plan(Base):
 
 
 
+=======
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    ForeignKey
+)
+
+from app.database import Base
+
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 class Subscription(Base):
 
     __tablename__ = "subscriptions"
 
+<<<<<<< HEAD
    
 
     id: Mapped[int] = mapped_column(
+=======
+    id = Column(
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
         Integer,
         primary_key=True,
         index=True
     )
 
+<<<<<<< HEAD
     
 
     organization_id: Mapped[int | None] = mapped_column(
@@ -192,3 +210,18 @@ class CreditTransaction(Base):
         DateTime,
         server_default=func.now()
     )
+=======
+    organization_id = Column(
+        Integer,
+        ForeignKey("organizations.id")
+    )
+
+    plan = Column(String)
+
+    status = Column(
+        String,
+        default="active"
+    )
+
+    payment_provider = Column(String)
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2

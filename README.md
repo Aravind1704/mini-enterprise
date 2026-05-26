@@ -1,6 +1,10 @@
 Mini Enterprise 
 Mini Enterprise is a comprehensive full-stack enterprise task management and SaaS subscription platform built using FastAPI and React.js. It supports role-based access control, task workflows, approvals, notifications, Stripe subscriptions, WebSockets, analytics, AI insights, and modern dashboard features.
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
 Tech Stack
 
@@ -26,6 +30,7 @@ AI Processing	Python AI Services
 Frontend
 
 
+<<<<<<< HEAD
 Technology	Purpose
 Framework	React.js
 Routing	React Router DOM
@@ -37,6 +42,19 @@ State Management	React Context API
 Real-Time Updates	WebSocket Client
 Notifications	Toast Notifications
 UI Components	Custom Enterprise UI Components
+=======
+Security Features:
+
+JWT Authentication
+Bcrypt Password Hashing
+Role-Based Access Control
+Protected APIs
+SQLAlchemy ORM Protection
+Token Expiry
+Refresh Tokens
+Deployment
+Tools & Infrastructure
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
 
 Security Features
@@ -57,12 +75,17 @@ Multi-Tenant Data Isolation
 Project Structure
 
 ```
+<<<<<<< HEAD
 MINI ENTERPRISE/
+=======
+Mini-Enterprise/
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 │
 ├── backend/
 │   │
 │   ├── venv/
 │   │
+<<<<<<< HEAD
 │   ├── alembic/
 │   │   ├── versions/
 │   │   ├── env.py
@@ -194,15 +217,90 @@ MINI ENTERPRISE/
 │   │   │   └── workflow_service.py
 │   │   │
 │   │   ├── uploads/
+=======
+│   ├── app/
+│   │   │
+│   │   ├── core/
+│   │   │   ├── config.py
+│   │   │   ├── security.py
+│   │   │   ├── dependencies.py
+│   │   │   ├── stripe_config.py
+│   │   │   ├── websocket_manager.py
+│   │   │   └── limiter.py
+│   │   │
+│   │   ├── models/
+│   │   │   ├── user.py
+│   │   │   ├── task.py
+│   │   │   ├── comment.py
+│   │   │   ├── approval.py
+│   │   │   ├── document.py
+│   │   │   ├── notification.py
+│   │   │   ├── audit_log.py
+│   │   │   ├── subscription.py
+│   │   │   └── payment.py
+│   │   │
+│   │   ├── schemas/
+│   │   │   ├── user.py
+│   │   │   ├── task.py
+│   │   │   ├── comment.py
+│   │   │   ├── approval.py
+│   │   │   ├── document.py
+│   │   │   ├── notification.py
+│   │   │   ├── audit_log.py
+│   │   │   ├── analytics.py
+│   │   │   ├── subscription.py
+│   │   │   └── payment.py
+│   │   │
+│   │   ├── routers/
+│   │   │   ├── auth.py
+│   │   │   ├── users.py
+│   │   │   ├── tasks.py
+│   │   │   ├── comments.py
+│   │   │   ├── approvals.py
+│   │   │   ├── kanban.py
+│   │   │   ├── analytics.py
+│   │   │   ├── dashboard.py
+│   │   │   ├── documents.py
+│   │   │   ├── notifications.py
+│   │   │   ├── audit_logs.py
+│   │   │   ├── ai_insights.py
+│   │   │  ├── payment_router.py
+│   │   │  ├── subscription_router.py
+│   │   │  └── websocket_router.py
+│   │   │
+│   │   ├── services/
+│   │   │   ├── auth_service.py
+│   │   │   ├── task_service.py
+│   │   │   ├── comment_service.py
+│   │   │   ├── approval_service.py
+│   │   │   ├── analytics_service.py
+│   │   │   ├── document_service.py
+│   │   │   ├── notification_service.py
+│   │   │   ├── audit_service.py
+│   │   │   ├── ai_service.py
+│   │   │   ├── websocket_service.py
+│   │   │   ├── payment_service.py
+│   │   │   └── stripe_service.py
+│   │   │
+│   │   ├── websocket/
+│   │   │   └── connection_manager.py
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 │   │   │
 │   │   ├── database.py
 │   │   └── main.py
 │   │
+<<<<<<< HEAD
 │   ├── uploads/
 │   │
 │   ├── .env
 │   ├── alembic.ini
 │   └── requirements.txt
+=======
+│   ├── requirements.txt
+│   ├── .env
+│   ├── README.md
+│   └── alembic/
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 │
 │
 ├── frontend/
@@ -210,6 +308,7 @@ MINI ENTERPRISE/
 │   ├── node_modules/
 │   │
 │   ├── public/
+<<<<<<< HEAD
 │   │
 │   ├── src/
 │   │   │
@@ -264,6 +363,50 @@ MINI ENTERPRISE/
 │   │   ├── logo.svg
 │   │   ├── reportWebVitals.js
 │   │   └── setupTests.js
+=======
+│   │   ├── index.html
+│   │   ├── favicon.ico
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   └── manifest.json
+│   │
+│   ├── src/
+│   │   │
+│   │   ├── api/
+│   │   │   └── axios.js
+│   │   │
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx
+│   │   │
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx
+│   │   │   └── PrivateRoute.jsx
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   ├── CreateTask.jsx
+│   │   │   ├── EditTask.jsx
+│   │   │   ├── Kanban.jsx
+│   │   │   ├── Comments.jsx
+│   │   │   ├── Approvals.jsx
+│   │   │   ├── Notifications.jsx
+│   │   │   ├── Documents.jsx
+│   │   │   ├── Analytics.jsx
+│   │   │   ├── AuditLogs.jsx
+│   │   │   ├── AIInsights.jsx
+│   │   │   ├── Pricing.jsx
+│   │   │   ├── Success.jsx
+│   │   │   └── Cancel.jsx
+│   │   │
+│   │   ├── services/
+│   │   │   ├── WebSocketClient.js
+│   │   │
+│   │   ├── App.js
+│   │   ├── routes.js
+│   │   └── index.js
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 │   │
 │   ├── .gitignore
 │   ├── package-lock.json
@@ -272,8 +415,12 @@ MINI ENTERPRISE/
 │   └── tailwind.config.js
 │
 ├── .gitignore
+<<<<<<< HEAD
 ├── README.md
 └── LICENSE
+=======
+└── README.md
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 ```
 
 Prerequisites
@@ -997,4 +1144,90 @@ Real-Time Credit Tracking
 
 
 
+<<<<<<< HEAD
 
+=======
+
+
+
+🚀 Features
+✅ Authentication & Security
+JWT Authentication
+Refresh Token Support
+Role-Based Access Control
+OAuth Ready
+Password Hashing with Bcrypt
+Protected Routes
+Token-Based Authorization
+
+📋 Task Management
+Create Tasks
+Edit Tasks
+Delete Tasks
+Assign Tasks
+Task Priorities
+Due Dates
+Comments System
+Task Workflow Management
+📊 Dashboard Features
+👨‍💼 Admin Dashboard
+Total Users
+Total Tasks
+Approvals
+Audit Logs
+Full Analytics
+
+
+👨‍💻 Manager Dashboard
+Team Tasks
+Pending Approvals
+Team Analytics
+
+👤 Employee Dashboard
+My Tasks
+Pending Tasks
+Personal Analytics
+
+
+
+🧠 AI Features
+AI Task Insights
+Delay Detection
+High Priority Alerts
+Smart Analytics
+
+
+
+🔔 Notifications
+Real-Time Notifications
+WebSocket Support
+Activity Feed
+Comment Alerts
+Approval Alerts
+
+
+
+
+💳 SaaS Subscription System
+Subscription Plans
+Plan	Price	Credits
+Basic	₹499	100
+Silver	₹1499	500
+Gold	₹3999	2000
+Subscription Features
+Stripe Checkout Integration
+Live Credit Updates
+Live Plan Updates
+Webhook Support
+Subscription Dashboard
+Real-Time Credit Tracking
+
+
+
+ GitHub repository
+ Complete documentation
+ API endpoints tested
+ Frontend pages tested
+ All features working
+
+>>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
