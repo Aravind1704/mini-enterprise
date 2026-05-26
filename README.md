@@ -75,17 +75,14 @@ Multi-Tenant Data Isolation
 Project Structure
 
 ```
-<<<<<<< HEAD
 MINI ENTERPRISE/
 =======
 Mini-Enterprise/
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 │
 ├── backend/
 │   │
 │   ├── venv/
 │   │
-<<<<<<< HEAD
 │   ├── alembic/
 │   │   ├── versions/
 │   │   ├── env.py
@@ -217,7 +214,6 @@ Mini-Enterprise/
 │   │   │   └── workflow_service.py
 │   │   │
 │   │   ├── uploads/
-=======
 │   ├── app/
 │   │   │
 │   │   ├── core/
@@ -284,23 +280,19 @@ Mini-Enterprise/
 │   │   │
 │   │   ├── websocket/
 │   │   │   └── connection_manager.py
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 │   │   │
 │   │   ├── database.py
 │   │   └── main.py
 │   │
-<<<<<<< HEAD
 │   ├── uploads/
 │   │
 │   ├── .env
 │   ├── alembic.ini
 │   └── requirements.txt
-=======
 │   ├── requirements.txt
 │   ├── .env
 │   ├── README.md
 │   └── alembic/
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 │
 │
 ├── frontend/
@@ -308,7 +300,6 @@ Mini-Enterprise/
 │   ├── node_modules/
 │   │
 │   ├── public/
-<<<<<<< HEAD
 │   │
 │   ├── src/
 │   │   │
@@ -363,7 +354,6 @@ Mini-Enterprise/
 │   │   ├── logo.svg
 │   │   ├── reportWebVitals.js
 │   │   └── setupTests.js
-=======
 │   │   ├── index.html
 │   │   ├── favicon.ico
 │   │   ├── logo192.png
@@ -406,7 +396,6 @@ Mini-Enterprise/
 │   │   ├── App.js
 │   │   ├── routes.js
 │   │   └── index.js
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 │   │
 │   ├── .gitignore
 │   ├── package-lock.json
@@ -415,12 +404,10 @@ Mini-Enterprise/
 │   └── tailwind.config.js
 │
 ├── .gitignore
-<<<<<<< HEAD
 ├── README.md
 └── LICENSE
 =======
 └── README.md
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 ```
 
 Prerequisites
