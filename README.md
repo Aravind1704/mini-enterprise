@@ -408,7 +408,7 @@ Mini-Enterprise/
 =======
 └── README.md
 ```
-
+```
 Prerequisites
 
 - Python 3.10+
@@ -708,7 +708,7 @@ NotificationPreferences
 Organization
 Subscription
 Billing
-
+```
 
 
 ```
@@ -1135,10 +1135,10 @@ Real-Time Credit Tracking
 
 
 
-=======
 
 
 
+```
 🚀 Features
 ✅ Authentication & Security
 JWT Authentication
@@ -1218,5 +1218,5 @@ Real-Time Credit Tracking
  API endpoints tested
  Frontend pages tested
  All features working
+```
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
