@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from sqlalchemy import (
     Integer,
     String,
@@ -14,10 +13,7 @@ from sqlalchemy.orm import (
 )
 from typing import TYPE_CHECKING
 
-=======
-from sqlalchemy import Column, Integer, String, Boolean, Index
-from sqlalchemy.orm import relationship
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
 from app.database import Base
 from sqlalchemy import ForeignKey
 
@@ -29,7 +25,7 @@ class User(Base):
 
     __tablename__ = "users"
 
-<<<<<<< HEAD
+
    
 
     __table_args__ = (
@@ -86,16 +82,3 @@ class User(Base):
         "Organization",
         backref="users"
     )
-=======
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)
-    email = Column(String, unique=True, index=True, nullable=False)
-    hashed_password = Column(String, nullable=False)
-    role = Column(String, default="user")
-    is_active = Column(Boolean, default=True)
-    organization_id = Column(
-    Integer,
-    ForeignKey("organizations.id")
-    )
-Index("idx_user_email", User.email)
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2

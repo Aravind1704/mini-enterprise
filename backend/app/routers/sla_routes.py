@@ -5,6 +5,7 @@ from app.database import get_db
 from app.schemas.sla import SLARuleCreate, SLARuleOut, SLARuleUpdate, SLATrackingOut
 from app.services.sla_service import create_sla_rule, list_sla_rules, get_sla_rule, update_sla_rule, disable_sla_rule, start_sla_tracking, complete_sla, list_active_sla, list_breached_sla
 from app.core.dependencies import get_current_user, require_admin
+from backend.app.models.sla import SLATracking
 
 router = APIRouter(prefix="/sla-rules", tags=["SLA Rules"])
 

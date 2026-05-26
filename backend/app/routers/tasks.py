@@ -1,6 +1,7 @@
 from fastapi import (
     APIRouter,
-    Depends
+    Depends,
+    HTTPException
 )
 
 from sqlalchemy.orm import Session
@@ -8,12 +9,11 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 
 from app.schemas.task import (
-<<<<<<< HEAD
+
     TaskCreate,
+    TaskOut,
     TaskUpdate,
-=======
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
-    TaskOut
+    
 )
 
 from app.core.dependencies import (
@@ -21,15 +21,13 @@ from app.core.dependencies import (
 )
 
 from app.services.task_service import (
-<<<<<<< HEAD
+
     create_task_service,
     list_tasks_service,
     get_task_service,
     update_task_service,
     delete_task_service
-=======
-    list_tasks_service
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
 )
 
 router = APIRouter(
@@ -38,15 +36,14 @@ router = APIRouter(
 )
 
 
-<<<<<<< HEAD
+
 # =====================================================
 # CREATE TASK
 # =====================================================
 
 @router.post(
     "/",
-    response_model=TaskOut
-)
+    response_model=TaskOut)
 def create_task(
     payload: TaskCreate,
     db: Session = Depends(get_db),
@@ -64,25 +61,22 @@ def create_task(
 # LIST TASKS
 # =====================================================
 
-=======
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
 @router.get(
     "/",
     response_model=list[TaskOut]
 )
 def list_tasks(
     db: Session = Depends(get_db),
-<<<<<<< HEAD
+
     user=Depends(get_current_user)
-=======
-    user = Depends(get_current_user)
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
 ):
 
     return list_tasks_service(
         db,
         user
-<<<<<<< HEAD
+
     )
 
 
@@ -176,6 +170,6 @@ def delete_task(
     return {
         "message": "Task deleted successfully"
     }
-=======
-    )
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
+  
+

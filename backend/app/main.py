@@ -1,12 +1,4 @@
-"""
-Enterprise Task Manager - FastAPI Backend
-Phase 4: Advanced Authentication, Security & Performance
-"""
-<<<<<<< HEAD
-from app.routers import websocket
-=======
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
@@ -66,12 +58,9 @@ from app.routers import (
 )
 from app.models.organization import Organization
 from app.models.subscription import Subscription
-<<<<<<< HEAD
+
 from app.routers import sla_routes
 from app.routers import approval_escalations, approval_delegations, notification_preferences, audit
-=======
-
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 # =========================================================
 # CREATE TABLES
 # =========================================================
@@ -79,11 +68,7 @@ from app.routers import approval_escalations, approval_delegations, notification
 Base.metadata.create_all(bind=engine)
 
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 # =========================================================
 # FASTAPI APP INITIALIZATION
 # =========================================================
@@ -163,11 +148,9 @@ async def validation_exception_handler(request, exc):
 # =========================================================
 # INCLUDE ROUTERS
 # =========================================================
-<<<<<<< HEAD
-app.include_router(websocket.router)
-=======
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+app.include_router(websocket.router)
+
 # Authentication
 app.include_router(auth.router)
 
@@ -213,17 +196,14 @@ app.include_router(
     websocket_router.router
 )
 
-<<<<<<< HEAD
+
 app.include_router(sla_routes.router)
 app.include_router(sla_routes.tracking_router)
 app.include_router(approval_escalations.router)
 app.include_router(approval_delegations.router)
 app.include_router(notification_preferences.router)
 app.include_router(audit.router)
-=======
 
-
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 # =========================================================
 # HEALTH CHECK ENDPOINTS
 # =========================================================
@@ -270,7 +250,7 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     """Application shutdown event"""
-<<<<<<< HEAD
+
     print("❌ Application shutting down...")
 
 
@@ -280,6 +260,6 @@ from app.core.sla_scheduler import start_scheduler
 @app.on_event("startup")
 def on_startup():
     start_scheduler()
-=======
+
     print("❌ Application shutting down...")
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+

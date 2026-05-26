@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 from datetime import datetime
 
 from sqlalchemy import (
@@ -14,15 +14,15 @@ from sqlalchemy.orm import (
     mapped_column
 )
 
-=======
+
 from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.sql import func
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
 from app.database import Base
 
 
 class Employee(Base):
-<<<<<<< HEAD
+
 
     __tablename__ = "employees"
 
@@ -68,13 +68,3 @@ class Employee(Base):
         DateTime,
         onupdate=func.now()
     )
-=======
-    __tablename__ = "employees"
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), nullable=False)
-    position = Column(String(100), nullable=False)
-    department = Column(String(100), nullable=False)
-    email = Column(String(100), unique=True, nullable=False)
-    created_at = Column(DateTime, server_default=func.now())
-    updated_at = Column(DateTime, onupdate=func.now())  
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2

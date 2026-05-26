@@ -35,11 +35,9 @@ router = APIRouter(
 )
 def list_logs(
     db: Session = Depends(get_db),
-<<<<<<< HEAD
+
     user=Depends(get_current_user)
-=======
-    user = Depends(get_current_user)
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
 ):
 
     return list_logs_service(

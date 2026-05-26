@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
 import stripe
@@ -68,29 +67,3 @@ def my_subscription(current_user = Depends(get_current_user), db: Session = Depe
     sub = db.query(Subscription).filter(Subscription.organization_id == org.id, Subscription.status == "active").order_by(Subscription.started_at.desc()).first() if org else None
     plan = db.query(Plan).get(sub.plan_id) if sub else None
     return {"plan": plan.name if plan else "free", "credits": org.ai_credits or 0}
-=======
-from fastapi import APIRouter
-
-from app.services.payment_service import (
-    create_checkout_session
-)
-
-router = APIRouter(
-
-    prefix="/billing",
-
-    tags=["Billing"]
-)
-
-
-@router.get("/checkout")
-
-def checkout():
-
-    url = create_checkout_session()
-
-    return {
-
-        "checkout_url": url
-    }
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2

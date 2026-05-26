@@ -19,18 +19,7 @@ def hash_password(password: str):
 
     password_bytes = password.encode("utf-8")
 
-<<<<<<< HEAD
-=======
 
-# =====================================================
-# HASH PASSWORD
-# =====================================================
-
-def hash_password(password: str):
-
-    password_bytes = password.encode("utf-8")
-
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
     salt = bcrypt.gensalt()
 
     hashed = bcrypt.hashpw(
@@ -139,7 +128,6 @@ def verify_token(token: str):
 
     except Exception:
 
-<<<<<<< HEAD
         return None
     
 
@@ -176,6 +164,3 @@ def send_email(to_email: str, subject: str, html_body: str, text_body: str = "")
         smtp.starttls()
         smtp.login(settings.smtp_user, settings.smtp_password)
         smtp.send_message(msg)
-=======
-        return None
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2

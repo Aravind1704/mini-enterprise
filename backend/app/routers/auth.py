@@ -57,7 +57,6 @@ from app.services.email_service import (
 )
 
 from app.core.cache import get_cache, set_cache
-<<<<<<< HEAD
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
@@ -66,11 +65,7 @@ from app.models.user import User
 from app.models.subscription import PasswordResetToken
 from app.core.security import create_password_reset_token, verify_password_reset_token
 from app.services.email_service import send_password_reset_email
-from app.core.security import hash_password
-=======
-
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
-
+from app.core.security import hash_password, verify_password, create_access_token, create_refresh_token
 # =========================================================
 # ROUTER
 # =========================================================
@@ -565,7 +560,7 @@ def verify_token_endpoint(
     return {
         "valid": True,
         "user": current_user
-<<<<<<< HEAD
+
     }
 
 
@@ -598,6 +593,3 @@ def reset_password(token: str, new_password: str, db: Session = Depends(get_db))
     pr.used = True
     db.add(user); db.add(pr); db.commit()
     return {"message": "Password reset successfully"}
-=======
-    }
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2

@@ -5,10 +5,7 @@ import {
   Crown,
   Sparkles
 } from "lucide-react";
-<<<<<<< HEAD
-=======
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 export default function Navbar({
 
   user,
@@ -17,13 +14,11 @@ export default function Navbar({
 
   currentPlan = "Silver",
 
-<<<<<<< HEAD
+
   credits = 600,
 
   showSummary = true
-=======
-  credits = 600
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
 
 }) {
 
@@ -62,16 +57,13 @@ export default function Navbar({
           </p>
 
         </div>
-<<<<<<< HEAD
+
          
 
         {/* MENU */}
         
               
-=======
 
-        {/* MENU */}
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
         <div className="flex items-center gap-6 font-semibold">
 
@@ -98,7 +90,7 @@ export default function Navbar({
           <Link to="/ai-insights" className="hover:text-indigo-200">
             AI
           </Link>
-<<<<<<< HEAD
+
            {/* SLA Links - Only for Admin/Manager */}
             {(user?.role === "admin" || user?.role === "manager") && (
             <>
@@ -118,8 +110,7 @@ export default function Navbar({
             </>
           )}
             
-=======
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
             <Link
 
             to="/pricing"
@@ -135,20 +126,14 @@ export default function Navbar({
                 transition
             "
             >
-<<<<<<< HEAD
-          
-=======
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
             Upgrade
 
             </Link>
           {/* BELL */}
-<<<<<<< HEAD
-          
-=======
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+          
+
           <Link
             to="/notifications"
             className="relative"
@@ -204,20 +189,12 @@ export default function Navbar({
 
       {/* PLAN + AI */}
 
-<<<<<<< HEAD
       {showSummary && (
         <div className="max-w-7xl mx-auto px-8 mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           {/* PLAN */}
 
           <div className="bg-white rounded-2xl shadow-md p-6 flex items-center gap-4">
-=======
-      <div className="max-w-7xl mx-auto px-8 mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-
-        {/* PLAN */}
-
-        <div className="bg-white rounded-2xl shadow-md p-6 flex items-center gap-4">
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
           <div className="bg-yellow-100 p-4 rounded-xl">
 
@@ -278,16 +255,11 @@ export default function Navbar({
 
           </div>
 
-<<<<<<< HEAD
+
           </div>
 
         </div>
       )}
-=======
-        </div>
-
-      </div>
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
     </>
 
