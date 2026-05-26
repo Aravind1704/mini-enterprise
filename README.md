@@ -1,11 +1,7 @@
 Mini Enterprise 
 Mini Enterprise is a comprehensive full-stack enterprise task management and SaaS subscription platform built using FastAPI and React.js. It supports role-based access control, task workflows, approvals, notifications, Stripe subscriptions, WebSockets, analytics, AI insights, and modern dashboard features.
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
-
+```
 Tech Stack
 
 Backend
@@ -30,7 +26,7 @@ AI Processing	Python AI Services
 Frontend
 
 
-<<<<<<< HEAD
+
 Technology	Purpose
 Framework	React.js
 Routing	React Router DOM
@@ -54,7 +50,7 @@ Token Expiry
 Refresh Tokens
 Deployment
 Tools & Infrastructure
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
 
 
 Security Features
@@ -71,6 +67,9 @@ Token Expiry Handling
 Secure Password Reset Flow
 SQLAlchemy ORM Protection
 Multi-Tenant Data Isolation
+```
+
+
 
 Project Structure
 
@@ -409,7 +408,7 @@ Mini-Enterprise/
 =======
 └── README.md
 ```
-
+```
 Prerequisites
 
 - Python 3.10+
@@ -709,7 +708,10 @@ NotificationPreferences
 Organization
 Subscription
 Billing
+```
 
+
+```
 Project Completion Checklist
 #-----------------------------#
 Phase 1 — Authentication & Task Management
@@ -885,9 +887,9 @@ IP Address
 User Agent
 Module Name
 Action Type
+```
 
-
-
+```
 API Endpoints
 #-------------#
 Authentication APIs
@@ -1128,15 +1130,15 @@ Webhook Support
 Subscription Dashboard
 Real-Time Credit Tracking
 
+```
 
 
 
-<<<<<<< HEAD
-
-=======
 
 
 
+
+```
 🚀 Features
 ✅ Authentication & Security
 JWT Authentication
@@ -1216,5 +1218,5 @@ Real-Time Credit Tracking
  API endpoints tested
  Frontend pages tested
  All features working
+```
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
