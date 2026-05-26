@@ -1,23 +1,18 @@
 import { useEffect, useState } from "react";
-
 import { Link } from "react-router-dom";
-
 import api from "../api/axios";
 
 export default function AuditLogs() {
 
   const [logs, setLogs] = useState([]);
-
   const [loading, setLoading] = useState(true);
 
-
+  // FETCH LOGS
   const fetchLogs = async () => {
 
     try {
 
-      const res = await api.get(
-        "/audit-logs/"
-      );
+      const res = await api.get("/audit-logs/");
 
       setLogs(res.data);
 
@@ -32,160 +27,317 @@ export default function AuditLogs() {
     }
   };
 
-
   useEffect(() => {
 
     fetchLogs();
 
   }, []);
 
-
   return (
 
-    <div style={styles.container}>
+    <div className="
+      min-h-screen
+      bg-gradient-to-br
+      from-slate-100
+      via-blue-50
+      to-indigo-100
+      p-6
+      md:p-10
+    ">
 
-      {/* HEADER */}
+      {/* CONTAINER */}
+      <div className="
+        max-w-7xl
+        mx-auto
+      ">
 
-      <div style={styles.header}>
+        {/* HEADER */}
+        <div className="
+          bg-white/80
+          backdrop-blur-xl
+          rounded-3xl
+          shadow-xl
+          border
+          border-white/40
+          p-8
+          mb-8
+        ">
 
-        <div>
+          <div className="
+            flex
+            flex-col
+            lg:flex-row
+            lg:items-center
+            lg:justify-between
+            gap-6
+          ">
 
-          <h1 style={styles.title}>
-            🔍 Audit Logs
-          </h1>
+            {/* LEFT */}
+            <div className="flex items-center gap-5">
 
-          <p style={styles.subtitle}>
-            Track all task activities with user, action and timestamp
-          </p>
+              <div className="
+                w-20
+                h-20
+                rounded-3xl
+                bg-indigo-100
+                flex
+                items-center
+                justify-center
+                text-4xl
+                shadow-md
+              ">
+                🔍
+              </div>
+
+              <div>
+
+                <h1 className="
+                  text-4xl
+                  md:text-5xl
+                  font-bold
+                  text-gray-900
+                ">
+                  Audit Logs
+                </h1>
+
+                <p className="
+                  text-gray-500
+                  mt-3
+                  text-lg
+                ">
+                  Track all activities, actions and user operations
+                </p>
+
+              </div>
+
+            </div>
+
+            {/* RIGHT */}
+            <Link
+              to="/dashboard"
+              className="
+                bg-indigo-600
+                hover:bg-indigo-700
+                text-white
+                px-6
+                py-3
+                rounded-2xl
+                font-semibold
+                shadow-lg
+                hover:shadow-xl
+                transition-all
+                duration-300
+                text-center
+              "
+            >
+              ← Dashboard
+            </Link>
+
+          </div>
 
         </div>
 
+        {/* TABLE CARD */}
+        <div className="
+          bg-white/80
+          backdrop-blur-xl
+          rounded-[32px]
+          shadow-xl
+          border
+          border-white/40
+          overflow-hidden
+        ">
 
-        <Link
-          to="/dashboard"
-          style={styles.backBtn}
-        >
-          ← Dashboard
-        </Link>
+          {/* TABLE HEADER */}
+          <div className="
+            px-8
+            py-6
+            border-b
+            border-gray-100
+            bg-gradient-to-r
+            from-indigo-50
+            to-white
+          ">
 
-      </div>
+            <div className="
+              flex
+              items-center
+              justify-between
+            ">
 
+              <div>
 
-      {/* TABLE */}
+                <h2 className="
+                  text-3xl
+                  font-bold
+                  text-gray-900
+                ">
+                  📜 Activity Timeline
+                </h2>
 
-      <div style={styles.tableWrapper}>
+                <p className="
+                  text-gray-500
+                  mt-2
+                ">
+                  Monitor all audit events happening in the system
+                </p>
 
-        <table style={styles.table}>
+              </div>
 
-          <thead>
+              <div className="
+                bg-indigo-100
+                text-indigo-700
+                px-5
+                py-2
+                rounded-xl
+                font-bold
+              ">
+                {logs.length} Logs
+              </div>
 
-            <tr>
+            </div>
 
-              <th style={styles.th}>ID</th>
+          </div>
 
-              <th style={styles.th}>User</th>
+          {/* TABLE */}
+          <div className="overflow-x-auto">
 
-              <th style={styles.th}>Action</th>
+            <table className="w-full">
 
-              <th style={styles.th}>Entity Type</th>
-
-              <th style={styles.th}>Entity ID</th>
-
-              <th style={styles.th}>Details</th>
-
-              <th style={styles.th}>Created At</th>
-
-            </tr>
-
-          </thead>
-
-
-          <tbody>
-
-            {
-              loading ? (
+              <thead className="bg-gray-50">
 
                 <tr>
 
-                  <td
-                    colSpan="7"
-                    style={styles.empty}
-                  >
-                    Loading...
-                  </td>
+                  <th className={thStyle}>ID</th>
+
+                  <th className={thStyle}>User</th>
+
+                  <th className={thStyle}>Module</th>
+
+                  <th className={thStyle}>Action</th>
+
+                  <th className={thStyle}>Record</th>
+
+                  <th className={thStyle}>Details</th>
+
+                  <th className={thStyle}>Timestamp</th>
 
                 </tr>
 
-              ) : logs.length === 0 ? (
+              </thead>
 
-                <tr>
+              <tbody>
 
-                  <td
-                    colSpan="7"
-                    style={styles.empty}
-                  >
-                    No audit logs found
-                  </td>
+                {/* LOADING */}
+                {loading ? (
 
-                </tr>
+                  <tr>
 
-              ) : (
-
-                logs.map((log) => (
-
-                  <tr
-                    key={log.id}
-                    style={styles.row}
-                  >
-
-                    <td style={styles.td}>
-                      {log.id}
-                    </td>
-
-                    <td style={styles.td}>
-                      User #{log.user_id}
-                    </td>
-
-                    <td style={styles.td}>
-
-                      <span style={styles.badge}>
-                        {log.action}
-                      </span>
-
-                    </td>
-
-                    <td style={styles.td}>
-                      {log.entity || log.entity_type}
-                    </td>
-
-                    <td style={styles.td}>
-                      #{log.entity_id}
-                    </td>
-
-                    <td style={styles.td}>
-                      {log.details}
-                    </td>
-
-                    <td style={styles.td}>
-
-                      {
-                        new Date(
-                          log.timestamp || log.created_at
-                        ).toLocaleString()
-                      }
-
+                    <td
+                      colSpan="7"
+                      className="
+                        text-center
+                        py-20
+                        text-indigo-600
+                        font-bold
+                        text-xl
+                      "
+                    >
+                      Loading Audit Logs...
                     </td>
 
                   </tr>
 
-                ))
+                ) : logs.length === 0 ? (
 
-              )
-            }
+                  <tr>
 
-          </tbody>
+                    <td
+                      colSpan="7"
+                      className="
+                        text-center
+                        py-20
+                        text-gray-500
+                        text-lg
+                      "
+                    >
+                      No audit logs found
+                    </td>
 
-        </table>
+                  </tr>
+
+                ) : (
+
+                  logs.map((log) => (
+
+                    <tr
+                      key={log.id}
+                      className="
+                        border-t
+                        hover:bg-indigo-50
+                        transition-all
+                        duration-200
+                      "
+                    >
+
+                      <td className={tdStyle}>
+                        #{log.id}
+                      </td>
+
+                      <td className={tdStyle}>
+                        User #{log.user_id || "-"}
+                      </td>
+
+                      <td className={tdStyle}>
+                        {log.module_name || "-"}
+                      </td>
+
+                      <td className={tdStyle}>
+
+                        <span className="
+                          bg-indigo-100
+                          text-indigo-700
+                          px-4
+                          py-2
+                          rounded-xl
+                          text-sm
+                          font-bold
+                          uppercase
+                        ">
+                          {log.action_type || "-"}
+                        </span>
+
+                      </td>
+
+                      <td className={tdStyle}>
+                        #{log.record_id || "-"}
+                      </td>
+
+                      <td className={tdStyle}>
+                        {log.details || "-"}
+                      </td>
+
+                      <td className={tdStyle}>
+                        {
+                          log.timestamp
+                            ? new Date(log.timestamp).toLocaleString()
+                            : "-"
+                        }
+                      </td>
+
+                    </tr>
+
+                  ))
+
+                )}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
 
       </div>
 
@@ -193,92 +345,21 @@ export default function AuditLogs() {
   );
 }
 
+/* TABLE HEADER STYLE */
+const thStyle = `
+  px-8
+  py-5
+  text-left
+  text-sm
+  font-bold
+  text-gray-600
+  uppercase
+`;
 
-
-const styles = {
-
-  container: {
-    padding: "30px",
-    background: "#f4f7fb",
-    minHeight: "100vh"
-  },
-
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "25px"
-  },
-
-  title: {
-    fontSize: "40px",
-    fontWeight: "bold",
-    color: "#111827",
-    marginBottom: "10px"
-  },
-
-  subtitle: {
-    color: "#6b7280",
-    fontSize: "16px"
-  },
-
-  backBtn: {
-    background: "#4f46e5",
-    color: "#fff",
-    textDecoration: "none",
-    padding: "12px 22px",
-    borderRadius: "10px",
-    fontWeight: "bold",
-    transition: "0.2s"
-  },
-
-  tableWrapper: {
-    background: "#fff",
-    borderRadius: "16px",
-    overflow: "hidden",
-    boxShadow: "0 4px 15px rgba(0,0,0,0.08)"
-  },
-
-  table: {
-    width: "100%",
-    borderCollapse: "collapse"
-  },
-
-  th: {
-    background: "#eef2ff",
-    padding: "18px",
-    textAlign: "left",
-    color: "#111827",
-    fontWeight: "bold",
-    fontSize: "15px"
-  },
-
-  td: {
-    padding: "18px",
-    borderBottom: "1px solid #f1f1f1",
-    color: "#374151",
-    fontSize: "15px"
-  },
-
-  row: {
-    transition: "0.2s"
-  },
-
-  badge: {
-    background: "#4f46e5",
-    color: "#fff",
-    padding: "6px 14px",
-    borderRadius: "20px",
-    fontSize: "12px",
-    fontWeight: "bold",
-    textTransform: "uppercase"
-  },
-
-  empty: {
-    textAlign: "center",
-    padding: "30px",
-    color: "#6b7280",
-    fontSize: "16px"
-  }
-
-};
+/* TABLE DATA STYLE */
+const tdStyle = `
+  px-8
+  py-6
+  text-gray-700
+  font-medium
+`;

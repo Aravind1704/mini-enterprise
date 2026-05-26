@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
 
 export default function CreateTask() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [form, setForm] = useState({ title: "", description: "", priority: "medium", due_date: "", assigned_to_id: "" });
@@ -75,10 +77,13 @@ export default function CreateTask() {
             <label style={styles.label}>Assign To</label>
             <select style={styles.input} name="assigned_to_id" value={form.assigned_to_id} onChange={handleChange}>
               <option value="">-- Select User --</option>
-              {users.map((u) => (
+              {(user?.role === "manager" ? users.filter((u) => u.role === "employee") : users).map((u) => (
                 <option key={u.id} value={u.id}>{u.name} ({u.role})</option>
               ))}
             </select>
+            {user?.role === "manager" && (
+              <p style={styles.note}>Managers can only assign tasks to employees.</p>
+            )}
           </div>
 
           <button style={styles.button} type="submit" disabled={loading}>
@@ -102,4 +107,5 @@ const styles = {
   input: { width: "100%", padding: "10px 14px", border: "1px solid #ddd", borderRadius: "8px", fontSize: "14px", boxSizing: "border-box", outline: "none", fontFamily: "sans-serif" },
   row: { display: "flex", gap: "16px" },
   button: { width: "100%", padding: "12px", background: "#4f46e5", color: "#fff", border: "none", borderRadius: "8px", fontSize: "15px", fontWeight: "600", cursor: "pointer", marginTop: "8px" },
+  note: { marginTop: "8px", color: "#6b7280", fontSize: "13px" },
 };

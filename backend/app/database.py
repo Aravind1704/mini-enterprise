@@ -1,16 +1,52 @@
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+
+from sqlalchemy.orm import (
+    declarative_base,
+    sessionmaker
+)
+
 from app.core.config import settings
 
-engine = create_engine(settings.DATABASE_URL)
-SessionLocal = sessionmaker(autocommit = False , autoflush= False , bind=engine)
-Base=declarative_base()
+
+# =====================================================
+# DATABASE ENGINE
+# =====================================================
+
+engine = create_engine(
+    settings.database_url
+)
+
+
+# =====================================================
+# SESSION
+# =====================================================
+
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
+
+
+# =====================================================
+# BASE MODEL
+# =====================================================
+
+Base = declarative_base()
+
+
+# =====================================================
+# DATABASE DEPENDENCY
+# =====================================================
 
 def get_db():
-    db=SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()    
 
+    db = SessionLocal()
+
+    try:
+
+        yield db
+
+    finally:
+
+        db.close()

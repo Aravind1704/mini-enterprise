@@ -26,14 +26,21 @@ class AuditLog(Base):
         ForeignKey("users.id")
     )
 
-    action = Column(String(100))
+    action = Column(
+        String(100)
+    )
 
+    entity = Column(
+        String(100)
+    )
 
-    entity = Column(String(100))
+    entity_id = Column(
+        Integer
+    )
 
-    entity_id = Column(Integer)
-
-    details = Column(String(500))
+    details = Column(
+        String(500)
+    )
 
     timestamp = Column(
         DateTime,
