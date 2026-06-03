@@ -91,6 +91,8 @@ export default function Navbar({
             AI
           </Link>
 
+          
+
            {/* SLA Links - Only for Admin/Manager */}
             {(user?.role === "admin" || user?.role === "manager") && (
             <>

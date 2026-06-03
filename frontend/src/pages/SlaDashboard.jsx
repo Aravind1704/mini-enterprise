@@ -9,12 +9,20 @@ export default function SlaDashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
+  fetchData();
+
+  const interval = setInterval(() => {
     fetchData();
-  }, []);
+  }, 5000);
+
+  return () => clearInterval(interval);
+
+}, []);
 
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
 
       const headers = {
         Authorization: `Bearer ${token}`,

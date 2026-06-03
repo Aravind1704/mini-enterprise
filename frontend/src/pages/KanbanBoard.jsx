@@ -70,27 +70,33 @@ export default function KanbanBoard() {
 
   const fetchTasks = async () => {
 
-    try {
+  try {
 
-      const response =
-        await api.get(
-          "/tasks/kanban"
-        );
+    const response =
+      await api.get("/tasks/kanban");
 
-      setBoard(response.data);
+    setBoard(response.data);
 
-    } catch {
+  } catch (err) {
 
-      setError(
-        "Failed to load Kanban board"
-      );
+    console.log(
+      "KANBAN FETCH ERROR:",
+      err.response?.data
+    );
 
-    } finally {
+    setError(
+      JSON.stringify(
+        err.response?.data
+      )
+    );
 
-      setLoading(false);
-    }
-  };
+  } finally {
 
+    setLoading(false);
+
+  }
+
+};
 
   // =====================================================
   // INITIAL LOAD

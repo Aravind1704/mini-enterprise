@@ -260,7 +260,7 @@ export default function Dashboard() {
         {/* CENTER */}
 
         <div style={styles.navCenter}>
-<<<<<<< HEAD
+
 
           <Link
             to="/kanban"
@@ -303,6 +303,9 @@ export default function Dashboard() {
           >
             📊 Analytics
           </Link>
+
+             
+          
 
           {(user?.role === "admin" || user?.role === "manager") && (
             <>
@@ -376,7 +379,7 @@ export default function Dashboard() {
             user?.role === "manager"
 
           ) && (
-
+    
             <Link
               to="/tasks/create"
               style={styles.createBtn}
@@ -394,105 +397,6 @@ export default function Dashboard() {
 
         </div>
 
-=======
-
-          <Link
-            to="/kanban"
-            style={styles.navLink}
-          >
-            ⚡ Kanban
-          </Link>
-
-          <Link
-            to="/approvals"
-            style={styles.navLink}
-          >
-            ✅ Approvals
-          </Link>
-
-          <Link
-            to="/documents"
-            style={styles.navLink}
-          >
-            📄 Documents
-          </Link>
-
-          <Link
-            to="/notifications"
-            style={styles.navLink}
-          >
-            🔔 Notifications
-          </Link>
-
-          <Link
-            to="/ai-insights"
-            style={styles.navLink}
-          >
-            🤖 AI Insights
-          </Link>
-
-          <Link
-            to="/analytics"
-            style={styles.navLink}
-          >
-            📊 Analytics
-          </Link>
-
-          {user?.role === "admin" && (
-
-            <Link
-              to="/audit-logs"
-              style={styles.navLink}
-            >
-              🔍 Audit Logs
-            </Link>
-          )}
-
-        </div>
-
-
-        {/* RIGHT */}
-
-        <div style={styles.navRight}>
-          
-          <button
-            onClick={() => navigate("/pricing")}
-            style={styles.upgradeBtn}
-          >
-            🚀 Upgrade
-          </button>
-          <span style={styles.userName}>
-
-            {user?.name}
-
-          </span>
-
-          {(
-
-            user?.role === "admin" ||
-
-            user?.role === "manager"
-
-          ) && (
-
-            <Link
-              to="/tasks/create"
-              style={styles.createBtn}
-            >
-              + New Task
-            </Link>
-          )}
-
-          <button
-            onClick={handleLogout}
-            style={styles.logoutBtn}
-          >
-            Logout
-          </button>
-
-        </div>
-
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
       </div>
 
 
@@ -655,8 +559,148 @@ export default function Dashboard() {
           )}
 
         </div>
+        
+      {/* =====================================================
+    ENTERPRISE COLLABORATION MODULE
+===================================================== */}
 
+<div style={styles.moduleContainer}>
 
+  <div style={styles.moduleCard}>
+
+    <h2 style={styles.moduleTitle}>
+      🏢 Tenant Management
+    </h2>
+
+    <div style={styles.moduleLinks}>
+
+      <Link to="/tenants" style={styles.moduleBtn}>
+        Tenant List
+      </Link>
+
+      <Link to="/tenant-create" style={styles.moduleBtn}>
+        Create Tenant
+      </Link>
+
+      <Link
+        to="/tenants/1"
+        style={styles.moduleBtn}
+      >
+        Tenant Details
+      </Link>
+
+      <Link to="/tenant-onboarding" style={styles.moduleBtn}>
+        Tenant Onboarding
+      </Link>
+
+    </div>
+
+  </div>
+
+  <div style={styles.moduleCard}>
+
+    <h2 style={styles.moduleTitle}>
+      ⚙️ Collaboration
+    </h2>
+
+      <Link
+      to="/tenants/1/settings"
+      style={styles.moduleBtn}
+    >
+      Settings
+    </Link>
+   <div style={{ height: "10px" }}></div>
+    <Link
+      to="/tenants/1/usage"
+      style={styles.moduleBtn}
+    >
+      Usage
+    </Link>
+    </div>
+
+  
+
+  <div style={styles.moduleCard}>
+
+    <h2 style={styles.moduleTitle}>
+      📂 Workspace Management
+    </h2>
+
+    <div style={styles.moduleLinks}>
+
+      <Link
+        to="/workspaces"
+        style={styles.moduleBtn}
+      >
+        Workspace List
+      </Link>
+
+      <Link
+        to="/workspace-create"
+        style={styles.moduleBtn}
+      >
+        Create Workspace
+      </Link>
+
+      <Link
+        to="/workspace-details/1"
+        style={styles.moduleBtn}
+      >
+        Workspace Details
+      </Link>
+
+      <Link
+        to="/workspace-members"
+        style={styles.moduleBtn}
+      >
+        Workspace Members
+      </Link>
+
+    </div>
+
+  </div>
+
+  <div style={styles.moduleCard}>
+
+    <h2 style={styles.moduleTitle}>
+      💬 Channel Management
+    </h2>
+
+    <div style={styles.moduleLinks}>
+
+      <Link
+        to="/channels"
+        style={styles.moduleBtn}
+      >
+        Channel List
+      </Link>
+
+      <Link
+        to="/channel-create"
+        style={styles.moduleBtn}
+      >
+        Create Channel
+      </Link>
+
+      <Link
+      to="/channel-details/1"
+      style={styles.moduleBtn}
+    >
+      Channel Details
+    </Link>
+
+      <Link
+        to="/channel-members/1"
+        style={styles.moduleBtn}
+      >
+        Channel Members
+      </Link>
+
+    </div>
+
+  </div>
+</div>
+</div>
 
         {/* =====================================================
             TASK LIST
@@ -850,7 +894,6 @@ export default function Dashboard() {
 
       </div>
 
-    </div>
   );
 }
 
@@ -985,19 +1028,25 @@ const styles = {
   },
 
   grid: {
-    display: "grid",
-    gridTemplateColumns:
-      "repeat(auto-fill,minmax(320px,1fr))",
-    gap: "20px"
-  },
+  display: "grid",
+  gridTemplateColumns:
+    "repeat(auto-fill,minmax(320px,1fr))",
+  gap: "20px",
+  alignItems: "stretch"
+},
 
-  card: {
-    background: "#fff",
-    borderRadius: "14px",
-    padding: "22px",
-    boxShadow:
-      "0 2px 12px rgba(0,0,0,0.07)"
-  },
+ card: {
+  background: "#fff",
+  borderRadius: "14px",
+  padding: "22px",
+  boxShadow: "0 2px 12px rgba(0,0,0,0.07)",
+
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+
+  minHeight: "280px"
+},
 
   cardHeader: {
     display: "flex",
@@ -1141,5 +1190,46 @@ upgradeBtn: {
   fontSize: "14px",
 
   fontWeight: "700"
+},
+moduleContainer: {
+  display: "grid",
+  gridTemplateColumns: "repeat(4, 1fr)",
+  gap: "20px",
+  marginBottom: "30px",
+  alignItems: "stretch"
+  
+},
+
+moduleCard: {
+  background: "#fff",
+  borderRadius: "16px",
+  padding: "20px",
+  boxShadow: "0 21px 12px rgba(0,0,0,0.07)",
+  minHeight: "260px",
+  display: "flex",
+  flexDirection: "column"
+},
+
+moduleTitle: {
+  fontSize: "20px",
+  fontWeight: "700",
+  marginBottom: "18px",
+  color: "#1f2937"
+},
+
+moduleLinks: {
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px"
+},
+
+moduleBtn: {
+  background: "#4f46e5",
+  color: "#fff",
+  textDecoration: "none",
+  padding: "10px 14px",
+  borderRadius: "8px",
+  fontSize: "14px",
+  fontWeight: "600"
 },
 };

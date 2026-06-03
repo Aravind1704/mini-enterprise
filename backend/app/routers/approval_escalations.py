@@ -5,6 +5,8 @@ from app.database import get_db
 from app.schemas.approval_escalation import ApprovalEscalationCreate, ApprovalEscalationOut
 from app.services.approval_escalation_service import create_escalation, list_escalations, list_pending, list_for_approval, resolve_escalation, cancel_escalation
 from app.core.dependencies import get_current_user, require_manager
+from app.models.user import User
+from app.schemas.user import UserOut
 
 router = APIRouter(prefix="/approval-escalations", tags=["Approval Escalations"])
 
@@ -15,6 +17,27 @@ def api_create_escalation(payload: ApprovalEscalationCreate, db: Session = Depen
         return esc
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+    
+@router.get(
+    "/users",
+    response_model=List[UserOut]
+)
+def get_users(
+    db: Session = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+
+    return (
+        db.query(User)
+        .filter(
+            User.role.in_([
+                "admin",
+                "manager"
+            ])
+        )
+        .all()
+    )
 
 @router.get("/", response_model=List[ApprovalEscalationOut])
 def api_list_escalations(db: Session = Depends(get_db)):

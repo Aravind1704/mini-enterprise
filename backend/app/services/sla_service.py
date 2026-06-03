@@ -47,18 +47,52 @@ def disable_sla_rule(db: Session, rule: SLARule) -> SLARule:
     db.refresh(rule)
     return rule
 
-def start_sla_tracking(db: Session, module_name: str, record_id: int) -> Optional[SLATracking]:
-    # find rule by module and priority if available; for tasks/approvals you may need to fetch record priority externally
-    # For simplicity: pick first active rule for module (prefer high priority if multiple)
-    rule = db.query(SLARule).filter(SLARule.module_name == module_name, SLARule.is_active == True).order_by(SLARule.allowed_hours).first()
+def start_sla_tracking(
+    db: Session,
+    module_name: str,
+    record_id: int
+) -> Optional[SLATracking]:
+
+    rule = (
+        db.query(SLARule)
+        .filter(
+            SLARule.module_name == module_name,
+            SLARule.is_active == True
+        )
+        .order_by(
+            SLARule.allowed_hours
+        )
+        .first()
+    )
+
     if not rule:
         return None
+
     start = datetime.utcnow()
-    due = start + timedelta(hours=rule.allowed_hours)
-    st = SLATracking(module_name=module_name, record_id=record_id, sla_rule_id=rule.id, start_time=start, due_time=due, status="active")
+
+    # =====================================
+    # REAL SLA TIME
+    # =====================================
+
+    due = start + timedelta(
+        hours=rule.allowed_hours
+    )
+
+    st = SLATracking(
+        module_name=module_name,
+        record_id=record_id,
+        sla_rule_id=rule.id,
+        start_time=start,
+        due_time=due,
+        status="active"
+    )
+
     db.add(st)
+
     db.commit()
+
     db.refresh(st)
+
     return st
 
 def complete_sla(db: Session, sla_id: int) -> Optional[SLATracking]:
@@ -72,8 +106,97 @@ def complete_sla(db: Session, sla_id: int) -> Optional[SLATracking]:
     db.refresh(st)
     return st
 
+
+# =========================================
+# ACTIVE SLA
+# =========================================
+
 def list_active_sla(db: Session):
-    return db.query(SLATracking).filter(SLATracking.status == "active").all()
+
+    now = datetime.utcnow()
+
+    # =====================================
+    # AUTO MOVE BREACHED RECORDS
+    # =====================================
+
+    expired_records = (
+        db.query(SLATracking)
+        .filter(
+            SLATracking.status == "active",
+            SLATracking.due_time <= now
+        )
+        .all()
+    )
+
+    for item in expired_records:
+
+        item.status = "breached"
+
+        if not item.breach_reason:
+
+            item.breach_reason = (
+                "SLA deadline exceeded"
+            )
+
+        db.add(item)
+
+    db.commit()
+
+    # =====================================
+    # RETURN ONLY ACTIVE
+    # =====================================
+
+    active_records = (
+        db.query(SLATracking)
+        .filter(
+            SLATracking.status == "active",
+            SLATracking.due_time > now
+        )
+        .order_by(
+            SLATracking.id.desc()
+        )
+        .all()
+    )
+
+    return active_records
+
+# =========================================
+# BREACHED SLA
+# =========================================
 
 def list_breached_sla(db: Session):
-    return db.query(SLATracking).filter(SLATracking.status == "breached").all()
+
+    now = datetime.utcnow()
+
+    breached_records = (
+        db.query(SLATracking)
+        .filter(
+            SLATracking.due_time <= now
+        )
+        .all()
+    )
+
+    for item in breached_records:
+
+        if item.status != "breached":
+
+            item.status = "breached"
+
+            item.breach_reason = (
+                "SLA deadline exceeded"
+            )
+
+            db.add(item)
+
+    db.commit()
+
+    return (
+        db.query(SLATracking)
+        .filter(
+            SLATracking.status == "breached"
+        )
+        .order_by(
+            SLATracking.id.desc()
+        )
+        .all()
+    )

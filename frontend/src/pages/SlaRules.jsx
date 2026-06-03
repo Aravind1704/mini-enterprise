@@ -23,8 +23,16 @@ export default function SlaRules() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+
+  fetchRules();
+
+  const interval = setInterval(() => {
     fetchRules();
-  }, []);
+  }, 5000);
+
+  return () => clearInterval(interval);
+
+}, []);
 
   async function fetchRules() {
     try {

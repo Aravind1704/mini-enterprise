@@ -50,22 +50,69 @@ export default function ApprovalEscalations() {
   }, []);
 
   async function fetchData() {
+
+  try {
+
+    setLoading(true);
+
+    setError('');
+
+    // =====================================
+    // FETCH ESCALATIONS
+    // =====================================
+
+    const escRes =
+      await api.get(
+        '/approval-escalations/'
+      );
+
+    setEscalations(
+      escRes.data || []
+    );
+
+    // =====================================
+    // FETCH USERS
+    // =====================================
+
     try {
-      setLoading(true);
 
-      const [escRes, usersRes] = await Promise.all([
-        api.get('/approval-escalations/'),
-        api.get('/users/'),
-      ]);
+      const usersRes =
+        await api.get('/approval-escalations/users');
 
-      setEscalations(escRes.data || []);
-      setUsers(usersRes.data || []);
-    } catch (err) {
-      setError('Failed to load escalations');
-    } finally {
-      setLoading(false);
+      setUsers(
+        usersRes.data || []
+      );
+
+    } catch (userErr) {
+
+      console.log(
+        'Users API failed:',
+        userErr
+      );
+
+      // keep page working
+      setUsers([]);
+
     }
+
+  } catch (err) {
+
+    console.log(
+      'Escalation fetch failed:',
+      err
+    );
+
+    setError(
+      err.response?.data?.detail ||
+      'Failed to load escalations'
+    );
+
+  } finally {
+
+    setLoading(false);
+
   }
+}
 
   // FILTERS
   const filtered = escalations.filter((e) => {
@@ -163,19 +210,42 @@ export default function ApprovalEscalations() {
   ];
 
   const tableRows = filtered.map((e) => ({
-    id: e.id,
-    approval_id: `#${e.approval_id}`,
-    escalated_from: `User #${e.escalated_from}`,
-    escalated_to: e.escalated_to
+
+  id: e.id || '—',
+
+  approval_id:
+    e.approval_id
+      ? `#${e.approval_id}`
+      : '—',
+
+  escalated_from:
+    e.escalated_from
+      ? `User #${e.escalated_from}`
+      : '—',
+
+  escalated_to:
+    e.escalated_to
       ? `User #${e.escalated_to}`
       : '—',
-    reason: e.reason,
-    status: <StatusBadge status={e.status} />,
-    escalated_at: new Date(
-      e.escalated_at
-    ).toLocaleDateString(),
-    _raw: e,
-  }));
+
+  reason:
+    e.reason || '—',
+
+  status: (
+    <StatusBadge
+      status={e.status || 'pending'}
+    />
+  ),
+
+  escalated_at:
+    e.escalated_at
+      ? new Date(
+          e.escalated_at
+        ).toLocaleString()
+      : '—',
+
+  _raw: e,
+}));
 
   return (
     <div

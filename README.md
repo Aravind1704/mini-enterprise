@@ -76,25 +76,13 @@ Project Structure
 ```
 MINI ENTERPRISE/
 =======
-Mini-Enterprise/
+MINI-ENTERPRISE/
 │
 ├── backend/
 │   │
-│   ├── venv/
-│   │
-│   ├── alembic/
-│   │   ├── versions/
-│   │   ├── env.py
-│   │   ├── script.py.mako
-│   │   └── README
-│   │
 │   ├── app/
 │   │   │
-│   │   ├── __pycache__/
-│   │   │
 │   │   ├── core/
-│   │   │   ├── __pycache__/
-│   │   │   ├── cache.py
 │   │   │   ├── config.py
 │   │   │   ├── dependencies.py
 │   │   │   ├── limiter.py
@@ -107,196 +95,139 @@ Mini-Enterprise/
 │   │   ├── middleware/
 │   │   │   └── sanitize.py
 │   │   │
+│   │   ├── models/
+│   │   │   ├── user.py
+│   │   │   ├── task.py
+│   │   │   ├── comment.py
+│   │   │   ├── approval.py
+│   │   │   ├── approval_delegation.py
+│   │   │   ├── approval_escalation.py
+│   │   │   ├── audit.py
+│   │   │   ├── billing.py
+│   │   │   ├── subscription.py
+│   │   │   ├── document.py
+│   │   │   ├── notification.py
+│   │   │   ├── notification_preferences.py
+│   │   │   ├── organization.py
+│   │   │   ├── sla.py
+│   │   │   │
+│   │   │   ├── tenant.py
+│   │   │   ├── tenant_onboarding.py
+│   │   │   ├── tenant_collaboration.py
+│   │   │   ├── workspace.py
+│   │   │   ├── workspace_member.py
+│   │   │   ├── channel.py
+│   │   │   └── channel_member.py
+│   │   │
+│   │   ├── repositories/
+│   │   │   ├── auth_repo.py
+│   │   │   ├── task_repo.py
+│   │   │   ├── comment_repo.py
+│   │   │   ├── approval_repo.py
+│   │   │   ├── approval_delegation_repo.py
+│   │   │   ├── approval_escalation_repo.py
+│   │   │   ├── analytics_repo.py
+│   │   │   ├── audit_repo.py
+│   │   │   ├── dashboard_repo.py
+│   │   │   ├── document_repo.py
+│   │   │   ├── subscription_repo.py
+│   │   │   ├── tenant_repo.py
+│   │   │   ├── tenant_onboarding_repo.py
+│   │   │   ├── tenant_collaboration_repo.py
+│   │   │   ├── workspace_repo.py
+│   │   │   ├── workspace_member_repo.py
+│   │   │   ├── channel_repo.py
+│   │   │   └── channel_member_repo.py
+│   │   │
+│   │   ├── schemas/
+│   │   │   ├── user.py
+│   │   │   ├── task.py
+│   │   │   ├── comment.py
+│   │   │   ├── approval.py
+│   │   │   ├── analytics.py
+│   │   │   ├── audit.py
+│   │   │   ├── document.py
+│   │   │   ├── notification.py
+│   │   │   ├── notification_preferences.py
+│   │   │   ├── sla.py
+│   │   │   ├── subscription.py
+│   │   │   ├── kanban.py
+│   │   │   ├── tenant.py
+│   │   │   ├── tenant_onboarding.py
+│   │   │   ├── tenant_collaboration.py
+│   │   │   ├── workspace.py
+│   │   │   ├── workspace_member.py
+│   │   │   ├── channel.py
+│   │   │   └── channel_member.py
+│   │   │
+│   │   ├── services/
+│   │   │   ├── auth_service.py
+│   │   │   ├── task_service.py
+│   │   │   ├── comment_service.py
+│   │   │   ├── approval_service.py
+│   │   │   ├── approval_delegation_service.py
+│   │   │   ├── approval_escalation_service.py
+│   │   │   ├── analytics_service.py
+│   │   │   ├── audit_service.py
+│   │   │   ├── dashboard_service.py
+│   │   │   ├── document_service.py
+│   │   │   ├── notification_service.py
+│   │   │   ├── payment_service.py
+│   │   │   ├── subscription_service.py
+│   │   │   ├── websocket_service.py
+│   │   │   ├── workflow_service.py
+│   │   │   ├── sla_service.py
+│   │   │   ├── tenant_service.py
+│   │   │   ├── tenant_onboarding_service.py
+│   │   │   ├── tenant_collaboration_service.py
+│   │   │   ├── workspace_service.py
+│   │   │   ├── workspace_member_service.py
+│   │   │   ├── channel_service.py
+│   │   │   └── channel_member_service.py
+│   │   │
+│   │   ├── routers/
+│   │   │   ├── auth.py
+│   │   │   ├── users.py
+│   │   │   ├── tasks.py
+│   │   │   ├── kanban.py
+│   │   │   ├── comments.py
+│   │   │   ├── approvals.py
+│   │   │   ├── approval_delegations.py
+│   │   │   ├── approval_escalations.py
+│   │   │   ├── analytics_router.py
+│   │   │   ├── dashboard.py
+│   │   │   ├── documents.py
+│   │   │   ├── notifications.py
+│   │   │   ├── notification_preferences.py
+│   │   │   ├── audit.py
+│   │   │   ├── billing_routes.py
+│   │   │   ├── payment_router.py
+│   │   │   ├── subscription_routes.py
+│   │   │   ├── sla_routes.py
+│   │   │   ├── websocket_routes.py
+│   │   │   ├── tenant_routes.py
+│   │   │   ├── tenant_onboarding_routes.py
+│   │   │   ├── tenant_collaboration_routes.py
+│   │   │   ├── workspace_routes.py
+│   │   │   ├── workspace_member_routes.py
+│   │   │   ├── channel_routes.py
+│   │   │   └── channel_member_routes.py
+│   │   │
 │   │   ├── websocket/
-│   │   │   ├── __pycache__/
 │   │   │   ├── manager.py
 │   │   │   └── notifications.py
 │   │   │
-│   │   ├── models/
-│   │   │   ├── __pycache__/
-│   │   │   ├── __init__.py
-│   │   │   ├── approval_delegation.py
-│   │   │   ├── approval_escalation.py
-│   │   │   ├── approval.py
-│   │   │   ├── audit.py
-│   │   │   ├── billing.py
-│   │   │   ├── comment.py
-│   │   │   ├── document.py
-│   │   │   ├── employee.py
-│   │   │   ├── notification_preferences.py
-│   │   │   ├── notification.py
-│   │   │   ├── organization.py
-│   │   │   ├── sla.py
-│   │   │   ├── subscription.py
-│   │   │   ├── task.py
-│   │   │   └── user.py
-│   │   │
-│   │   ├── repositories/
-│   │   │   ├── __pycache__/
-│   │   │   ├── ai_repo.py
-│   │   │   ├── analytics_repo.py
-│   │   │   ├── approval_delegation_repo.py
-│   │   │   ├── approval_escalation_repo.py
-│   │   │   ├── approval_repo.py
-│   │   │   ├── audit_repo.py
-│   │   │   ├── auth_repo.py
-│   │   │   ├── comment_repo.py
-│   │   │   ├── dashboard_repo.py
-│   │   │   ├── document_repo.py
-│   │   │   ├── notification_preferences_repo.py
-│   │   │   ├── subscription_repo.py
-│   │   │   └── task_repo.py
-│   │   │
-│   │   ├── routers/
-│   │   │   ├── __pycache__/
-│   │   │   ├── ai.py
-│   │   │   ├── analytics_router.py
-│   │   │   ├── approval_delegations.py
-│   │   │   ├── approval_escalations.py
-│   │   │   ├── approvals.py
-│   │   │   ├── audit.py
-│   │   │   ├── auth.py
-│   │   │   ├── billing_routes.py
-│   │   │   ├── comments.py
-│   │   │   ├── dashboard.py
-│   │   │   ├── documents.py
-│   │   │   ├── kanban.py
-│   │   │   ├── notification_preferences.py
-│   │   │   ├── notifications.py
-│   │   │   ├── payment_routes.py
-│   │   │   ├── sla_routes.py
-│   │   │   ├── subscription_routes.py
-│   │   │   ├── tasks.py
-│   │   │   ├── users.py
-│   │   │   ├── websocket_routes.py
-│   │   │   └── websocket.py
-│   │   │
-│   │   ├── schemas/
-│   │   │   ├── __pycache__/
-│   │   │   ├── analytics.py
-│   │   │   ├── approval_delegation.py
-│   │   │   ├── approval_escalation.py
-│   │   │   ├── approval.py
-│   │   │   ├── audit.py
-│   │   │   ├── comment.py
-│   │   │   ├── dashboard.py
-│   │   │   ├── document.py
-│   │   │   ├── kanban.py
-│   │   │   ├── notification_preferences.py
-│   │   │   ├── notification.py
-│   │   │   ├── sla.py
-│   │   │   ├── subscription.py
-│   │   │   ├── task.py
-│   │   │   └── user.py
-│   │   │
-│   │   ├── services/
-│   │   │   ├── __pycache__/
-│   │   │   ├── activity_service.py
-│   │   │   ├── ai_service.py
-│   │   │   ├── analytics_service.py
-│   │   │   ├── approval_delegation_service.py
-│   │   │   ├── approval_escalation_service.py
-│   │   │   ├── approval_service.py
-│   │   │   ├── audit_service.py
-│   │   │   ├── auth_service.py
-│   │   │   ├── comment_service.py
-│   │   │   ├── dashboard_service.py
-│   │   │   ├── document_service.py
-│   │   │   ├── email_service.py
-│   │   │   ├── notification_preferences_service.py
-│   │   │   ├── notification_service.py
-│   │   │   ├── payment_service.py
-│   │   │   ├── sla_service.py
-│   │   │   ├── subscription_service.py
-│   │   │   ├── task_service.py
-│   │   │   ├── websocket_service.py
-│   │   │   └── workflow_service.py
-│   │   │
 │   │   ├── uploads/
-│   ├── app/
-│   │   │
-│   │   ├── core/
-│   │   │   ├── config.py
-│   │   │   ├── security.py
-│   │   │   ├── dependencies.py
-│   │   │   ├── stripe_config.py
-│   │   │   ├── websocket_manager.py
-│   │   │   └── limiter.py
-│   │   │
-│   │   ├── models/
-│   │   │   ├── user.py
-│   │   │   ├── task.py
-│   │   │   ├── comment.py
-│   │   │   ├── approval.py
-│   │   │   ├── document.py
-│   │   │   ├── notification.py
-│   │   │   ├── audit_log.py
-│   │   │   ├── subscription.py
-│   │   │   └── payment.py
-│   │   │
-│   │   ├── schemas/
-│   │   │   ├── user.py
-│   │   │   ├── task.py
-│   │   │   ├── comment.py
-│   │   │   ├── approval.py
-│   │   │   ├── document.py
-│   │   │   ├── notification.py
-│   │   │   ├── audit_log.py
-│   │   │   ├── analytics.py
-│   │   │   ├── subscription.py
-│   │   │   └── payment.py
-│   │   │
-│   │   ├── routers/
-│   │   │   ├── auth.py
-│   │   │   ├── users.py
-│   │   │   ├── tasks.py
-│   │   │   ├── comments.py
-│   │   │   ├── approvals.py
-│   │   │   ├── kanban.py
-│   │   │   ├── analytics.py
-│   │   │   ├── dashboard.py
-│   │   │   ├── documents.py
-│   │   │   ├── notifications.py
-│   │   │   ├── audit_logs.py
-│   │   │   ├── ai_insights.py
-│   │   │  ├── payment_router.py
-│   │   │  ├── subscription_router.py
-│   │   │  └── websocket_router.py
-│   │   │
-│   │   ├── services/
-│   │   │   ├── auth_service.py
-│   │   │   ├── task_service.py
-│   │   │   ├── comment_service.py
-│   │   │   ├── approval_service.py
-│   │   │   ├── analytics_service.py
-│   │   │   ├── document_service.py
-│   │   │   ├── notification_service.py
-│   │   │   ├── audit_service.py
-│   │   │   ├── ai_service.py
-│   │   │   ├── websocket_service.py
-│   │   │   ├── payment_service.py
-│   │   │   └── stripe_service.py
-│   │   │
-│   │   ├── websocket/
-│   │   │   └── connection_manager.py
-│   │   │
 │   │   ├── database.py
 │   │   └── main.py
 │   │
 │   ├── uploads/
-│   │
+│   ├── alembic/
 │   ├── .env
 │   ├── alembic.ini
 │   └── requirements.txt
-│   ├── requirements.txt
-│   ├── .env
-│   ├── README.md
-│   └── alembic/
-│
 │
 ├── frontend/
-│   │
-│   ├── node_modules/
 │   │
 │   ├── public/
 │   │
@@ -305,108 +236,67 @@ Mini-Enterprise/
 │   │   ├── api/
 │   │   │   └── axios.js
 │   │   │
-│   │   ├── components/
-│   │   │   ├── ForgotPassword.jsx
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── PrivateRoute.jsx
-│   │   │   ├── ResetPassword.jsx
-│   │   │   └── UIComponents.jsx
-│   │   │
 │   │   ├── context/
 │   │   │   └── AuthContext.jsx
-│   │   │
-│   │   ├── pages/
-│   │   │   ├── AIInsights.jsx
-│   │   │   ├── Analytics.jsx
-│   │   │   ├── ApprovalDelegations.jsx
-│   │   │   ├── ApprovalEscalations.jsx
-│   │   │   ├── Approvals.jsx
-│   │   │   ├── AuditLogs.jsx
-│   │   │   ├── Billing.jsx
-│   │   │   ├── BillingCancel.jsx
-│   │   │   ├── BillingSuccess.jsx
-│   │   │   ├── CreateTask.jsx
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── DashboardStats.jsx
-│   │   │   ├── DocumentManagement.jsx
-│   │   │   ├── EditTask.jsx
-│   │   │   ├── KanbanBoard.jsx
-│   │   │   ├── Login.jsx
-│   │   │   ├── notification-preferences.jsx
-│   │   │   ├── NotificationCenter.jsx
-│   │   │   ├── OAuthSuccess.jsx
-│   │   │   ├── Pricing.jsx
-│   │   │   ├── Register.jsx
-│   │   │   ├── SlaDashboard.jsx
-│   │   │   ├── SLARules.jsx
-│   │   │   ├── Subscription.jsx
-│   │   │   └── TaskComments.jsx
 │   │   │
 │   │   ├── services/
 │   │   │   └── WebSocketClient.js
 │   │   │
-│   │   ├── App.css
-│   │   ├── App.js
-│   │   ├── App.test.js
-│   │   ├── index.css
-│   │   ├── index.js
-│   │   ├── logo.svg
-│   │   ├── reportWebVitals.js
-│   │   └── setupTests.js
-│   │   ├── index.html
-│   │   ├── favicon.ico
-│   │   ├── logo192.png
-│   │   ├── logo512.png
-│   │   └── manifest.json
-│   │
-│   ├── src/
-│   │   │
-│   │   ├── api/
-│   │   │   └── axios.js
-│   │   │
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx
-│   │   │
 │   │   ├── components/
-│   │   │   ├── Navbar.jsx
-│   │   │   └── PrivateRoute.jsx
+│   │   │   ├── PrivateRoute.jsx
+│   │   │   ├── ForgotPassword.jsx
+│   │   │   └── ResetPassword.jsx
 │   │   │
 │   │   ├── pages/
 │   │   │   ├── Login.jsx
 │   │   │   ├── Register.jsx
 │   │   │   ├── Dashboard.jsx
+│   │   │   ├── DashboardStats.jsx
 │   │   │   ├── CreateTask.jsx
 │   │   │   ├── EditTask.jsx
-│   │   │   ├── Kanban.jsx
-│   │   │   ├── Comments.jsx
+│   │   │   ├── KanbanBoard.jsx
+│   │   │   ├── TaskComments.jsx
 │   │   │   ├── Approvals.jsx
-│   │   │   ├── Notifications.jsx
-│   │   │   ├── Documents.jsx
+│   │   │   ├── ApprovalDelegations.jsx
+│   │   │   ├── ApprovalEscalations.jsx
 │   │   │   ├── Analytics.jsx
 │   │   │   ├── AuditLogs.jsx
 │   │   │   ├── AIInsights.jsx
+│   │   │   ├── DocumentManager.jsx
+│   │   │   ├── NotificationCenter.jsx
+│   │   │   ├── notification-preferences.jsx
 │   │   │   ├── Pricing.jsx
-│   │   │   ├── Success.jsx
-│   │   │   └── Cancel.jsx
-│   │   │
-│   │   ├── services/
-│   │   │   ├── WebSocketClient.js
-│   │   │
-│   │   ├── App.js
-│   │   ├── routes.js
-│   │   └── index.js
+│   │   │   ├── Billing.jsx
+│   │   │   ├── BillingSuccess.jsx
+│   │   │   ├── BillingCancel.jsx
+│   │   │   ├── Subscriptions.jsx
+│   │   │   ├── OAuthSuccess.jsx
+│   │   │   ├── SlaRules.jsx
+│   │   │   ├── SlaDashboard.jsx
+│   │   │   ├── TenantList.jsx
+│   │   │   ├── TenantCreate.jsx
+│   │   │   ├── TenantDetails.jsx
+│   │   │   ├── TenantOnboarding.jsx
+│   │   │   ├── CollaborationSettings.jsx
+│   │   │   ├── CollaborationUsage.jsx
+│   │   │   ├── WorkspaceList.jsx
+│   │   │   ├── WorkspaceCreate.jsx
+│   │   │   ├── WorkspaceDetails.jsx
+│   │   │   ├── WorkspaceMembers.jsx
+│   │   │   ├── ChannelList.jsx
+│   │   │   ├── ChannelCreate.jsx
+│   │   │   ├── ChannelDetails.jsx
+│   │   │   └── ChannelMembers.jsx
 │   │
-│   ├── .gitignore
-│   ├── package-lock.json
-│   ├── package.json
-│   ├── postcss.config.js
-│   └── tailwind.config.js
+│   ├── App.js
+│   ├── index.js
+│   ├── App.css
+│   ├── index.css
+│   └── package.json
 │
-├── .gitignore
 ├── README.md
-└── LICENSE
+└── .gitignore
 =======
-└── README.md
 ```
 ```
 Prerequisites
@@ -887,6 +777,68 @@ IP Address
 User Agent
 Module Name
 Action Type
+
+
+
+Phase 10A — SaaS Tenant Onboarding, Workspace & Channel Foundation
+Tenant Management
+Create Tenant
+Update Tenant
+Suspend Tenant
+Activate Tenant
+Unique Slug Generation
+Duplicate Validation
+
+
+Tenant Onboarding
+Create Organization Admin
+Assign Roles
+Create Default Collaboration Settings
+Track Onboarding Status
+
+
+Tenant Collaboration Settings
+Workspace Limits
+Channel Limits
+Member Limits
+Storage Limits
+Feature Toggles
+
+
+Tenant Collaboration Usage
+Workspace Usage Tracking
+Channel Usage Tracking
+Member Usage Tracking
+Storage Monitoring
+
+
+Workspace Management
+Create Workspace
+Archive Workspace
+Restore Workspace
+Public / Private Visibility
+
+
+Workspace Membership
+Add Members
+Remove Members
+Update Roles
+Search Members
+
+
+Channel Management
+Create Channel
+Archive Channel
+Restore Channel
+Join Channel
+Leave Channel
+Channel Membership
+
+
+Tenant Isolation
+Secure Cross-Tenant Protection
+Data Separation
+Access Restrictions
 ```
 
 ```
@@ -1043,6 +995,69 @@ PUT	/notification-preferences/me	Update notification preferences
 POST	/notification-preferences/default/{user_id}	Create default preferences
 
 
+
+Tenant Management APIs
+Method	Endpoint	Description
+GET	/tenants	List all tenants
+POST	/tenants	Create tenant
+GET	/tenants/{tenant_id}	Get tenant details
+PUT	/tenants/{tenant_id}	Update tenant
+DELETE	/tenants/{tenant_id}	Delete tenant
+PATCH	/tenants/{tenant_id}/activate	Activate tenant
+PATCH	/tenants/{tenant_id}/suspend	Suspend tenant
+
+
+🚀 Tenant Onboarding APIs
+Method	Endpoint	Description
+POST	/tenants/onboard	Onboard tenant
+POST	/tenants/{tenant_id}/admin	Create tenant admin
+GET	/tenants/{tenant_id}/onboarding-status	Get onboarding status
+
+
+⚙️ Tenant Collaboration Settings APIs
+Method	Endpoint	Description
+GET	/tenants/{tenant_id}/collaboration/settings	Get collaboration settings
+PUT	/tenants/{tenant_id}/collaboration/settings	Update collaboration settings
+
+
+📊 Tenant Collaboration Usage APIs
+Method	Endpoint	Description
+GET	/tenants/{tenant_id}/collaboration/usage	Get collaboration usage
+POST	/tenants/{tenant_id}/collaboration/recalculate-usage	Recalculate usage
+
+
+🏢 Workspace Management APIs
+Method	Endpoint	Description
+POST	/workspaces	Create workspace
+GET	/workspaces	List workspaces
+GET	/workspaces/{workspace_id}	Get workspace details
+PUT	/workspaces/{workspace_id}	Update workspace
+PATCH	/workspaces/{workspace_id}/archive	Archive workspace
+PATCH	/workspaces/{workspace_id}/restore	Restore workspace
+
+
+
+👥 Workspace Membership APIs
+Method	Endpoint	Description
+POST	/workspaces/{workspace_id}/members	Add member
+GET	/workspaces/{workspace_id}/members	List members
+PATCH	/workspaces/{workspace_id}/members/{user_id}/role	Update member role
+DELETE	/workspaces/{workspace_id}/members/{user_id}	Remove member
+
+
+
+💬 Channel Management APIs
+Method	Endpoint	Description
+POST	/channels	Create channel
+GET	/workspaces/{workspace_id}/channels	List workspace channels
+GET	/channels/{channel_id}	Get channel details
+PUT	/channels/{channel_id}	Update channel
+PATCH	/channels/{channel_id}/archive	Archive channel
+PATCH	/channels/{channel_id}/restore	Restore channel
+POST	/channels/{channel_id}/join	Join channel
+POST	/channels/{channel_id}/leave	Leave channel
+
+
 🌐 Default APIs
 Method	Endpoint	Description
 GET	/	Root endpoint
@@ -1133,11 +1148,6 @@ Real-Time Credit Tracking
 ```
 
 
-
-
-
-
-
 ```
 🚀 Features
 ✅ Authentication & Security
@@ -1195,8 +1205,6 @@ Comment Alerts
 Approval Alerts
 
 
-
-
 💳 SaaS Subscription System
 Subscription Plans
 Plan	Price	Credits
@@ -1210,6 +1218,90 @@ Live Plan Updates
 Webhook Support
 Subscription Dashboard
 Real-Time Credit Tracking
+
+
+Tenant Management
+Create Tenant
+Update Tenant
+View Tenant Details
+List Tenants
+Activate Tenant
+Suspend Tenant
+Unique Slug Generation
+Duplicate Validation
+
+
+
+
+🎯 Tenant Onboarding
+Create Organization Admin
+Assign Admin Role
+Create Default Collaboration Settings
+Create Default Workspace
+Track Onboarding Status
+⚙ Tenant Collaboration Settings
+Workspace Limits
+Channel Limits
+Member Limits
+Storage Limits
+Workspace Enable/Disable
+Channel Enable/Disable
+
+
+
+
+📊 Tenant Collaboration Usage
+
+Tracks:
+
+Workspace Count
+Channel Count
+Member Count
+Storage Usage
+Usage Recalculation
+
+
+🏢 Workspace Management
+Create Workspace
+Update Workspace
+Archive Workspace
+Restore Workspace
+Workspace Visibility Controls
+Workspace Types
+Public Workspace
+Private Workspace
+
+
+
+👥 Workspace Membership
+Roles
+Workspace Admin
+Moderator
+Member
+Viewer
+Features
+Add Members
+Remove Members
+Update Member Roles
+Search Members
+Duplicate Member Prevention
+
+
+
+💬 Channel Management
+Channel Types
+Public
+Private
+Announcement
+Project
+Features
+Create Channel
+Update Channel
+Archive Channel
+Restore Channel
+Join Channel
+Leave Channel
+Channel Membership Management
 
 
 

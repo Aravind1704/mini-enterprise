@@ -1,8 +1,18 @@
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from slowapi.middleware import SlowAPIMiddleware
+
+
+from app.routers.tenant_routes import router as tenant_router
+from app.routers.tenant_onboarding_routes import router as tenant_onboarding_router
+from app.routers.tenant_collaboration_settings_routes import router as tenant_collaboration_settings_router
+from app.routers.tenant_collaboration_usage_routes import router as tenant_collaboration_usage_router
+from app.routers.workspace_routes import router as workspace_router
+from app.routers.workspace_member_routes import router as workspace_member_router
+from app.routers.channel_routes import router as channel_router
+from app.routers.channel_routes import router as channel_member_router
+
 
 from app.database import Base, engine
 from app.core.limiter import limiter
@@ -10,6 +20,12 @@ from app.core.config import settings
 from app.routers import (
     websocket_router
 )
+from app.routers.sla_routes import (
+    router as sla_router,
+    tracking_router
+)
+
+
 # =========================================================
 # IMPORT MODELS (for table creation)
 # =========================================================
@@ -30,6 +46,7 @@ from app.routers.payment_router import (
 from app.routers.subscription_router import (
     router as subscription_router
 )
+
 # =========================================================
 # IMPORT ROUTERS
 # =========================================================
@@ -157,9 +174,12 @@ app.include_router(auth.router)
 # User Management
 app.include_router(users.router)
 
+
+
+app.include_router(kanban.router)
 # Task Management
 app.include_router(tasks.router)
-app.include_router(kanban.router)
+
 
 # Comments
 app.include_router(comments.router)
@@ -203,7 +223,14 @@ app.include_router(approval_escalations.router)
 app.include_router(approval_delegations.router)
 app.include_router(notification_preferences.router)
 app.include_router(audit.router)
-
+app.include_router(tenant_router)
+app.include_router(tenant_onboarding_router)
+app.include_router(tenant_collaboration_settings_router)
+app.include_router(tenant_collaboration_usage_router)
+app.include_router(workspace_router)
+app.include_router(workspace_member_router)
+app.include_router(channel_router)
+app.include_router(channel_member_router)
 # =========================================================
 # HEALTH CHECK ENDPOINTS
 # =========================================================

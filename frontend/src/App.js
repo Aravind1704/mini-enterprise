@@ -10,12 +10,10 @@ import {
 } from "./context/AuthContext";
 
 import PrivateRoute from "./components/PrivateRoute";
-<<<<<<< HEAD
+
 import ApprovalEscalations from "./pages/ApprovalEscalations";
 import ApprovalDelegations from "./pages/ApprovalDelegations";
-=======
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 // ========================================
 // PAGES
 // ========================================
@@ -38,24 +36,35 @@ import Analytics from "./pages/Analytics";
 import Subscriptions from "./pages/Subscriptions";
 import Billing from "./pages/Billing";
 import Pricing from "./pages/Pricing";
-<<<<<<< HEAD
+
 import SlaRules from './pages/SlaRules';
 import SlaDashboard from './pages/SlaDashboard';
 
 import BillingSuccess from "./pages/BillingSuccess";
-=======
 
-
-import BillingSuccess from "./pages/BillingSuccess";
-
-import BillingCancel from "./pages/BillingCancel";
-
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
 import BillingCancel from "./pages/BillingCancel";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import NotificationPreferences from "./pages/notification-preferences"; 
+
+import TenantList from "./pages/TenantList";
+import TenantCreate from "./pages/TenantCreate";
+import TenantDetails from "./pages/TenantDetails";
+import TenantOnboarding from "./pages/TenantOnboarding";
+
+import CollaborationSettings from "./pages/CollaborationSettings";
+import CollaborationUsage from "./pages/CollaborationUsage";
+
+import WorkspaceList from "./pages/WorkspaceList";
+import WorkspaceCreate from "./pages/WorkspaceCreate";
+import WorkspaceDetails from "./pages/WorkspaceDetails";
+import WorkspaceMembers from "./pages/WorkspaceMembers";
+
+import ChannelList from "./pages/ChannelList";
+import ChannelCreate from "./pages/ChannelCreate";
+import ChannelDetails from "./pages/ChannelDetails";
+import ChannelMembers from "./pages/ChannelMembers";
 export default function App() {
 
   return (
@@ -66,10 +75,94 @@ export default function App() {
 
         <Routes>
 
-          {/* =====================================
-              PUBLIC ROUTES
-          ===================================== */}
+                  {/* =====================================
+                      PUBLIC ROUTES
+                  ===================================== */}
+        {/* ================================
+            TENANT MANAGEMENT
+        ================================ */}
 
+        <Route
+          path="/tenants"
+          element={<TenantList />}
+        />
+
+        <Route
+          path="/tenant-create"
+          element={<TenantCreate />}
+        />
+
+        <Route
+          path="/tenants/:id"
+          element={<TenantDetails />}
+        />
+
+        <Route
+          path="/tenant-onboarding"
+          element={<TenantOnboarding />}
+        />
+
+        {/* ================================
+            COLLABORATION
+        ================================ */}
+
+        <Route
+          path="/tenants/:id/settings"
+          element={<CollaborationSettings />}
+        />
+
+        <Route
+          path="/tenants/:id/usage"
+          element={<CollaborationUsage />}
+        />
+
+        {/* ================================
+            WORKSPACE MANAGEMENT
+        ================================ */}
+
+        <Route
+          path="/workspaces"
+          element={<WorkspaceList />}
+        />
+
+        <Route
+          path="/workspace-create"
+          element={<WorkspaceCreate />}
+        />
+
+        <Route
+          path="/workspace-details/:id"
+          element={<WorkspaceDetails />}
+        />
+
+        <Route
+          path="/workspace-members/:workspaceId"
+          element={<WorkspaceMembers />}
+        />
+
+        {/* ================================
+            CHANNEL MANAGEMENT
+        ================================ */}
+
+        <Route
+          path="/channels"
+          element={<ChannelList />}
+        />
+
+        <Route
+          path="/channel-create"
+          element={<ChannelCreate />}
+        />
+
+        <Route
+          path="/channel-details/:id"
+          element={<ChannelDetails />}
+        />
+
+        <Route
+          path="/channel-members/:channelId"
+          element={<ChannelMembers />}
+        />
           <Route
             path="/login"
             element={<Login />}
@@ -84,12 +177,7 @@ export default function App() {
             path="/oauth-success"
             element={<OAuthSuccess />}
           />
-<<<<<<< HEAD
-         
-=======
 
-
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
           {/* =====================================
               PROTECTED ROUTES
           ===================================== */}
@@ -201,10 +289,6 @@ export default function App() {
               </PrivateRoute>
             }
           />
-<<<<<<< HEAD
-          
-=======
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
 
           <Route
             path="/subscriptions"
@@ -231,7 +315,7 @@ export default function App() {
             </PrivateRoute>
           }
         />
-<<<<<<< HEAD
+
         <Route
           path="/notification-preferences"
           element={
@@ -242,30 +326,25 @@ export default function App() {
         />
         <Route path="/sla-rules" element={<PrivateRoute><SlaRules /></PrivateRoute>} />
         <Route path="/sla-dashboard" element={<PrivateRoute><SlaDashboard /></PrivateRoute>} />
-=======
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
         <Route
           path="/success"
           element={<BillingSuccess />}
         />
-<<<<<<< HEAD
+
        <Route path="/approval-escalations" element={<ApprovalEscalations />} />
         <Route path="/approval-delegations" element={<ApprovalDelegations />} />
-=======
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
         <Route
           path="/cancel"
           element={<BillingCancel />}
         />
-<<<<<<< HEAD
+
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-=======
 
->>>>>>> 4500000c8c54ec045a9125ffb74854e6cb5209d2
+
           {/* =====================================
               DEFAULT ROUTE
           ===================================== */}
