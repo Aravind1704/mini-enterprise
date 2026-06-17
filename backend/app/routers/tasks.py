@@ -96,7 +96,8 @@ def get_task(
 
     task = get_task_service(
         db,
-        task_id
+        task_id,
+        user
     )
 
     if not task:

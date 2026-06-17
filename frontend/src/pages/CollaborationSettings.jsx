@@ -1,88 +1,140 @@
 import React, {
   useEffect,
-  useState
+  useState,
+  useCallback
 } from "react";
 
-import { useParams } from "react-router-dom";
-
 import axios from "../api/axios";
+import PageLayout from "../components/PageLayout";
 
 export default function CollaborationSettings() {
 
-  const { id } = useParams();
+  const tenantId =
+    localStorage.getItem("tenantId") || "1";
 
   const [loading, setLoading] =
     useState(true);
 
-  const [saving, setSaving] =
-    useState(false);
-
   const [form, setForm] =
     useState({
-      max_workspaces: 0,
-      max_channels_per_workspace: 0,
-      max_workspace_members: 0,
-      max_storage_mb: 0,
+      max_workspaces: 10,
+      max_channels_per_workspace: 50,
+      max_workspace_members: 500,
+      max_storage_mb: 1024,
       workspace_enabled: true,
       channel_enabled: true
     });
 
-  useEffect(() => {
-
-    const fetchSettings = async () => {
-
-      try {
-
-        const res =
-          await axios.get(
-            `/tenants/${id}/collaboration/settings`
-          );
-
-        setForm(res.data);
-
-      } catch (err) {
-
-        console.error(err);
-
-      } finally {
-
-        setLoading(false);
-
-      }
-
-    };
-
-    fetchSettings();
-
-  }, [id]);
-
-  const updateSettings = async () => {
+  const loadSettings = useCallback(async () => {
 
     try {
 
-      setSaving(true);
+      const res =
+        await axios.get(
+          `/tenants/${tenantId}/collaboration/settings`
+        );
 
-      await axios.put(
-        `/tenants/${id}/collaboration/settings`,
-        form
-      );
+      setForm({
+        max_workspaces:
+          res.data.max_workspaces ?? 10,
 
-      alert(
-        "Settings Updated Successfully"
-      );
+        max_channels_per_workspace:
+          res.data.max_channels_per_workspace ?? 50,
+
+        max_workspace_members:
+          res.data.max_workspace_members ?? 500,
+
+        max_storage_mb:
+          res.data.max_storage_mb ?? 1024,
+
+        workspace_enabled:
+          res.data.workspace_enabled ?? true,
+
+        channel_enabled:
+          res.data.channel_enabled ?? true
+      });
 
     } catch (err) {
 
-      console.error(err);
+      console.error(
+        "Load Settings Error:",
+        err.response?.data
+      );
 
       alert(
         err.response?.data?.detail ||
-        "Failed to update settings"
+        "Failed to load settings"
       );
 
     } finally {
 
-      setSaving(false);
+      setLoading(false);
+
+    }
+
+  }, [tenantId]);
+
+  useEffect(() => {
+
+    loadSettings();
+
+  }, [loadSettings]);
+
+  const saveSettings = async () => {
+
+    try {
+
+      const payload = {
+        max_workspaces:
+          Number(form.max_workspaces),
+
+        max_channels_per_workspace:
+          Number(
+            form.max_channels_per_workspace
+          ),
+
+        max_workspace_members:
+          Number(
+            form.max_workspace_members
+          ),
+
+        max_storage_mb:
+          Number(form.max_storage_mb),
+
+        workspace_enabled:
+          Boolean(
+            form.workspace_enabled
+          ),
+
+        channel_enabled:
+          Boolean(
+            form.channel_enabled
+          )
+      };
+
+      await axios.put(
+        `/tenants/${tenantId}/collaboration/settings`,
+        payload
+      );
+
+      alert(
+        "Settings Saved Successfully"
+      );
+
+    } catch (err) {
+
+      console.error(
+        "Save Settings Error:",
+        err.response?.data
+      );
+
+      alert(
+        JSON.stringify(
+          err.response?.data,
+          null,
+          2
+        )
+      );
 
     }
 
@@ -91,24 +143,28 @@ export default function CollaborationSettings() {
   if (loading) {
 
     return (
-      <div className="p-6">
+      <PageLayout>
         Loading...
-      </div>
+      </PageLayout>
     );
 
   }
 
   return (
 
-    <div className="p-6">
+    <PageLayout>
 
-      <div className="bg-white shadow rounded-xl p-6">
+      <div className="bg-white rounded-2xl border p-8">
 
-        <h1 className="text-2xl font-bold mb-6">
+        <h1 className="text-3xl font-bold mb-2">
           Collaboration Settings
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <p className="text-gray-500 mb-8">
+          Configure collaboration limits and controls
+        </p>
+
+        <div className="grid grid-cols-2 gap-6">
 
           <div>
 
@@ -118,13 +174,13 @@ export default function CollaborationSettings() {
 
             <input
               type="number"
+              className="w-full border p-3 rounded-xl"
               value={form.max_workspaces}
-              className="w-full border rounded p-3"
               onChange={(e) =>
                 setForm({
                   ...form,
                   max_workspaces:
-                    Number(e.target.value)
+                    e.target.value
                 })
               }
             />
@@ -139,13 +195,13 @@ export default function CollaborationSettings() {
 
             <input
               type="number"
+              className="w-full border p-3 rounded-xl"
               value={form.max_channels_per_workspace}
-              className="w-full border rounded p-3"
               onChange={(e) =>
                 setForm({
                   ...form,
                   max_channels_per_workspace:
-                    Number(e.target.value)
+                    e.target.value
                 })
               }
             />
@@ -160,13 +216,13 @@ export default function CollaborationSettings() {
 
             <input
               type="number"
+              className="w-full border p-3 rounded-xl"
               value={form.max_workspace_members}
-              className="w-full border rounded p-3"
               onChange={(e) =>
                 setForm({
                   ...form,
                   max_workspace_members:
-                    Number(e.target.value)
+                    e.target.value
                 })
               }
             />
@@ -181,13 +237,13 @@ export default function CollaborationSettings() {
 
             <input
               type="number"
+              className="w-full border p-3 rounded-xl"
               value={form.max_storage_mb}
-              className="w-full border rounded p-3"
               onChange={(e) =>
                 setForm({
                   ...form,
                   max_storage_mb:
-                    Number(e.target.value)
+                    e.target.value
                 })
               }
             />
@@ -196,59 +252,76 @@ export default function CollaborationSettings() {
 
         </div>
 
-        <div className="mt-6 space-y-4">
+        <div className="mt-8">
 
-          <label className="flex items-center gap-2">
+          <h2 className="font-semibold mb-4">
+            Feature Controls
+          </h2>
 
-            <input
-              type="checkbox"
-              checked={form.workspace_enabled}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  workspace_enabled:
-                    e.target.checked
-                })
-              }
-            />
+          <div className="space-y-4">
 
-            Workspace Enabled
+            <label className="flex justify-between border p-4 rounded-xl">
 
-          </label>
+              <span>
+                Workspace Module
+              </span>
 
-          <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={
+                  form.workspace_enabled
+                }
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    workspace_enabled:
+                      e.target.checked
+                  })
+                }
+              />
 
-            <input
-              type="checkbox"
-              checked={form.channel_enabled}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  channel_enabled:
-                    e.target.checked
-                })
-              }
-            />
+            </label>
 
-            Channel Enabled
+            <label className="flex justify-between border p-4 rounded-xl">
 
-          </label>
+              <span>
+                Channel Module
+              </span>
+
+              <input
+                type="checkbox"
+                checked={
+                  form.channel_enabled
+                }
+                onChange={(e) =>
+                  setForm({
+                    ...form,
+                    channel_enabled:
+                      e.target.checked
+                  })
+                }
+              />
+
+            </label>
+
+          </div>
 
         </div>
 
-        <button
-          onClick={updateSettings}
-          disabled={saving}
-          className="mt-6 bg-indigo-600 text-white px-5 py-3 rounded"
-        >
-          {saving
-            ? "Saving..."
-            : "Update Settings"}
-        </button>
+        <div className="mt-8 flex justify-end">
+
+          <button
+            onClick={saveSettings}
+            className="bg-blue-600 text-white px-6 py-3 rounded-xl"
+          >
+            Save Settings
+          </button>
+
+        </div>
 
       </div>
 
-    </div>
+    </PageLayout>
 
   );
 

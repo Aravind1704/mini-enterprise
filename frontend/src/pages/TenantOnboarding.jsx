@@ -1,134 +1,280 @@
 import React, {
-  useState
+  useState,
+  useEffect
 } from "react";
 
 import axios from "../api/axios";
+import PageLayout from "../components/PageLayout";
 
 export default function TenantOnboarding() {
 
-  const [tenantId, setTenantId] =
-    useState("");
+  const [form, setForm] = useState({
+    tenant_id: "",
+    admin_user_id: ""
+  });
 
-  const [adminUserId,
-    setAdminUserId] =
-    useState("");
+  const [tenants, setTenants] = useState([]);
+  const [admins, setAdmins] = useState([]);
 
-  const [status, setStatus] =
-    useState(null);
+  useEffect(() => {
+    loadTenants();
+    loadAdmins();
+  }, []);
 
-  const onboard = async () => {
+  const loadTenants = async () => {
 
     try {
 
-      const res =
-        await axios.post(
-          `/tenants/onboard?tenant_id=${tenantId}&admin_user_id=${adminUserId}`
-        );
-
-      alert(
-        "Tenant Onboarded"
+      const res = await axios.get(
+        "/super-admin/tenants"
       );
 
-      console.log(res.data);
+      setTenants(res.data);
 
     } catch (err) {
 
-      alert(
-        err.response?.data?.detail
+      console.error(
+        "Failed to load tenants",
+        err
       );
 
     }
-
   };
 
-  const getStatus = async () => {
+  const loadAdmins = async () => {
 
     try {
 
-      const res =
-        await axios.get(
-          `/tenants/${tenantId}/onboarding-status`
-        );
-
-      setStatus(
-        res.data
+      const res = await axios.get(
+        "/super-admin/tenant-admins"
       );
+
+      setAdmins(res.data);
 
     } catch (err) {
 
-      console.log(err);
+      console.error(
+        "Failed to load tenant admins",
+        err
+      );
 
     }
+  };
 
+  const submit = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      await axios.post(
+        "/tenants/onboard",
+        null,
+        {
+          params: {
+            tenant_id: form.tenant_id,
+            admin_user_id: form.admin_user_id
+          }
+        }
+      );
+
+      alert(
+        "Tenant Onboarding Completed"
+      );
+
+      setForm({
+        tenant_id: "",
+        admin_user_id: ""
+      });
+
+    } catch (err) {
+
+      alert(
+        err.response?.data?.detail ||
+        "Onboarding Failed"
+      );
+
+    }
   };
 
   return (
-    <div className="p-6">
 
-      <div className="bg-white shadow rounded p-6">
+    <PageLayout>
 
-        <h1 className="text-2xl font-bold mb-5">
-          Tenant Onboarding
-        </h1>
+      <div className="space-y-6">
 
-        <input
-          placeholder="Tenant ID"
-          className="border p-3 rounded w-full mb-4"
-          value={tenantId}
-          onChange={(e) =>
-            setTenantId(
-              e.target.value
-            )
-          }
-        />
+        {/* Onboarding Form */}
 
-        <input
-          placeholder="Admin User ID"
-          className="border p-3 rounded w-full mb-4"
-          value={adminUserId}
-          onChange={(e) =>
-            setAdminUserId(
-              e.target.value
-            )
-          }
-        />
+        <div className="bg-white p-8 rounded-2xl border shadow">
 
-        <div className="flex gap-3">
+          <h1 className="text-3xl font-bold mb-8">
+            Tenant Onboarding
+          </h1>
 
-          <button
-            onClick={onboard}
-            className="bg-green-600 text-white px-4 py-2 rounded"
+          <form
+            onSubmit={submit}
+            className="space-y-4"
           >
-            Onboard
-          </button>
 
-          <button
-            onClick={getStatus}
-            className="bg-indigo-600 text-white px-4 py-2 rounded"
-          >
-            Check Status
-          </button>
+            <input
+              className="w-full border p-3 rounded-xl"
+              placeholder="Tenant ID"
+              value={form.tenant_id}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  tenant_id: e.target.value
+                })
+              }
+              required
+            />
+
+            <input
+              className="w-full border p-3 rounded-xl"
+              placeholder="Admin User ID"
+              value={form.admin_user_id}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  admin_user_id: e.target.value
+                })
+              }
+              required
+            />
+
+            <button
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl"
+            >
+              Complete Onboarding
+            </button>
+
+          </form>
 
         </div>
 
-        {status && (
+        {/* Tenant List */}
 
-          <div className="mt-5 bg-gray-100 p-4 rounded">
+        <div className="bg-white p-6 rounded-2xl border shadow">
 
-            <pre>
-              {JSON.stringify(
-                status,
-                null,
-                2
-              )}
-            </pre>
+          <h2 className="text-2xl font-bold mb-4">
+            Existing Tenants
+          </h2>
 
-          </div>
+          <table className="w-full border">
 
-        )}
+            <thead>
+
+              <tr className="bg-gray-100">
+
+                <th className="border p-2">ID</th>
+                <th className="border p-2">Name</th>
+                <th className="border p-2">Slug</th>
+                <th className="border p-2">Email</th>
+                <th className="border p-2">Industry</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              {tenants.map((tenant) => (
+
+                <tr key={tenant.id}>
+
+                  <td className="border p-2">
+                    {tenant.id}
+                  </td>
+
+                  <td className="border p-2">
+                    {tenant.name}
+                  </td>
+
+                  <td className="border p-2">
+                    {tenant.slug}
+                  </td>
+
+                  <td className="border p-2">
+                    {tenant.contact_email}
+                  </td>
+
+                  <td className="border p-2">
+                    {tenant.industry}
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        {/* Tenant Admin List */}
+
+        <div className="bg-white p-6 rounded-2xl border shadow">
+
+          <h2 className="text-2xl font-bold mb-4">
+            Existing Tenant Admins
+          </h2>
+
+          <table className="w-full border">
+
+            <thead>
+
+              <tr className="bg-gray-100">
+
+                <th className="border p-2">ID</th>
+                <th className="border p-2">Name</th>
+                <th className="border p-2">Email</th>
+                <th className="border p-2">Tenant ID</th>
+                <th className="border p-2">Role</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              {admins.map((admin) => (
+
+                <tr key={admin.id}>
+
+                  <td className="border p-2">
+                    {admin.id}
+                  </td>
+
+                  <td className="border p-2">
+                    {admin.name}
+                  </td>
+
+                  <td className="border p-2">
+                    {admin.email}
+                  </td>
+
+                  <td className="border p-2">
+                    {admin.tenant_id}
+                  </td>
+
+                  <td className="border p-2">
+                    {admin.role}
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
 
-    </div>
+    </PageLayout>
+
   );
 }

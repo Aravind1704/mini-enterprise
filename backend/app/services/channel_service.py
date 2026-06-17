@@ -1,4 +1,6 @@
 # app/services/channel_service.py
+from app.models.channel_member import ChannelMember
+from app.models.user import User
 
 from sqlalchemy.orm import Session
 
@@ -19,6 +21,13 @@ from app.models.channel_member import (
 from app.schemas.channel import (
     ChannelCreate,
     ChannelUpdate
+)
+
+from app.services.tenant_collaboration_settings_service import (
+    get_collaboration_settings,
+    create_default_settings,
+    check_channel_enabled,
+    validate_channel_limit
 )
 
 
@@ -45,6 +54,32 @@ def create_channel(
         raise ValueError(
             "Channel already exists"
         )
+
+    # enforce tenant settings and limits
+    settings = get_collaboration_settings(
+        db,
+        payload.tenant_id
+    )
+
+    if not settings:
+        settings = create_default_settings(
+            db,
+            payload.tenant_id
+        )
+
+    check_channel_enabled(settings)
+
+    current_channel_count = len(
+        ChannelRepo.list_active_by_workspace(
+            db,
+            payload.workspace_id
+        )
+    )
+
+    validate_channel_limit(
+        settings,
+        current_channel_count
+    )
 
     channel = Channel(
         tenant_id=payload.tenant_id,
@@ -240,3 +275,32 @@ def leave_channel(
         "message":
         "Left channel successfully"
     }
+
+    
+
+def get_channel_members(
+    db: Session,
+    channel_id: int
+):
+    members = (
+        db.query(ChannelMember, User)
+        .join(
+            User,
+            ChannelMember.user_id == User.id
+        )
+        .filter(
+            ChannelMember.channel_id == channel_id
+        )
+        .all()
+    )
+
+    return [
+        {
+            "id": member.id,
+            "channel_id": member.channel_id,
+            "user_id": member.user_id,
+            "user_name": user.name,
+            "email": user.email
+        }
+        for member, user in members
+    ]

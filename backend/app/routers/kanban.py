@@ -13,6 +13,7 @@ from app.schemas.kanban import (
     TaskOut,
     StatusUpdate
 )
+from app.schemas.task import TaskOut
 from app.core.dependencies import (
     get_current_user
 )
@@ -23,7 +24,10 @@ router = APIRouter(
 )
 
 
-@router.get("/kanban")
+@router.get(
+    "/kanban",
+    response_model=dict[str, list[TaskOut]]
+)
 def get_kanban(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
@@ -33,22 +37,10 @@ def get_kanban(
     ).scalars().all()
 
     return {
-        "todo": [
-            task for task in tasks
-            if task.status == "todo"
-        ],
-        "in_progress": [
-            task for task in tasks
-            if task.status == "in_progress"
-        ],
-        "review": [
-            task for task in tasks
-            if task.status == "review"
-        ],
-        "done": [
-            task for task in tasks
-            if task.status == "done"
-        ]
+        "todo": [t for t in tasks if t.status == "todo"],
+        "in_progress": [t for t in tasks if t.status == "in_progress"],
+        "review": [t for t in tasks if t.status == "review"],
+        "done": [t for t in tasks if t.status == "done"]
     }
 
 

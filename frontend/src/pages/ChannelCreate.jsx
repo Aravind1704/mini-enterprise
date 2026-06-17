@@ -1,138 +1,223 @@
-import React, {
-  useState
-} from "react";
-
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
-
-import {
-  useNavigate
-} from "react-router-dom";
+import PageLayout from "../components/PageLayout";
 
 export default function ChannelCreate() {
+  const navigate = useNavigate();
 
-  const navigate =
-    useNavigate();
+  const user = JSON.parse(
+    localStorage.getItem("user")
+  );
 
-  const [form, setForm] =
-    useState({
-      tenant_id: 1,
-      workspace_id: 1,
-      name: "",
-      description: "",
-      channel_type: "PUBLIC",
-      created_by: 1
-    });
+  const workspaceId = Number(
+    localStorage.getItem("workspaceId")
+  );
+
+  const tenantId = Number(
+    user?.tenant_id ||
+    localStorage.getItem(
+      "selectedTenantId"
+    )
+  );
+
+  const [form, setForm] = useState({
+    tenant_id: tenantId || "",
+    workspace_id: workspaceId || "",
+    name: "",
+    description: "",
+    channel_type: "PUBLIC",
+    created_by: user?.id || "",
+  });
 
   const submit = async (e) => {
-
     e.preventDefault();
 
-    try {
+    if (!form.tenant_id) {
+      alert("Tenant ID not found.");
+      return;
+    }
 
-      await axios.post(
-        "/channels",
-        form
+    if (!form.workspace_id) {
+      alert("Please select a workspace first.");
+      return;
+    }
+
+    try {
+      const payload = {
+        tenant_id: Number(
+          form.tenant_id
+        ),
+        workspace_id: Number(
+          form.workspace_id
+        ),
+        name: form.name,
+        description:
+          form.description,
+        channel_type:
+          form.channel_type,
+        created_by: Number(
+          form.created_by
+        ),
+      };
+
+      console.log(
+        "Creating Channel:",
+        payload
+      );
+
+      const res =
+        await axios.post(
+          "/channels",
+          payload
+        );
+
+      const channel =
+        res.data;
+
+      localStorage.setItem(
+        "channelId",
+        channel.id
       );
 
       alert(
-        "Channel Created"
+        "Channel Created Successfully"
       );
 
       navigate(
-        "/channels"
+        `/channel-details/${channel.id}`
       );
-
     } catch (err) {
+      console.error(err);
 
       alert(
-        err.response?.data?.detail
+        err.response?.data?.detail ||
+        "Failed to create channel"
       );
-
     }
   };
 
   return (
-    <div className="p-6">
+    <PageLayout>
+      <div className="bg-white p-8 rounded-2xl border max-w-3xl">
 
-      <div className="bg-white p-6 rounded shadow max-w-3xl">
-  <button
-    onClick={() => navigate("/dashboard")}
-    className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700  display-inline left-0 mb-4"
-  >
-    ← Back
-  </button>
-        <h1 className="text-3xl font-bold mb-6">
+        <h1 className="text-3xl font-bold mb-8">
           Create Channel
         </h1>
 
         <form
           onSubmit={submit}
-          className="space-y-4"
+          className="space-y-5"
         >
 
-          <input
-            className="w-full border p-3 rounded"
-            placeholder="Channel Name"
-            onChange={(e) =>
-              setForm({
-                ...form,
-                name:
-                  e.target.value
-              })
-            }
-          />
+          {/* Tenant ID */}
+          <div>
+            <label className="block mb-2 font-semibold">
+              Tenant ID
+            </label>
 
-          <textarea
-            className="w-full border p-3 rounded"
-            placeholder="Description"
-            onChange={(e) =>
-              setForm({
-                ...form,
-                description:
-                  e.target.value
-              })
-            }
-          />
+            <input
+              type="number"
+              value={form.tenant_id}
+              readOnly
+              className="w-full border p-3 rounded-xl bg-gray-100"
+            />
+          </div>
 
-          <select
-            className="w-full border p-3 rounded"
-            onChange={(e) =>
-              setForm({
-                ...form,
-                channel_type:
-                  e.target.value
-              })
-            }
-          >
+          {/* Workspace ID */}
+          <div>
+            <label className="block mb-2 font-semibold">
+              Workspace ID
+            </label>
 
-            <option value="PUBLIC">
-              PUBLIC
-            </option>
+            <input
+              type="number"
+              value={form.workspace_id}
+              readOnly
+              className="w-full border p-3 rounded-xl bg-gray-100"
+            />
+          </div>
 
-            <option value="PRIVATE">
-              PRIVATE
-            </option>
+          {/* Channel Name */}
+          <div>
+            <input
+              type="text"
+              placeholder="Channel Name"
+              value={form.name}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  name:
+                    e.target.value,
+                })
+              }
+              className="w-full border p-3 rounded-xl"
+              required
+            />
+          </div>
 
-            <option value="ANNOUNCEMENT">
-              ANNOUNCEMENT
-            </option>
+          {/* Description */}
+          <div>
+            <textarea
+              placeholder="Description"
+              value={
+                form.description
+              }
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  description:
+                    e.target.value,
+                })
+              }
+              className="w-full border p-3 rounded-xl"
+              rows="4"
+            />
+          </div>
 
-            <option value="PROJECT">
-              PROJECT
-            </option>
+          {/* Channel Type */}
+          <div>
+            <select
+              value={
+                form.channel_type
+              }
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  channel_type:
+                    e.target.value,
+                })
+              }
+              className="w-full border p-3 rounded-xl"
+            >
+              <option value="PUBLIC">
+                PUBLIC
+              </option>
 
-          </select>
+              <option value="PRIVATE">
+                PRIVATE
+              </option>
 
+              <option value="ANNOUNCEMENT">
+                ANNOUNCEMENT
+              </option>
+
+              <option value="PROJECT">
+                PROJECT
+              </option>
+            </select>
+          </div>
+
+          {/* Submit */}
           <button
-            className="bg-indigo-600 text-white px-6 py-3 rounded"
+            type="submit"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl"
           >
             Create Channel
           </button>
 
         </form>
-
       </div>
-
-    </div>
+    </PageLayout>
   );
 }

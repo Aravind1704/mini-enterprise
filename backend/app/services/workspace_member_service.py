@@ -10,6 +10,15 @@ from app.repositories.workspace_member_repo import (
     WorkspaceMemberRepo
 )
 
+from app.services.tenant_collaboration_settings_service import (
+    get_collaboration_settings,
+    create_default_settings,
+    validate_member_limit
+)
+from app.repositories.workspace_repo import (
+    WorkspaceRepo
+)
+
 
 # =========================================
 # ADD MEMBER
@@ -36,6 +45,38 @@ def add_workspace_member(
         raise ValueError(
             "User already exists in workspace"
         )
+
+    # enforce workspace member limit from tenant settings
+    workspace = WorkspaceRepo.get(
+        db,
+        workspace_id
+    )
+
+    if not workspace:
+        raise ValueError("Workspace not found")
+
+    settings = get_collaboration_settings(
+        db,
+        workspace.tenant_id
+    )
+
+    if not settings:
+        settings = create_default_settings(
+            db,
+            workspace.tenant_id
+        )
+
+    current_members = WorkspaceMemberRepo.list_members(
+        db,
+        workspace_id
+    )
+
+    current_count = len(current_members)
+
+    validate_member_limit(
+        settings,
+        current_count
+    )
 
     member = WorkspaceMember(
         workspace_id=workspace_id,

@@ -9,41 +9,29 @@ import api from "../api/axios";
 
 const AuthContext = createContext();
 
-export const AuthProvider = ({
-  children
-}) => {
+export const AuthProvider = ({ children }) => {
 
-  const [user, setUser] =
-    useState(null);
-
-  const [loading, setLoading] =
-    useState(true);
-
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // =====================================
   // LOGIN
   // =====================================
 
-  const login = async (
-    email,
-    password
-  ) => {
+  const login = async (email, password) => {
 
-    const response =
-      await api.post(
-        "/auth/login",
-        {
-          email,
-          password
-        }
-      );
+    const response = await api.post(
+      "/auth/login",
+      {
+        email,
+        password
+      }
+    );
 
     const {
       access_token,
       refresh_token
     } = response.data;
-
-    // SAVE TOKENS
 
     localStorage.setItem(
       "access_token",
@@ -55,10 +43,10 @@ export const AuthProvider = ({
       refresh_token
     );
 
-    // GET USER
+    // fetch current user
+    const me = await api.get("/auth/me");
 
-    const me =
-      await api.get("/auth/me");
+    console.log("Current User:", me.data);
 
     setUser(me.data);
 
@@ -70,37 +58,26 @@ export const AuthProvider = ({
     return me.data;
   };
 
-
   // =====================================
   // LOGOUT
   // =====================================
 
   const logout = () => {
 
-    localStorage.removeItem(
-      "access_token"
-    );
-
-    localStorage.removeItem(
-      "refresh_token"
-    );
-
-    localStorage.removeItem(
-      "user"
-    );
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
 
     setUser(null);
   };
 
-
   // =====================================
-  // AUTO LOGIN
+  // RESTORE SESSION
   // =====================================
 
   useEffect(() => {
 
-    const initialize =
-      async () => {
+    const initialize = async () => {
 
       try {
 
@@ -112,21 +89,24 @@ export const AuthProvider = ({
         if (!token) {
 
           setLoading(false);
-
           return;
         }
-
-        // FETCH USER
 
         const response =
           await api.get("/auth/me");
 
         setUser(response.data);
 
-      } catch (error) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify(response.data)
+        );
 
-        console.log(
-          "Auth restore failed"
+      } catch (err) {
+
+        console.error(
+          "Auth restore failed",
+          err
         );
 
         logout();
@@ -139,9 +119,7 @@ export const AuthProvider = ({
 
   }, []);
 
-
   return (
-
     <AuthContext.Provider
       value={{
         user,
@@ -152,9 +130,7 @@ export const AuthProvider = ({
         isAuthenticated: !!user
       }}
     >
-
       {children}
-
     </AuthContext.Provider>
   );
 };

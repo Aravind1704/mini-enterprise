@@ -45,6 +45,17 @@ class WorkspaceRepo:
         )
 
     @staticmethod
+    def list_all(
+        db: Session
+    ):
+        stmt = select(Workspace)
+        return (
+            db.execute(stmt)
+            .scalars()
+            .all()
+        )
+
+    @staticmethod
     def save(
         db: Session,
         workspace: Workspace

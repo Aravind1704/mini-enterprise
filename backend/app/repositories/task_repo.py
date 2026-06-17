@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session, selectinload
 from app.models.task import Task
- 
+from sqlalchemy import or_
  
 def list_all_tasks(db: Session):
     """List all tasks with eager loading of relationships"""
@@ -14,13 +14,36 @@ def list_all_tasks(db: Session):
     )
     result = db.execute(stmt)
     return result.scalars().all()
- 
- 
-def list_tasks_for_employee(db: Session, user_id: int):
-    """List tasks assigned to a specific employee"""
+
+
+def list_tasks_by_tenant(db, tenant_id):
     stmt = (
         select(Task)
-        .where(Task.assigned_to_id == user_id)
+        .where(
+            or_(
+                Task.tenant_id == tenant_id,
+                Task.tenant_id.is_(None)
+            )
+        )
+        .options(
+            selectinload(Task.assignee),
+            selectinload(Task.creator)
+        )
+    )
+
+    result = db.execute(stmt)
+    return result.scalars().all()
+ 
+ 
+def list_tasks_for_employee(db: Session, user_id: int, tenant_id: int | None = None):
+    """List tasks assigned to a specific employee"""
+    filters = [Task.assigned_to_id == user_id]
+    if tenant_id is not None:
+        filters.append(Task.tenant_id == tenant_id)
+
+    stmt = (
+        select(Task)
+        .where(*filters)
         .options(
             selectinload(Task.assignee),
             selectinload(Task.creator)
@@ -30,14 +53,20 @@ def list_tasks_for_employee(db: Session, user_id: int):
     return result.scalars().all()
  
  
-def list_tasks_for_manager(db: Session, user_id: int):
+def list_tasks_for_manager(db: Session, user_id: int, tenant_id: int | None = None):
     """List tasks created by or assigned to a manager"""
+    filters = [
+    or_(
+        Task.created_by_id == user_id,
+        Task.assigned_to_id == user_id
+    )
+]
+    if tenant_id is not None:
+        filters.append(Task.tenant_id == tenant_id)
+
     stmt = (
         select(Task)
-        .where(
-            (Task.created_by_id == user_id)
-            | (Task.assigned_to_id == user_id)
-        )
+        .where(*filters)
         .options(
             selectinload(Task.assignee),
             selectinload(Task.creator)

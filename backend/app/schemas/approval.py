@@ -6,6 +6,8 @@ from datetime import datetime
 class ApprovalCreate(BaseModel):
     title: str
     description: Optional[str] = None
+    workspace_id: Optional[int] = None
+    channel_id: Optional[int] = None
 
 
 class ApprovalAction(BaseModel):
@@ -15,6 +17,9 @@ class ApprovalAction(BaseModel):
 
 class ApprovalOut(BaseModel):
     id: int
+    tenant_id: Optional[int] = None
+    workspace_id: Optional[int] = None
+    channel_id: Optional[int] = None
     title: str
     description: Optional[str]
     requested_by: int

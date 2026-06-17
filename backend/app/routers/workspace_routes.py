@@ -73,7 +73,7 @@ def api_create_workspace(
     response_model=List[WorkspaceOut]
 )
 def api_list_workspaces(
-    tenant_id: int,
+    tenant_id: int | None = None,
     db: Session = Depends(get_db)
 ):
 

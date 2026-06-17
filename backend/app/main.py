@@ -11,7 +11,6 @@ from app.routers.tenant_collaboration_usage_routes import router as tenant_colla
 from app.routers.workspace_routes import router as workspace_router
 from app.routers.workspace_member_routes import router as workspace_member_router
 from app.routers.channel_routes import router as channel_router
-from app.routers.channel_routes import router as channel_member_router
 
 
 from app.database import Base, engine
@@ -37,6 +36,7 @@ from app.models import (
     approval,
     audit,
     document,
+    collaboration,
     notification
 )
 from app.routers.payment_router import (
@@ -46,7 +46,9 @@ from app.routers.payment_router import (
 from app.routers.subscription_router import (
     router as subscription_router
 )
-
+from app.routers.tenantdashboard_routes import (
+    router as tenant_dashboard_router
+)
 # =========================================================
 # IMPORT ROUTERS
 # =========================================================
@@ -60,6 +62,7 @@ from app.routers import (
     approvals,
     dashboard,
     documents,
+    collaboration,
     audit,
     notifications,
     ai,
@@ -162,6 +165,7 @@ async def validation_exception_handler(request, exc):
     )
 
 
+
 # =========================================================
 # INCLUDE ROUTERS
 # =========================================================
@@ -189,9 +193,11 @@ app.include_router(approvals.router)
 
 # Dashboard
 app.include_router(dashboard.router)
-
+app.include_router(tenant_dashboard_router)
+    
 # Documents
 app.include_router(documents.router)
+app.include_router(collaboration.router)
 
 # Audit Logs
 app.include_router(audit.router)
@@ -230,7 +236,6 @@ app.include_router(tenant_collaboration_usage_router)
 app.include_router(workspace_router)
 app.include_router(workspace_member_router)
 app.include_router(channel_router)
-app.include_router(channel_member_router)
 # =========================================================
 # HEALTH CHECK ENDPOINTS
 # =========================================================

@@ -1,40 +1,88 @@
 import React, {
   useEffect,
-  useState
+  useState,
+  useCallback
 } from "react";
 
-import { useParams } from "react-router-dom";
-
 import axios from "../api/axios";
+import PageLayout from "../components/PageLayout";
 
 export default function CollaborationUsage() {
 
-  const { id } = useParams();
+  const [tenants, setTenants] =
+    useState([]);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [tenantId, setTenantId] =
+    useState("");
 
   const [usage, setUsage] =
     useState(null);
 
+  const [loading, setLoading] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
   useEffect(() => {
 
-    const fetchUsage = async () => {
+    loadTenants();
+
+  }, []);
+
+  const loadTenants = async () => {
+
+    try {
+
+      const res =
+        await axios.get("/tenants");
+
+      setTenants(res.data);
+
+    } catch (err) {
+
+      console.error(err);
+
+      setError(
+        "Failed to load tenants"
+      );
+
+    }
+
+  };
+
+  const loadUsage =
+    useCallback(async () => {
+
+      if (!tenantId) {
+
+        setUsage(null);
+
+        return;
+
+      }
 
       try {
 
+        setLoading(true);
+
         const res =
           await axios.get(
-            `/tenants/${id}/collaboration/usage`
+            `/tenants/${tenantId}/collaboration/usage`
           );
 
-        setUsage(
-          res.data
-        );
+        setUsage(res.data);
+
+        setError("");
 
       } catch (err) {
 
         console.error(err);
+
+        setError(
+          err.response?.data?.detail ||
+          "Failed to load usage"
+        );
 
       } finally {
 
@@ -42,166 +90,247 @@ export default function CollaborationUsage() {
 
       }
 
-    };
+    }, [tenantId]);
 
-    fetchUsage();
+  useEffect(() => {
 
-  }, [id]);
+    loadUsage();
 
-  const recalculate = async () => {
+  }, [loadUsage]);
 
-    try {
+  const recalculateUsage =
+    async () => {
 
-      await axios.post(
-        `/tenants/${id}/collaboration/recalculate-usage`
-      );
+      if (!tenantId) {
 
-      const res =
-        await axios.get(
-          `/tenants/${id}/collaboration/usage`
+        alert(
+          "Please select a tenant first"
         );
 
-      setUsage(
-        res.data
-      );
+        return;
 
-      alert(
-        "Usage Recalculated Successfully"
-      );
+      }
 
-    } catch (err) {
+      try {
 
-      console.error(err);
+        await axios.post(
+          `/tenants/${tenantId}/collaboration/recalculate-usage`
+        );
 
-      alert(
-        err.response?.data?.detail ||
-        "Failed to recalculate usage"
-      );
+        await loadUsage();
 
-    }
+        alert(
+          "Usage Recalculated"
+        );
 
-  };
+      } catch (err) {
 
-  if (loading) {
+        alert(
+          err.response?.data?.detail ||
+          "Failed to recalculate usage"
+        );
 
-    return (
-      <div className="p-6">
-        Loading...
-      </div>
-    );
+      }
 
-  }
-
-  if (!usage) {
-
-    return (
-      <div className="p-6">
-
-        <div className="bg-white p-6 rounded-xl shadow">
-
-          <h2 className="text-xl font-bold">
-            No Usage Record Found
-          </h2>
-
-          <button
-            onClick={recalculate}
-            className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded"
-          >
-            Create Usage Record
-          </button>
-
-        </div>
-
-      </div>
-    );
-
-  }
+    };
 
   return (
 
-    <div className="p-6">
+    <PageLayout>
 
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-8">
 
-        <h1 className="text-3xl font-bold">
-          Collaboration Usage
-        </h1>
+        <div>
+
+          <h1 className="text-3xl font-bold">
+            Collaboration Usage
+          </h1>
+
+          <p className="text-gray-500">
+            Current tenant usage statistics
+          </p>
+
+        </div>
 
         <button
-          onClick={recalculate}
-          className="bg-green-600 text-white px-4 py-2 rounded"
+          onClick={recalculateUsage}
+          className="bg-blue-600 text-white px-5 py-3 rounded-xl"
         >
           Recalculate Usage
         </button>
 
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="bg-white p-6 rounded-2xl border mb-8">
 
-        <div className="bg-white shadow rounded-xl p-6">
+        <label className="block font-medium mb-2">
+          Select Tenant
+        </label>
 
-          <p className="text-gray-500">
-            Workspaces
-          </p>
+        <select
+          value={tenantId}
+          onChange={(e) =>
+            setTenantId(
+              e.target.value
+            )
+          }
+          className="w-full border p-3 rounded-xl"
+        >
 
-          <h2 className="text-4xl font-bold">
-            {usage.workspace_count}
-          </h2>
+          <option value="">
+            Select Tenant
+          </option>
 
-        </div>
+          {tenants.map((tenant) => (
 
-        <div className="bg-white shadow rounded-xl p-6">
+            <option
+              key={tenant.id}
+              value={tenant.id}
+            >
+              {tenant.name}
+            </option>
 
-          <p className="text-gray-500">
-            Channels
-          </p>
+          ))}
 
-          <h2 className="text-4xl font-bold">
-            {usage.channel_count}
-          </h2>
-
-        </div>
-
-        <div className="bg-white shadow rounded-xl p-6">
-
-          <p className="text-gray-500">
-            Members
-          </p>
-
-          <h2 className="text-4xl font-bold">
-            {usage.member_count}
-          </h2>
-
-        </div>
-
-        <div className="bg-white shadow rounded-xl p-6">
-
-          <p className="text-gray-500">
-            Storage Used
-          </p>
-
-          <h2 className="text-4xl font-bold">
-            {usage.storage_used_mb} MB
-          </h2>
-
-        </div>
+        </select>
 
       </div>
 
-      <div className="bg-white shadow rounded-xl p-6 mt-6">
+      {loading && (
 
-        <h3 className="font-semibold mb-2">
-          Last Calculated
-        </h3>
+        <div className="mb-6">
+          Loading...
+        </div>
 
-        <p>
-          {usage.last_calculated_at ||
-            "Not Available"}
-        </p>
+      )}
 
-      </div>
+      {error && (
 
-    </div>
+        <div className="bg-red-100 text-red-700 p-4 rounded-xl mb-6">
+
+          {error}
+
+        </div>
+
+      )}
+
+      {usage && (
+
+        <>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+
+            <div className="bg-white p-6 rounded-2xl border">
+
+              <h3 className="text-gray-500">
+                Workspaces
+              </h3>
+
+              <p className="text-4xl font-bold mt-2">
+                {usage.workspace_count}
+              </p>
+
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border">
+
+              <h3 className="text-gray-500">
+                Channels
+              </h3>
+
+              <p className="text-4xl font-bold mt-2">
+                {usage.channel_count}
+              </p>
+
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border">
+
+              <h3 className="text-gray-500">
+                Members
+              </h3>
+
+              <p className="text-4xl font-bold mt-2">
+                {usage.member_count}
+              </p>
+
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl border">
+
+              <h3 className="text-gray-500">
+                Storage Used
+              </h3>
+
+              <p className="text-4xl font-bold mt-2">
+                {usage.storage_used_mb}
+              </p>
+
+              <p className="text-gray-400 text-sm">
+                MB
+              </p>
+
+            </div>
+
+          </div>
+
+          <div className="bg-white rounded-2xl border p-6">
+
+            <h2 className="text-xl font-semibold mb-4">
+              Usage Details
+            </h2>
+
+            <table className="w-full">
+
+              <tbody>
+
+                <tr className="border-b">
+                  <td className="py-3">
+                    Workspace Count
+                  </td>
+                  <td>
+                    {usage.workspace_count}
+                  </td>
+                </tr>
+
+                <tr className="border-b">
+                  <td className="py-3">
+                    Channel Count
+                  </td>
+                  <td>
+                    {usage.channel_count}
+                  </td>
+                </tr>
+
+                <tr className="border-b">
+                  <td className="py-3">
+                    Member Count
+                  </td>
+                  <td>
+                    {usage.member_count}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td className="py-3">
+                    Storage Used
+                  </td>
+                  <td>
+                    {usage.storage_used_mb} MB
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </>
+
+      )}
+
+    </PageLayout>
 
   );
 

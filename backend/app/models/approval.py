@@ -32,6 +32,21 @@ class Approval(Base):
         index=True
     )
 
+    tenant_id: Mapped[int | None] = mapped_column(
+        ForeignKey("tenants.id"),
+        nullable=True
+    )
+
+    workspace_id: Mapped[int | None] = mapped_column(
+        ForeignKey("workspaces.id"),
+        nullable=True
+    )
+
+    channel_id: Mapped[int | None] = mapped_column(
+        ForeignKey("channels.id"),
+        nullable=True
+    )
+
     
 
     title: Mapped[str] = mapped_column(

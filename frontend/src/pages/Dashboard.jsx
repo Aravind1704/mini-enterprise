@@ -11,11 +11,8 @@ import {
 
 import api from "../api/axios";
 
-import { useAuth }
-from "../context/AuthContext";
-
-import WebSocketClient
-from "../services/WebSocketClient";
+import { useAuth } from "../context/AuthContext";
+import WebSocketClient from "../services/WebSocketClient";
 
 
 const STATUS_COLORS = {
@@ -307,7 +304,7 @@ export default function Dashboard() {
              
           
 
-          {(user?.role === "admin" || user?.role === "manager") && (
+          {(user?.role === "admin"  ) && (
             <>
               <Link
                 to="/sla-dashboard"
@@ -356,7 +353,16 @@ export default function Dashboard() {
              
           )}
 
+          <Link to ="/tenantDashboard" style={styles.navLink}>
+
+            🏢 Tenants  
+            </Link>
+
         </div>
+
+
+
+
 
         {/* RIGHT */}
         <div style={styles.navRight}>
@@ -564,59 +570,6 @@ export default function Dashboard() {
     ENTERPRISE COLLABORATION MODULE
 ===================================================== */}
 
-<div style={styles.moduleContainer}>
-
-  <div style={styles.moduleCard}>
-
-    <h2 style={styles.moduleTitle}>
-      🏢 Tenant Management
-    </h2>
-
-    <div style={styles.moduleLinks}>
-
-      <Link to="/tenants" style={styles.moduleBtn}>
-        Tenant List
-      </Link>
-
-      <Link to="/tenant-create" style={styles.moduleBtn}>
-        Create Tenant
-      </Link>
-
-      <Link
-        to="/tenants/1"
-        style={styles.moduleBtn}
-      >
-        Tenant Details
-      </Link>
-
-      <Link to="/tenant-onboarding" style={styles.moduleBtn}>
-        Tenant Onboarding
-      </Link>
-
-    </div>
-
-  </div>
-
-  <div style={styles.moduleCard}>
-
-    <h2 style={styles.moduleTitle}>
-      ⚙️ Collaboration
-    </h2>
-
-      <Link
-      to="/tenants/1/settings"
-      style={styles.moduleBtn}
-    >
-      Settings
-    </Link>
-   <div style={{ height: "10px" }}></div>
-    <Link
-      to="/tenants/1/usage"
-      style={styles.moduleBtn}
-    >
-      Usage
-    </Link>
-    </div>
 
   
 
@@ -643,14 +596,14 @@ export default function Dashboard() {
       </Link>
 
       <Link
-        to="/workspace-details/1"
+        to="/workspaces/1"
         style={styles.moduleBtn}
       >
         Workspace Details
       </Link>
 
       <Link
-        to="/workspace-members"
+        to="/workspace-members/1"
         style={styles.moduleBtn}
       >
         Workspace Members
@@ -698,14 +651,11 @@ export default function Dashboard() {
 
     </div>
 
-  </div>
-</div>
 </div>
 
-        {/* =====================================================
-            TASK LIST
-        ===================================================== */}
-
+{/* =====================================================
+    TASK LIST
+===================================================== */}
         <div style={styles.headerSection}>
 
           <div>
@@ -865,25 +815,21 @@ export default function Dashboard() {
                 </Link>
 
 
-                {(
-
-                  user?.role === "admin" ||
-
-                  user?.role === "manager"
-
+                {
+                (
+                  user?.role?.toLowerCase() === "admin" ||
+                  user?.role?.toLowerCase() === "manager"
                 ) && (
-
                   <button
                     onClick={() =>
                       handleDelete(task.id)
                     }
                     style={styles.deleteBtn}
                   >
-
                     Delete
-
                   </button>
-                )}
+                )
+              }
 
               </div>
 
@@ -893,6 +839,8 @@ export default function Dashboard() {
         </div>
 
       </div>
+
+    </div>
 
   );
 }

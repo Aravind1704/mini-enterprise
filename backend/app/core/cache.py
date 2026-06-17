@@ -46,11 +46,11 @@ try:
 
     cache.ping()
 
-    print("✅ Redis connected")
+    print("Redis connected")
 
 except Exception as e:
 
-    print(f"⚠️ Redis unavailable: {e}")
+    print(f"Redis unavailable: {e}")
 
     cache = None
 

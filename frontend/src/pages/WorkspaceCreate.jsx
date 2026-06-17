@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, {
+  useState
+} from "react";
+
 import axios from "../api/axios";
-import { useNavigate } from "react-router-dom";
+import PageLayout from "../components/PageLayout";
 
 export default function WorkspaceCreate() {
 
-  const navigate = useNavigate();
+  const [form, setForm] =
+    useState({
 
-  const [form, setForm] = useState({
-    tenant_id: 1,
-    name: "",
-    description: "",
-    avatar_url: "",
-    visibility: "PUBLIC",
-    created_by: 1
-  });
+      tenant_id: "",
+      name: "",
+      description: "",
+      visibility: "PUBLIC",
+      created_by: 1
+
+    });
 
   const submit = async (e) => {
 
@@ -22,7 +25,7 @@ export default function WorkspaceCreate() {
     try {
 
       await axios.post(
-        "/workspaces/",
+        "/workspaces",
         form
       );
 
@@ -30,27 +33,23 @@ export default function WorkspaceCreate() {
         "Workspace Created"
       );
 
-      navigate(
-        "/workspaces"
-      );
-
     } catch (err) {
-
-      console.error(err);
 
       alert(
         err.response?.data?.detail
       );
 
     }
+
   };
 
   return (
-    <div className="p-6">
 
-      <div className="bg-white p-6 rounded shadow max-w-3xl">
+    <PageLayout>
 
-        <h1 className="text-3xl font-bold mb-6">
+      <div className="bg-white rounded-2xl border p-8">
+
+        <h1 className="text-3xl font-bold mb-8">
           Create Workspace
         </h1>
 
@@ -60,35 +59,51 @@ export default function WorkspaceCreate() {
         >
 
           <input
-            className="w-full border p-3 rounded"
-            placeholder="Workspace Name"
-            onChange={(e) =>
+            className="w-full border p-3 rounded-xl"
+            placeholder="Tenant ID"
+            value={form.tenant_id}
+            onChange={(e)=>
               setForm({
                 ...form,
-                name: e.target.value
+                tenant_id:
+                  Number(
+                    e.target.value
+                  )
+              })
+            }
+          />
+
+          <input
+            className="w-full border p-3 rounded-xl"
+            placeholder="Workspace Name"
+            value={form.name}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                name:e.target.value
               })
             }
           />
 
           <textarea
-            className="w-full border p-3 rounded"
+            className="w-full border p-3 rounded-xl"
             placeholder="Description"
-            onChange={(e) =>
+            value={form.description}
+            onChange={(e)=>
               setForm({
                 ...form,
-                description:
-                  e.target.value
+                description:e.target.value
               })
             }
           />
 
           <select
-            className="w-full border p-3 rounded"
-            onChange={(e) =>
+            className="w-full border p-3 rounded-xl"
+            value={form.visibility}
+            onChange={(e)=>
               setForm({
                 ...form,
-                visibility:
-                  e.target.value
+                visibility:e.target.value
               })
             }
           >
@@ -104,7 +119,7 @@ export default function WorkspaceCreate() {
           </select>
 
           <button
-            className="bg-indigo-600 text-white px-6 py-3 rounded"
+            className="bg-blue-600 text-white px-6 py-3 rounded-xl"
           >
             Create Workspace
           </button>
@@ -113,6 +128,8 @@ export default function WorkspaceCreate() {
 
       </div>
 
-    </div>
+    </PageLayout>
+
   );
+
 }

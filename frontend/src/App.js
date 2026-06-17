@@ -8,12 +8,21 @@ import {
 import {
   AuthProvider
 } from "./context/AuthContext";
+import {
+  TenantProvider
+} from "./context/TenantContext";
 
 import PrivateRoute from "./components/PrivateRoute";
 
 import ApprovalEscalations from "./pages/ApprovalEscalations";
 import ApprovalDelegations from "./pages/ApprovalDelegations";
 
+
+import TenantList from "./pages/TenantList";
+import TenantOnboarding from "./pages/TenantOnboarding";
+
+
+import SuperAdminRoute from "./components/SuperAdminRoute";
 // ========================================
 // PAGES
 // ========================================
@@ -48,10 +57,13 @@ import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import NotificationPreferences from "./pages/notification-preferences"; 
 
-import TenantList from "./pages/TenantList";
+
+import TenantDashboard from "./pages/TenantDashboard";
+
+
 import TenantCreate from "./pages/TenantCreate";
 import TenantDetails from "./pages/TenantDetails";
-import TenantOnboarding from "./pages/TenantOnboarding";
+import TenantOnboardCreate from "./pages/TenantOnboardCreate";
 
 import CollaborationSettings from "./pages/CollaborationSettings";
 import CollaborationUsage from "./pages/CollaborationUsage";
@@ -71,9 +83,11 @@ export default function App() {
 
     <AuthProvider>
 
-      <BrowserRouter>
+      <TenantProvider>
 
-        <Routes>
+        <BrowserRouter>
+
+          <Routes>
 
                   {/* =====================================
                       PUBLIC ROUTES
@@ -82,26 +96,102 @@ export default function App() {
             TENANT MANAGEMENT
         ================================ */}
 
+
         <Route
-          path="/tenants"
-          element={<TenantList />}
+        path="/tenants"
+        element={
+          <SuperAdminRoute>
+            <TenantList />
+          </SuperAdminRoute>
+        }
+      />
+
+      <Route
+        path="/tenant-create"
+        element={
+          <SuperAdminRoute>
+            <TenantCreate />
+          </SuperAdminRoute>
+        }
+      />
+
+      <Route
+        path="/tenant-onboarding"
+        element={
+          <SuperAdminRoute>
+            <TenantOnboarding />
+          </SuperAdminRoute>
+        }
+      />
+
+      <Route
+        path="/tenants/:id"
+        element={
+          <SuperAdminRoute>
+            <TenantDetails />
+          </SuperAdminRoute>
+        }
+      />
+
+      <Route
+        path="/tenants/:id/settings"
+        element={
+          <SuperAdminRoute>
+            <CollaborationSettings />
+          </SuperAdminRoute>
+        }
+      />
+
+      <Route
+        path="/tenants/:id/usage"
+        element={
+          <SuperAdminRoute>
+            <CollaborationUsage />
+          </SuperAdminRoute>
+        }
+      />
+          <Route
+            path="/tenant-details"
+            element={
+              <SuperAdminRoute>
+                <TenantDetails />
+              </SuperAdminRoute>
+            }
+          />
+        <Route
+          path="/tenant-details"
+          element={
+            <SuperAdminRoute>
+              <TenantDetails />
+            </SuperAdminRoute>
+          }
         />
 
         <Route
           path="/tenant-create"
-          element={<TenantCreate />}
+          element={
+            <SuperAdminRoute>
+              <TenantCreate />
+            </SuperAdminRoute>
+          }
         />
 
         <Route
-          path="/tenants/:id"
-          element={<TenantDetails />}
+          path="/tenant-onboard-create"
+          element={
+            <SuperAdminRoute>
+              <TenantOnboardCreate />
+            </SuperAdminRoute>
+          }
         />
-
         <Route
-          path="/tenant-onboarding"
-          element={<TenantOnboarding />}
+          path="/tenant-dashboard"
+          element={
+            <SuperAdminRoute>
+              <TenantDashboard />
+            </SuperAdminRoute>
+          }
         />
-
         {/* ================================
             COLLABORATION
         ================================ */}
@@ -120,49 +210,66 @@ export default function App() {
             WORKSPACE MANAGEMENT
         ================================ */}
 
-        <Route
-          path="/workspaces"
-          element={<WorkspaceList />}
-        />
+       
 
-        <Route
-          path="/workspace-create"
-          element={<WorkspaceCreate />}
-        />
 
-        <Route
-          path="/workspace-details/:id"
-          element={<WorkspaceDetails />}
-        />
 
-        <Route
-          path="/workspace-members/:workspaceId"
-          element={<WorkspaceMembers />}
-        />
 
+<Route path="/workspaces" element={<WorkspaceList />} />
+<Route path="/workspace-create" element={<WorkspaceCreate />} />
+<Route
+  path="/workspaces/:id"
+  element={<WorkspaceDetails />}
+/>
+<Route
+  path="/workspaces/:id/members"
+  element={<WorkspaceMembers />}
+/>
+
+
+       
         {/* ================================
             CHANNEL MANAGEMENT
         ================================ */}
 
-        <Route
-          path="/channels"
-          element={<ChannelList />}
-        />
 
-        <Route
-          path="/channel-create"
-          element={<ChannelCreate />}
-        />
+        
+          <Route
+            path="/channels"
+            element={
+              <PrivateRoute>
+                <ChannelList />
+              </PrivateRoute>
+            }
+          />
 
-        <Route
-          path="/channel-details/:id"
-          element={<ChannelDetails />}
-        />
+          <Route
+            path="/channel-create"
+            element={
+              <PrivateRoute>
+                <ChannelCreate />
+              </PrivateRoute>
+            }
+          />
 
-        <Route
-          path="/channel-members/:channelId"
-          element={<ChannelMembers />}
-        />
+          <Route
+            path="/channel-details/:id"
+            element={
+              <PrivateRoute>
+                <ChannelDetails />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/channel-members/:channelId"
+            element={
+              <PrivateRoute>
+                <ChannelMembers />
+              </PrivateRoute>
+            }
+          />
+        
           <Route
             path="/login"
             element={<Login />}
@@ -359,6 +466,8 @@ export default function App() {
         </Routes>
 
       </BrowserRouter>
+
+    </TenantProvider>
 
     </AuthProvider>
   );

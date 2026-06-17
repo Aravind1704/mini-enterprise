@@ -19,12 +19,29 @@ export default function Approvals() {
   const [newForm, setNewForm] = useState({ title: "", description: "" });
   const [showForm, setShowForm] = useState(false);
   const [error, setError] = useState("");
+  const [approvalDocs, setApprovalDocs] = useState({});
+  const [newFile, setNewFile] = useState(null);
+  const [docUpload, setDocUpload] = useState({});
 
-  const fetchApprovals = () => {
-    api.get("/approvals/")
-      .then((res) => setApprovals(res.data))
-      .catch(() => {})
-      .finally(() => setLoading(false));
+  const fetchApprovals = async () => {
+    try {
+      const res = await api.get("/approvals/");
+      setApprovals(res.data);
+      const pairs = await Promise.all(
+        res.data.map(async (approval) => {
+          try {
+            const docs = await api.get(`/approvals/${approval.id}/documents`);
+            return [approval.id, docs.data];
+          } catch {
+            return [approval.id, []];
+          }
+        })
+      );
+      setApprovalDocs(Object.fromEntries(pairs));
+    } catch {
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => { fetchApprovals(); }, []);
@@ -32,9 +49,18 @@ export default function Approvals() {
   const handleSubmitApproval = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/approvals/", newForm);
+      const res = await api.post("/approvals/", newForm);
+      if (newFile) {
+        const formData = new FormData();
+        formData.append("document_type", "SUPPORTING");
+        formData.append("file", newFile);
+        await api.post(`/approvals/${res.data.id}/documents`, formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
       setShowForm(false);
       setNewForm({ title: "", description: "" });
+      setNewFile(null);
       fetchApprovals();
     } catch (err) {
       setError(err.response?.data?.detail || "Failed to submit");
@@ -57,6 +83,34 @@ export default function Approvals() {
     } catch (err) {
       setError(err.response?.data?.detail || "Action failed");
     }
+  };
+
+  const uploadApprovalDocument = async (approvalId) => {
+    const file = docUpload[approvalId];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("document_type", "SUPPORTING");
+    formData.append("file", file);
+    await api.post(`/approvals/${approvalId}/documents`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    setDocUpload({ ...docUpload, [approvalId]: null });
+    const docs = await api.get(`/approvals/${approvalId}/documents`);
+    setApprovalDocs({ ...approvalDocs, [approvalId]: docs.data });
+  };
+
+  const downloadApprovalDocument = async (documentId, fileName) => {
+    const res = await api.get(`/approval-documents/${documentId}/download`, {
+      responseType: "blob",
+    });
+    const url = window.URL.createObjectURL(new Blob([res.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(url);
   };
 
   return (
@@ -104,6 +158,14 @@ export default function Approvals() {
                 placeholder="Details..."
                 value={newForm.description}
                 onChange={(e) => setNewForm({ ...newForm, description: e.target.value })}
+              />
+            </div>
+            <div style={styles.field}>
+              <label style={styles.label}>Supporting Document</label>
+              <input
+                style={styles.input}
+                type="file"
+                onChange={(e) => setNewFile(e.target.files[0])}
               />
             </div>
             <button style={styles.submitBtn} type="submit">Submit Request</button>
@@ -165,6 +227,32 @@ export default function Approvals() {
                       </button>
                     </div>
                   )}
+              </div>
+              <div style={styles.docs}>
+                {(approvalDocs[a.id] || []).map((doc) => (
+                  <div key={doc.id} style={styles.docRow}>
+                    <span>{doc.file_name}</span>
+                    <button
+                      onClick={() => downloadApprovalDocument(doc.id, doc.file_name)}
+                      style={styles.docBtn}
+                    >
+                      Download
+                    </button>
+                  </div>
+                ))}
+                <div style={styles.uploadRow}>
+                  <input
+                    type="file"
+                    onChange={(e) => setDocUpload({ ...docUpload, [a.id]: e.target.files[0] })}
+                    style={styles.fileInput}
+                  />
+                  <button
+                    onClick={() => uploadApprovalDocument(a.id)}
+                    style={styles.uploadBtn}
+                  >
+                    Upload Document
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -230,6 +318,12 @@ const styles = {
   levelBadge: { background: "#eef2ff", color: "#4f46e5", padding: "3px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: "600" },
   cardFooter: { display: "flex", justifyContent: "space-between", alignItems: "center" },
   meta: { fontSize: "12px", color: "#aaa" },
+  docs: { marginTop: "14px", borderTop: "1px solid #edf0f5", paddingTop: "12px" },
+  docRow: { display: "flex", justifyContent: "space-between", alignItems: "center", background: "#f8fafc", padding: "8px 10px", borderRadius: "8px", marginBottom: "8px", fontSize: "13px" },
+  docBtn: { background: "transparent", color: "#4f46e5", border: "none", cursor: "pointer", fontWeight: "700" },
+  uploadRow: { display: "flex", gap: "8px", alignItems: "center", marginTop: "8px" },
+  fileInput: { flex: 1, fontSize: "13px" },
+  uploadBtn: { background: "#111827", color: "#fff", border: "none", padding: "8px 12px", borderRadius: "8px", cursor: "pointer", fontSize: "12px", fontWeight: "700" },
   approveBtn: { background: "#d4edda", color: "#155724", border: "none", padding: "6px 14px", borderRadius: "8px", cursor: "pointer", fontSize: "13px", fontWeight: "600" },
   holdBtn: { background: "#e2e3e5", color: "#383d41", border: "none", padding: "6px 14px", borderRadius: "8px", cursor: "pointer", fontSize: "13px", fontWeight: "600" },
   rejectBtn: { background: "#fde8e8", color: "#c0392b", border: "none", padding: "6px 14px", borderRadius: "8px", cursor: "pointer", fontSize: "13px", fontWeight: "600" },

@@ -1,116 +1,157 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useState
+} from "react";
+
 import { Link } from "react-router-dom";
+
 import axios from "../api/axios";
+import PageLayout from "../components/PageLayout";
 
 export default function TenantList() {
 
-  const [tenants, setTenants] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [tenants, setTenants] =
+    useState([]);
+
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
-    fetchTenants();
+
+    loadTenants();
+
   }, []);
 
-  const fetchTenants = async () => {
+  const loadTenants = async () => {
+
     try {
 
-      const res = await axios.get("/tenants/");
+      const res =
+        await axios.get(
+          "/tenants"
+        );
 
-      setTenants(res.data);
+      setTenants(
+        res.data
+      );
 
     } catch (err) {
 
-      console.log(err);
+      console.error(
+        "Failed to load tenants",
+        err
+      );
 
     } finally {
 
       setLoading(false);
 
     }
+
   };
 
-  const filtered = tenants.filter(
-    (tenant) =>
-      tenant.name
-        ?.toLowerCase()
-        .includes(search.toLowerCase())
-  );
-
   return (
-    <div className="p-6">
 
-      <div className="flex justify-between mb-6">
+    <PageLayout>
 
-        <h1 className="text-3xl font-bold">
-          Tenants
-        </h1>
+      <div className="bg-white rounded-2xl border p-6">
 
-        <Link
-          to="/tenants/create"
-          className="bg-indigo-600 text-white px-4 py-2 rounded"
-        >
-          Create Tenant
-        </Link>
+        <div className="flex justify-between items-center mb-6">
 
-      </div>
+          <h1 className="text-3xl font-bold">
+            Tenant List
+          </h1>
 
-      <input
-        type="text"
-        placeholder="Search Tenant"
-        className="border p-2 rounded w-full mb-4"
-        value={search}
-        onChange={(e) =>
-          setSearch(e.target.value)
-        }
-      />
+          <Link
+            to="/tenant-create"
+            className="bg-blue-600 text-white px-4 py-2 rounded-xl"
+          >
+            Create Tenant
+          </Link>
 
-      <div className="bg-white shadow rounded">
+        </div>
 
         {loading ? (
-          <p className="p-5">
-            Loading...
+
+          <p className="text-gray-500">
+            Loading tenants...
           </p>
+
         ) : (
+
           <table className="w-full">
 
-            <thead className="bg-gray-100">
+            <thead>
 
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Action</th>
+              <tr className="border-b">
+
+                <th className="text-left p-3">
+                  ID
+                </th>
+
+                <th className="text-left p-3">
+                  Name
+                </th>
+
+                <th className="text-left p-3">
+                  Email
+                </th>
+
+                <th className="text-left p-3">
+                  Status
+                </th>
+
+                <th className="text-left p-3">
+                  Actions
+                </th>
+
               </tr>
 
             </thead>
 
             <tbody>
 
-              {filtered.map((tenant) => (
+              {tenants.map((tenant) => (
 
                 <tr
                   key={tenant.id}
                   className="border-b"
                 >
-                  <td>{tenant.id}</td>
 
-                  <td>{tenant.name}</td>
+                  <td className="p-3">
+                    {tenant.id}
+                  </td>
 
-                  <td>
+                  <td className="p-3">
+                    {tenant.name}
+                  </td>
+
+                  <td className="p-3">
                     {tenant.contact_email}
                   </td>
 
-                  <td>
+                  <td className="p-3">
                     {tenant.status}
                   </td>
 
-                  <td>
+                  <td className="p-3">
 
                     <Link
                       to={`/tenants/${tenant.id}`}
-                      className="text-blue-600"
+                      className="text-blue-600 font-medium"
+                      onClick={() => {
+
+                        localStorage.setItem(
+                          "selectedTenantId",
+                          tenant.id
+                        );
+
+                        localStorage.setItem(
+                          "selectedTenantName",
+                          tenant.name
+                        );
+
+                      }}
                     >
                       View
                     </Link>
@@ -124,10 +165,13 @@ export default function TenantList() {
             </tbody>
 
           </table>
+
         )}
 
       </div>
 
-    </div>
+    </PageLayout>
+
   );
+
 }

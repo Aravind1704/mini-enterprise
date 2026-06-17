@@ -3,8 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
-  const { login } = useAuth();
 
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -13,7 +13,6 @@ export default function Login() {
   });
 
   const [error, setError] = useState("");
-
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -27,18 +26,39 @@ export default function Login() {
     e.preventDefault();
 
     setLoading(true);
-
     setError("");
 
     try {
-      await login(
+
+      const loggedInUser = await login(
         form.email,
         form.password
       );
 
-      navigate("/dashboard");
+      console.log(
+        "Logged In User:",
+        loggedInUser
+      );
+
+      if (
+        loggedInUser?.role ===
+        "super_admin"
+      ) {
+
+        navigate(
+          "/tenant-dashboard"
+        );
+
+      } else {
+
+        navigate(
+          "/dashboard"
+        );
+      }
 
     } catch (err) {
+
+      console.error(err);
 
       setError(
         err.response?.data?.detail ||
@@ -108,17 +128,23 @@ export default function Login() {
               required
             />
           </div>
-<Link to="/forgot-password">Forgot password?</Link>
+
+          <Link to="/forgot-password">
+            Forgot password?
+          </Link>
 
           <button
             type="submit"
             style={styles.button}
             disabled={loading}
           >
-            {loading
-              ? "Signing in..."
-              : "Sign In"}
+            {
+              loading
+                ? "Signing in..."
+                : "Sign In"
+            }
           </button>
+
         </form>
 
         <div style={styles.divider}>
@@ -149,7 +175,6 @@ export default function Login() {
 }
 
 const styles = {
-
   container: {
     minHeight: "100vh",
     display: "flex",
@@ -233,7 +258,6 @@ const styles = {
     margin: "24px 0",
     color: "#9ca3af",
     fontSize: "13px",
-    position: "relative",
   },
 
   googleBtn: {

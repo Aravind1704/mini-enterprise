@@ -10,8 +10,8 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 
-# import your app's Base metadata
 from app.database import Base  # adjust import path
+import app.models  # noqa: F401 - load model metadata for Alembic
 target_metadata = Base.metadata
 
 # optionally read DB URL from your app config
@@ -34,7 +34,6 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = None
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

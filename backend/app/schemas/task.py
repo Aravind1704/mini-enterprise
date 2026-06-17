@@ -21,12 +21,15 @@ class TaskAssign(BaseModel):
 
 class TaskOut(BaseModel):
     id: int
+    tenant_id: Optional[int] = None
+    workspace_id: Optional[int] = None
+    channel_id: Optional[int] = None
     title: str
     description: Optional[str]
     status: str
     priority: str
     due_date: Optional[datetime]
-    created_by_id: int
+    created_by_id: Optional[int] = None
     assigned_to_id: Optional[int]
 
     class Config:

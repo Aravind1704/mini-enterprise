@@ -27,7 +27,8 @@ from app.services.channel_service import (
     archive_channel,
     restore_channel,
     join_channel,
-    leave_channel
+    leave_channel,
+    get_channel_members
 )
 
 router = APIRouter(
@@ -262,3 +263,17 @@ def api_leave_channel(
             status_code=400,
             detail=str(e)
         )
+    
+
+@router.get(
+    "/channels/{channel_id}/members"
+)
+def api_get_channel_members(
+    channel_id: int,
+    db: Session = Depends(get_db)
+):
+
+    return get_channel_members(
+        db,
+        channel_id
+    )

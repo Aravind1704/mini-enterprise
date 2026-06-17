@@ -1,21 +1,22 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import PageLayout from "../components/PageLayout";
+import { useNavigate } from "react-router-dom";
 
 export default function TenantCreate() {
 
   const navigate = useNavigate();
 
-  const [loading, setLoading] =
-    useState(false);
-
   const [form, setForm] = useState({
     name: "",
+    slug: "",
     contact_email: "",
     phone: "",
     address: "",
     industry: ""
   });
+
+  const [loading, setLoading] = useState(false);
 
   const submit = async (e) => {
 
@@ -26,8 +27,12 @@ export default function TenantCreate() {
       setLoading(true);
 
       await axios.post(
-        "/tenants/",
+        "/tenants",
         form
+      );
+
+      alert(
+        "Tenant Created Successfully"
       );
 
       navigate("/tenants");
@@ -35,23 +40,23 @@ export default function TenantCreate() {
     } catch (err) {
 
       alert(
-        err.response?.data?.detail
+        err.response?.data?.detail ||
+        "Failed to create tenant"
       );
 
     } finally {
 
       setLoading(false);
-
     }
-
   };
 
   return (
-    <div className="p-6">
 
-      <div className="bg-white shadow rounded p-6">
+    <PageLayout>
 
-        <h1 className="text-2xl font-bold mb-6">
+      <div className="bg-white p-8 rounded-2xl border">
+
+        <h1 className="text-3xl font-bold mb-8">
           Create Tenant
         </h1>
 
@@ -61,31 +66,48 @@ export default function TenantCreate() {
         >
 
           <input
-            placeholder="Name"
-            className="border p-3 rounded w-full"
+            className="w-full border p-3 rounded-xl"
+            placeholder="Tenant Name"
+            value={form.name}
             onChange={(e) =>
               setForm({
                 ...form,
                 name: e.target.value
               })
             }
+            required
           />
 
           <input
-            placeholder="Email"
-            className="border p-3 rounded w-full"
+            className="w-full border p-3 rounded-xl"
+            placeholder="Tenant Slug"
+            value={form.slug}
             onChange={(e) =>
               setForm({
                 ...form,
-                contact_email:
-                  e.target.value
+                slug: e.target.value
               })
             }
+            required
           />
 
           <input
+            className="w-full border p-3 rounded-xl"
+            placeholder="Contact Email"
+            value={form.contact_email}
+            onChange={(e) =>
+              setForm({
+                ...form,
+                contact_email: e.target.value
+              })
+            }
+            required
+          />
+
+          <input
+            className="w-full border p-3 rounded-xl"
             placeholder="Phone"
-            className="border p-3 rounded w-full"
+            value={form.phone}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -95,8 +117,9 @@ export default function TenantCreate() {
           />
 
           <input
+            className="w-full border p-3 rounded-xl"
             placeholder="Address"
-            className="border p-3 rounded w-full"
+            value={form.address}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -106,8 +129,9 @@ export default function TenantCreate() {
           />
 
           <input
+            className="w-full border p-3 rounded-xl"
             placeholder="Industry"
-            className="border p-3 rounded w-full"
+            value={form.industry}
             onChange={(e) =>
               setForm({
                 ...form,
@@ -117,8 +141,8 @@ export default function TenantCreate() {
           />
 
           <button
-            className="bg-indigo-600 text-white px-5 py-3 rounded"
             disabled={loading}
+            className="bg-blue-600 text-white px-6 py-3 rounded-xl"
           >
             {loading
               ? "Creating..."
@@ -129,6 +153,7 @@ export default function TenantCreate() {
 
       </div>
 
-    </div>
+    </PageLayout>
+
   );
 }

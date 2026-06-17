@@ -1,9 +1,8 @@
 # app/services/tenant_service.py
 
 from sqlalchemy.orm import Session
-from slugify import slugify
-
 from app.models.tenant import Tenant
+from app.core.slug import make_slug
 
 from app.schemas.tenant import (
     TenantCreate,
@@ -24,19 +23,15 @@ def create_tenant(
     payload: TenantCreate
 ) -> Tenant:
 
-    slug = slugify(payload.name)
+    base_slug = make_slug(payload.name)
 
-    existing_slug = (
-        TenantRepo.get_by_slug(
-            db,
-            slug
-        )
-    )
+    slug = base_slug
 
-    if existing_slug:
-        raise ValueError(
-            "Tenant name already exists"
-        )
+    idx = 1
+
+    while TenantRepo.get_by_slug(db, slug):
+        slug = f"{base_slug}-{idx}"
+        idx += 1
 
     existing_email = (
         TenantRepo.get_by_email(
@@ -139,12 +134,41 @@ def update_tenant(
     )
 
     if (
+        "contact_email" in update_data
+        and update_data["contact_email"]
+    ):
+
+        existing_email = (
+            TenantRepo.get_by_email(
+                db,
+                update_data["contact_email"]
+            )
+        )
+
+        if existing_email and existing_email.id != tenant.id:
+
+            raise ValueError(
+                "Tenant email already exists"
+            )
+
+    if (
         "name" in update_data
         and update_data["name"]
     ):
-        tenant.slug = slugify(
-            update_data["name"]
-        )
+        base_slug = make_slug(update_data["name"])
+
+        slug = base_slug
+
+        idx = 1
+
+        existing = TenantRepo.get_by_slug(db, slug)
+
+        while existing and existing.id != tenant.id:
+            slug = f"{base_slug}-{idx}"
+            idx += 1
+            existing = TenantRepo.get_by_slug(db, slug)
+
+        tenant.slug = slug
 
     for key, value in update_data.items():
 

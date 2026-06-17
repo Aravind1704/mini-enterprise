@@ -15,8 +15,8 @@ import {
 
 import api from "../api/axios";
 
-import WebSocketClient
-from "../services/WebSocketClient";
+import WebSocketClient from "../services/WebSocketClient";
+
 
 
 const COLUMNS = [
