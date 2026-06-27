@@ -24,24 +24,18 @@ export default function ChannelCreate() {
   const [form, setForm] = useState({
     tenant_id: tenantId || "",
     workspace_id: workspaceId || "",
+    project_id: localStorage.getItem("projectId") || "",
     name: "",
     description: "",
     channel_type: "PUBLIC",
     created_by: user?.id || "",
   });
 
+  const [error, setError] = useState("");
+
   const submit = async (e) => {
     e.preventDefault();
-
-    if (!form.tenant_id) {
-      alert("Tenant ID not found.");
-      return;
-    }
-
-    if (!form.workspace_id) {
-      alert("Please select a workspace first.");
-      return;
-    }
+    setError("");
 
     try {
       const payload = {
@@ -51,6 +45,9 @@ export default function ChannelCreate() {
         workspace_id: Number(
           form.workspace_id
         ),
+        project_id: form.project_id
+          ? Number(form.project_id)
+          : null,
         name: form.name,
         description:
           form.description,
@@ -90,9 +87,9 @@ export default function ChannelCreate() {
     } catch (err) {
       console.error(err);
 
-      alert(
+      setError(
         err.response?.data?.detail ||
-        "Failed to create channel"
+          "Failed to create channel"
       );
     }
   };
@@ -104,6 +101,12 @@ export default function ChannelCreate() {
         <h1 className="text-3xl font-bold mb-8">
           Create Channel
         </h1>
+
+        {error && (
+          <div className="mb-6 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+            {error}
+          </div>
+        )}
 
         <form
           onSubmit={submit}
@@ -135,6 +138,26 @@ export default function ChannelCreate() {
               value={form.workspace_id}
               readOnly
               className="w-full border p-3 rounded-xl bg-gray-100"
+            />
+          </div>
+
+          {/* Project ID */}
+          <div>
+            <label className="block mb-2 font-semibold">
+              Project ID
+            </label>
+
+            <input
+              type="number"
+              value={form.project_id}
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  project_id: e.target.value,
+                })
+              }
+              className="w-full border p-3 rounded-xl"
+              placeholder="Optional project ID"
             />
           </div>
 

@@ -61,7 +61,6 @@ function Pricing() {
     try {
 
       const response = await axios.get(
-
         "http://127.0.0.1:8000/subscriptions/current"
       );
 
@@ -93,7 +92,6 @@ function Pricing() {
       setLoading(true);
 
       const response = await axios.get(
-
         `http://127.0.0.1:8000/billing/checkout/${plan}`
       );
 

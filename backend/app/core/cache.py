@@ -50,7 +50,7 @@ try:
 
 except Exception as e:
 
-    print(f"Redis unavailable: {e}")
+    print(f"INFO: Redis cache disabled; continuing without cache ({e})")
 
     cache = None
 

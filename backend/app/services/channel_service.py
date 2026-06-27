@@ -1,4 +1,6 @@
 # app/services/channel_service.py
+from datetime import datetime
+
 from app.models.channel_member import ChannelMember
 from app.models.user import User
 
@@ -29,6 +31,18 @@ from app.services.tenant_collaboration_settings_service import (
     check_channel_enabled,
     validate_channel_limit
 )
+
+
+def _ensure_channel_timestamps(channel: Channel | None) -> Channel | None:
+    if not channel:
+        return channel
+
+    now = datetime.utcnow()
+    if channel.created_at is None:
+        channel.created_at = now
+    if channel.updated_at is None:
+        channel.updated_at = channel.created_at or now
+    return channel
 
 
 # =========================================
@@ -84,11 +98,14 @@ def create_channel(
     channel = Channel(
         tenant_id=payload.tenant_id,
         workspace_id=payload.workspace_id,
+        project_id=payload.project_id,
         name=payload.name,
         description=payload.description,
         channel_type=payload.channel_type,
         created_by=created_by,
-        is_archived=False
+        is_archived=False,
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow(),
     )
 
     return (
@@ -108,7 +125,7 @@ def get_channel(
     channel_id: int
 ):
 
-    return (
+    return _ensure_channel_timestamps(
         ChannelRepo.get(
             db,
             channel_id
@@ -122,15 +139,24 @@ def get_channel(
 
 def list_channels(
     db: Session,
-    workspace_id: int
+    workspace_id: int,
+    project_id: int | None = None
 ):
-
-    return (
+    channels = (
         ChannelRepo.list_active_by_workspace(
             db,
             workspace_id
         )
     )
+
+    if project_id is None:
+        return [_ensure_channel_timestamps(channel) for channel in channels]
+
+    return [
+        _ensure_channel_timestamps(channel)
+        for channel in channels
+        if channel.project_id == project_id
+    ]
 
 
 # =========================================
@@ -155,6 +181,8 @@ def update_channel(
             value
         )
 
+    channel.updated_at = datetime.utcnow()
+
     return (
         ChannelRepo.save(
             db,
@@ -173,6 +201,7 @@ def archive_channel(
 ):
 
     channel.is_archived = True
+    channel.updated_at = datetime.utcnow()
 
     return (
         ChannelRepo.save(
@@ -192,6 +221,7 @@ def restore_channel(
 ):
 
     channel.is_archived = False
+    channel.updated_at = datetime.utcnow()
 
     return (
         ChannelRepo.save(

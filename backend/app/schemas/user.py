@@ -61,6 +61,7 @@ class UserOut(BaseModel):
     email: EmailStr
     role: str
     is_active: bool
+    organization_id: Optional[int] = None
     
     class Config:
         from_attributes = True
@@ -70,7 +71,8 @@ class UserOut(BaseModel):
                 "name": "John Doe",
                 "email": "john.doe@example.com",
                 "role": "employee",
-                "is_active": True
+                "is_active": True,
+                "organization_id": None
             }
         }
 

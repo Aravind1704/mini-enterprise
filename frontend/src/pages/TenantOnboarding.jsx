@@ -7,7 +7,6 @@ import axios from "../api/axios";
 import PageLayout from "../components/PageLayout";
 
 export default function TenantOnboarding() {
-
   const [form, setForm] = useState({
     tenant_id: "",
     admin_user_id: ""

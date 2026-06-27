@@ -8,6 +8,7 @@ from app.services.tenant_onboarding_service import (
     create_tenant_admin,
     get_onboarding_status
 )
+from app.services.sample_workflow_service import seed_sample_workflow
 
 router = APIRouter(
     prefix="/tenants",
@@ -62,3 +63,17 @@ def api_get_status(
         db,
         tenant_id
     )
+
+
+@router.post("/sample-workflow/{example_key}")
+def api_seed_sample_workflow(
+    example_key: str,
+    db: Session = Depends(get_db)
+):
+    try:
+        return seed_sample_workflow(db, example_key)
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=400,
+            detail=str(exc)
+        )

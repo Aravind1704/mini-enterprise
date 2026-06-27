@@ -11,8 +11,14 @@ from sqlalchemy import (
 
 from sqlalchemy.orm import (
     Mapped,
-    mapped_column
+    mapped_column,
+    relationship
 )
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.models.project import Project
+    from app.models.Team import Team
 
 from sqlalchemy.sql import func
 
@@ -78,4 +84,16 @@ class Workspace(Base):
         DateTime,
         server_default=func.now(),
         onupdate=func.now()
+    )
+
+    projects = relationship(
+        "Project",
+        back_populates="workspace",
+        cascade="all, delete-orphan"
+    )
+
+    teams = relationship(
+        "Team",
+        back_populates="workspace",
+        cascade="all, delete-orphan"
     )

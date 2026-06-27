@@ -33,7 +33,11 @@ def create_task_service(
 
     task_data = {
 
-        "tenant_id": user.tenant_id,
+        "tenant_id": payload.tenant_id or user.tenant_id,
+        "workspace_id": payload.workspace_id,
+        "channel_id": payload.channel_id,
+        "project_id": payload.project_id,
+        "team_id": payload.team_id,
 
         "title": payload.title,
 

@@ -12,6 +12,11 @@ from sqlalchemy.orm import Session
 from typing import List
 
 from app.database import get_db
+from app.core.dependencies import get_current_user
+from app.core.enterprise_access import (
+    require_project_access,
+    require_workspace_access,
+)
 
 from app.schemas.channel import (
     ChannelCreate,
@@ -46,15 +51,19 @@ router = APIRouter(
 )
 def api_create_channel(
     payload: ChannelCreate,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
 ):
+    require_workspace_access(db, payload.workspace_id, current_user)
+    if payload.project_id is not None:
+        require_project_access(db, payload.project_id, current_user)
 
     try:
 
         return create_channel(
             db,
             payload,
-            payload.created_by
+            current_user.id
         )
 
     except ValueError as e:
@@ -75,12 +84,18 @@ def api_create_channel(
 )
 def api_list_channels(
     workspace_id: int,
-    db: Session = Depends(get_db)
+    project_id: int | None = None,
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
 ):
+    require_workspace_access(db, workspace_id, current_user)
+    if project_id is not None:
+        require_project_access(db, project_id, current_user)
 
     return list_channels(
         db,
-        workspace_id
+        workspace_id,
+        project_id
     )
 
 

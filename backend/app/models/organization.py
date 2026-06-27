@@ -1,13 +1,12 @@
 from sqlalchemy import (
-
-    Column,
     Integer,
     String
 )
 
 from sqlalchemy.orm import (
     Mapped,
-    mapped_column
+    mapped_column,
+    relationship
 )
 
 
@@ -21,10 +20,7 @@ class Organization(Base):
     
 
     id: Mapped[int] = mapped_column(
-
-
-
-        
+        Integer,
         primary_key=True,
         index=True
     )
@@ -49,4 +45,10 @@ class Organization(Base):
     ai_credits: Mapped[int] = mapped_column(
         
         default=100
+    )
+
+    users = relationship(
+        "User",
+        back_populates="organization",
+        primaryjoin="Organization.id == User.organization_id"
     )

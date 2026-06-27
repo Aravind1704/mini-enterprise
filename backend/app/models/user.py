@@ -66,6 +66,11 @@ class User(Base):
         nullable=True
     )
 
+    organization_id: Mapped[int | None] = mapped_column(
+        ForeignKey("organizations.id"),
+        nullable=True
+    )
+
     tenant = relationship(
         "Tenant",
         backref="users",
@@ -73,12 +78,10 @@ class User(Base):
         foreign_keys=[tenant_id]
     )
 
-    organization_id: Mapped[int | None] = mapped_column(
-        ForeignKey("organizations.id"),
-        nullable=True
-    )
 
     organization: Mapped["Organization"] = relationship(
         "Organization",
-        backref="users"
+        back_populates="users",
+        foreign_keys=[organization_id],
+        primaryjoin="User.organization_id == Organization.id"
     )

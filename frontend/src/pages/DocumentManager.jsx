@@ -109,7 +109,6 @@ export default function Documents() {
   // ----------------------------
 
   const handleDownload = (id) => {
-
     window.open(
       `http://127.0.0.1:8000/documents/download/${id}`,
       "_blank"

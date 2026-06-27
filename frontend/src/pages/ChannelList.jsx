@@ -6,7 +6,8 @@ import React, {
 
 import {
   Link,
-  useNavigate
+  useNavigate,
+  useParams
 } from "react-router-dom";
 
 import {
@@ -21,6 +22,7 @@ import PageLayout from "../components/PageLayout";
 
 export default function ChannelList() {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [channels, setChannels] =
     useState([]);
@@ -32,10 +34,14 @@ export default function ChannelList() {
     useState(false);
 
   const workspaceId = Number(
-    localStorage.getItem(
-      "workspaceId"
-    )
+    id || localStorage.getItem("workspaceId")
   );
+
+  useEffect(() => {
+    if (workspaceId) {
+      localStorage.setItem("workspaceId", String(workspaceId));
+    }
+  }, [workspaceId]);
 
   const loadChannels =
     useCallback(async () => {

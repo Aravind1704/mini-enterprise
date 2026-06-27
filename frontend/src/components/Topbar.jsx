@@ -4,20 +4,23 @@ import {
   FiUser
 } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Topbar() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const user = JSON.parse(
     localStorage.getItem("user")
   );
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    logout();
     localStorage.removeItem("workspaceId");
     localStorage.removeItem("selectedTenantId");
-
+    localStorage.removeItem("projectId");
+    localStorage.removeItem("channelId");
+    localStorage.removeItem("teamId");
     navigate("/login");
   };
 

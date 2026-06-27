@@ -11,16 +11,15 @@ from sqlalchemy import (
 
 from sqlalchemy.orm import (
     Mapped,
-    mapped_column
+    mapped_column,
+    relationship
 )
 
 from sqlalchemy.sql import func
 
 from app.database import Base
 
-
 class Channel(Base):
-
     __tablename__ = "channels"
 
     id: Mapped[int] = mapped_column(
@@ -37,6 +36,11 @@ class Channel(Base):
     workspace_id: Mapped[int] = mapped_column(
         ForeignKey("workspaces.id"),
         nullable=False
+    )
+
+    project_id: Mapped[int | None] = mapped_column(
+        ForeignKey("projects.id"),
+        nullable=True
     )
 
     name: Mapped[str] = mapped_column(
@@ -73,4 +77,14 @@ class Channel(Base):
         DateTime,
         server_default=func.now(),
         onupdate=func.now()
+    )
+
+    project = relationship(
+        "Project",
+        back_populates="channels"
+    )
+
+    tasks = relationship(
+        "Task",
+        back_populates="channel"
     )

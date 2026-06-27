@@ -11,6 +11,8 @@ class ChannelCreate(BaseModel):
 
     workspace_id: int
 
+    project_id: Optional[int] = None
+
     name: str
 
     description: Optional[str] = None
@@ -39,6 +41,8 @@ class ChannelOut(BaseModel):
     tenant_id: int
 
     workspace_id: int
+
+    project_id: Optional[int] = None
 
     name: str
 

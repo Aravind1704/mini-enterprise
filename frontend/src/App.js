@@ -77,6 +77,15 @@ import ChannelList from "./pages/ChannelList";
 import ChannelCreate from "./pages/ChannelCreate";
 import ChannelDetails from "./pages/ChannelDetails";
 import ChannelMembers from "./pages/ChannelMembers";
+import Teams from "./pages/Teams";
+import TeamDetails from "./pages/TeamDetails";
+import TeamWorkload from "./pages/TeamWorkload";
+import Projects from "./pages/Projects";
+import ProjectDetails from "./pages/ProjectDetails";
+import ProjectCalendar from "./pages/ProjectCalendar";
+import ProjectWorkload from "./pages/ProjectWorkload";
+import Meetings from "./pages/Meetings";
+import MeetingDetails from "./pages/MeetingDetails";
 export default function App() {
 
   return (
@@ -244,6 +253,15 @@ export default function App() {
           />
 
           <Route
+            path="/workspaces/:id/channels"
+            element={
+              <PrivateRoute>
+                <ChannelList />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
             path="/channel-create"
             element={
               <PrivateRoute>
@@ -269,7 +287,88 @@ export default function App() {
               </PrivateRoute>
             }
           />
-        
+
+          <Route
+            path="/teams"
+            element={
+              <PrivateRoute>
+                <Teams />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/teams/:id"
+            element={
+              <PrivateRoute>
+                <TeamDetails />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/teams/:id/workload"
+            element={
+              <PrivateRoute>
+                <TeamWorkload />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/projects"
+            element={
+              <PrivateRoute>
+                <Projects />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/projects/:id"
+            element={
+              <PrivateRoute>
+                <ProjectDetails />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/projects/:id/calendar"
+            element={
+              <PrivateRoute>
+                <ProjectCalendar />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/projects/:id/workload"
+            element={
+              <PrivateRoute>
+                <ProjectWorkload />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/meetings"
+            element={
+              <PrivateRoute>
+                <Meetings />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/meetings/:id"
+            element={
+              <PrivateRoute>
+                <MeetingDetails />
+              </PrivateRoute>
+            }
+          />
+
           <Route
             path="/login"
             element={<Login />}

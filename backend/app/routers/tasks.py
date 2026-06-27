@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 
+from app.models.audit import AuditLog
 from app.schemas.task import (
 
     TaskCreate,
@@ -15,6 +16,7 @@ from app.schemas.task import (
     TaskUpdate,
     
 )
+from app.schemas.audit import AuditLogOut
 
 from app.core.dependencies import (
     get_current_user
@@ -171,6 +173,38 @@ def delete_task(
     return {
         "message": "Task deleted successfully"
     }
+
+
+@router.get(
+    "/{task_id}/activities",
+    response_model=list[AuditLogOut]
+)
+def list_task_activities(
+    task_id: int,
+    db: Session = Depends(get_db),
+    user=Depends(get_current_user)
+):
+    task = get_task_service(
+        db,
+        task_id,
+        user
+    )
+
+    if not task:
+        raise HTTPException(
+            status_code=404,
+            detail="Task not found"
+        )
+
+    return (
+        db.query(AuditLog)
+        .filter(
+            AuditLog.entity == "task",
+            AuditLog.entity_id == task_id,
+        )
+        .order_by(AuditLog.timestamp.desc())
+        .all()
+    )
 
   
 
