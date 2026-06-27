@@ -78,15 +78,11 @@ MINI ENTERPRISE/
 =======
 # 📂 Project Structure
 
-```text
+```
 MINI ENTERPRISE
 │
 ├── backend
 │   ├── alembic
-│   │   ├── versions
-│   │   ├── env.py
-│   │   ├── README
-│   │   └── script.py.mako
 │   │
 │   ├── app
 │   │
@@ -382,15 +378,6 @@ MINI ENTERPRISE
 │   ├── App.css
 │   ├── index.js
 │   ├── index.css
-│   ├── App.test.js
-│   ├── reportWebVitals.js
-│   └── setupTests.js
-│
-├── .gitignore
-├── package.json
-├── package-lock.json
-├── tailwind.config.js
-├── postcss.config.js
 └── README.md
 ```
 
