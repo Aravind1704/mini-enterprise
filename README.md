@@ -76,255 +76,334 @@ Project Structure
 ```
 MINI ENTERPRISE/
 =======
-```
+# 📂 Project Structure
+
+```text
 MINI ENTERPRISE
 │
 ├── backend
-│   ├── .vscode
 │   ├── alembic
-│   ├── uploads
-│   ├── venv
-│   ├── .env
-│   ├── alembic.ini
-│   ├── requirements.txt
+│   │   ├── versions
+│   │   ├── env.py
+│   │   ├── README
+│   │   └── script.py.mako
 │   │
-│   └── app
-│       ├── core
-│       │   ├── cache.py
-│       │   ├── config.py
-│       │   ├── dependencies.py
-│       │   ├── limiter.py
-│       │   ├── permissions.py
-│       │   ├── security.py
-│       │   ├── sla_scheduler.py
-│       │   ├── slug.py
-│       │   ├── stripe_config.py
-│       │   └── subscriptions.py
-│       │
-│       ├── middleware
-│       │
-│       ├── models
-│       │   ├── approval.py
-│       │   ├── approval_delegation.py
-│       │   ├── approval_escalation.py
-│       │   ├── audit.py
-│       │   ├── billing.py
-│       │   ├── channel.py
-│       │   ├── channel_member.py
-│       │   ├── collaboration.py
-│       │   ├── comment.py
-│       │   ├── document.py
-│       │   ├── employee.py
-│       │   ├── notification.py
-│       │   ├── notification_preferences.py
-│       │   ├── organization.py
-│       │   ├── sla.py
-│       │   ├── subscription.py
-│       │   ├── super_admin.py
-│       │   ├── task.py
-│       │   ├── tenant.py
-│       │   ├── tenant_collaboration_settings.py
-│       │   ├── tenant_collaboration_usage.py
-│       │   ├── tenant_onboarding.py
-│       │   ├── user.py
-│       │   ├── workspace.py
-│       │   └── workspace_member.py
-│       │
-│       ├── repositories
-│       │   ├── ai_repo.py
-│       │   ├── analytics_repo.py
-│       │   ├── approval_repo.py
-│       │   ├── approval_delegation_repo.py
-│       │   ├── approval_escalation_repo.py
-│       │   ├── audit_repo.py
-│       │   ├── auth_repo.py
-│       │   ├── channel_repo.py
-│       │   ├── channel_member_repo.py
-│       │   ├── comment_repo.py
-│       │   ├── dashboard_repo.py
-│       │   ├── document_repo.py
-│       │   ├── notification_preferences_repo.py
-│       │   ├── subscription_repo.py
-│       │   ├── task_repo.py
-│       │   ├── tenant_repo.py
-│       │   ├── tenant_collaboration_settings_repo.py
-│       │   ├── tenant_collaboration_usage_repo.py
-│       │   ├── tenant_onboarding_repo.py
-│       │   ├── workspace_repo.py
-│       │   └── workspace_member_repo.py
-│       │
-│       ├── schemas
-│       │   ├── analytics.py
-│       │   ├── approval.py
-│       │   ├── approval_delegation.py
-│       │   ├── approval_escalation.py
-│       │   ├── audit.py
-│       │   ├── channel.py
-│       │   ├── channel_member.py
-│       │   ├── collaboration.py
-│       │   ├── comment.py
-│       │   ├── dashboard.py
-│       │   ├── document.py
-│       │   ├── kanban.py
-│       │   ├── notification.py
-│       │   ├── notification_preferences.py
-│       │   ├── sla.py
-│       │   ├── subscription.py
-│       │   ├── super_admin.py
-│       │   ├── task.py
-│       │   ├── tenant.py
-│       │   ├── tenant_collaboration_settings.py
-│       │   ├── tenant_collaboration_usage.py
-│       │   ├── tenant_onboarding.py
-│       │   ├── user.py
-│       │   ├── workspace.py
-│       │   └── workspace_member.py
-│       │
-│       ├── services
-│       │   ├── activity_service.py
-│       │   ├── ai_service.py
-│       │   ├── analytics_service.py
-│       │   ├── approval_service.py
-│       │   ├── approval_delegation_service.py
-│       │   ├── approval_escalation_service.py
-│       │   ├── audit_service.py
-│       │   ├── auth_service.py
-│       │   ├── channel_service.py
-│       │   ├── channel_member_service.py
-│       │   ├── collaboration_service.py
-│       │   ├── comment_service.py
-│       │   ├── dashboard_service.py
-│       │   ├── document_service.py
-│       │   ├── email_service.py
-│       │   ├── notification_service.py
-│       │   ├── notification_preferences_service.py
-│       │   ├── payment_service.py
-│       │   ├── sla_service.py
-│       │   ├── sla_monitor_service.py
-│       │   ├── subscription_service.py
-│       │   ├── super_admin_service.py
-│       │   ├── task_service.py
-│       │   ├── tenant_service.py
-│       │   ├── tenant_collaboration_settings_service.py
-│       │   ├── tenant_collaboration_usage_service.py
-│       │   ├── tenant_onboarding_service.py
-│       │   ├── websocket_service.py
-│       │   ├── workflow_service.py
-│       │   ├── workspace_service.py
-│       │   └── workspace_member_service.py
-│       │
-│       ├── routers
-│       │   ├── ai.py
-│       │   ├── analytics_router.py
-│       │   ├── approvals.py
-│       │   ├── approval_delegations.py
-│       │   ├── approval_escalations.py
-│       │   ├── audit.py
-│       │   ├── auth.py
-│       │   ├── billing_router.py
-│       │   ├── channel_routes.py
-│       │   ├── collaboration.py
-│       │   ├── comments.py
-│       │   ├── dashboard.py
-│       │   ├── documents.py
-│       │   ├── kanban.py
-│       │   ├── notifications.py
-│       │   ├── notification_preferences.py
-│       │   ├── payment_router.py
-│       │   ├── sla_routes.py
-│       │   ├── subscription_router.py
-│       │   ├── super_admin_routes.py
-│       │   ├── tasks.py
-│       │   ├── tenant_routes.py
-│       │   ├── tenantdashboard_routes.py
-│       │   ├── tenant_collaboration_settings_routes.py
-│       │   ├── tenant_collaboration_usage_routes.py
-│       │   ├── tenant_onboarding_routes.py
-│       │   ├── users.py
-│       │   ├── websocket.py
-│       │   ├── websocket_router.py
-│       │   ├── workspace_routes.py
-│       │   └── workspace_member_routes.py
-│       │
-│       ├── websocket
-│       ├── database.py
-│       ├── scheduler.py
-│       └── main.py
+│   ├── app
+│   │
+│   │── core
+│   │   ├── cache.py
+│   │   ├── config.py
+│   │   ├── dependencies.py
+│   │   ├── enterprise_access.py
+│   │   ├── limiter.py
+│   │   ├── permissions.py
+│   │   ├── project_permissions.py
+│   │   ├── security.py
+│   │   ├── sla_scheduler.py
+│   │   ├── slug.py
+│   │   ├── stripe_config.py
+│   │   └── subscriptions.py
+│   │
+│   ├── middleware
+│   │
+│   ├── models
+│   │   ├── approval.py
+│   │   ├── approval_delegation.py
+│   │   ├── approval_escalation.py
+│   │   ├── ai_meeting_summary.py
+│   │   ├── audit.py
+│   │   ├── billing.py
+│   │   ├── channel.py
+│   │   ├── channel_member.py
+│   │   ├── collaboration.py
+│   │   ├── comment.py
+│   │   ├── document.py
+│   │   ├── employee.py
+│   │   ├── meeting.py
+│   │   ├── meeting_attendee.py
+│   │   ├── meeting_note.py
+│   │   ├── notification.py
+│   │   ├── notification_preferences.py
+│   │   ├── organization.py
+│   │   ├── project.py
+│   │   ├── project_document.py
+│   │   ├── project_team.py
+│   │   ├── sla.py
+│   │   ├── subscription.py
+│   │   ├── super_admin.py
+│   │   ├── task.py
+│   │   ├── Team.py
+│   │   ├── team_member.py
+│   │   ├── tenant.py
+│   │   ├── tenant_collaboration_settings.py
+│   │   ├── tenant_collaboration_usage.py
+│   │   ├── tenant_onboarding.py
+│   │   ├── user.py
+│   │   ├── workspace.py
+│   │   ├── workspace_member.py
+│   │   └── __init__.py
+│   │
+│   ├── repositories
+│   │   ├── ai_meeting_summary_repo.py
+│   │   ├── ai_repo.py
+│   │   ├── analytics_repo.py
+│   │   ├── approval_delegation_repo.py
+│   │   ├── approval_escalation_repo.py
+│   │   ├── approval_repo.py
+│   │   ├── audit_repo.py
+│   │   ├── auth_repo.py
+│   │   ├── channel_member_repo.py
+│   │   ├── channel_repo.py
+│   │   ├── comment_repo.py
+│   │   ├── dashboard_repo.py
+│   │   ├── document_repo.py
+│   │   ├── meeting_attendee_repo.py
+│   │   ├── meeting_note_repo.py
+│   │   ├── meeting_repo.py
+│   │   ├── notification_preferences_repo.py
+│   │   ├── project_document_repo.py
+│   │   ├── project_repo.py
+│   │   ├── project_team_repo.py
+│   │   ├── subscription_repo.py
+│   │   ├── task_repo.py
+│   │   ├── team_member_repo.py
+│   │   ├── team_repo.py
+│   │   ├── tenant_collaboration_settings_repo.py
+│   │   ├── tenant_collaboration_usage_repo.py
+│   │   ├── tenant_onboarding_repo.py
+│   │   ├── tenant_repo.py
+│   │   ├── workspace_member_repo.py
+│   │   └── workspace_repo.py
+│   │
+│   ├── routers
+│   │   ├── ai.py
+│   │   ├── analytics_router.py
+│   │   ├── approval_delegations.py
+│   │   ├── approval_escalations.py
+│   │   ├── approvals.py
+│   │   ├── audit.py
+│   │   ├── auth.py
+│   │   ├── billing_router.py
+│   │   ├── channel_routes.py
+│   │   ├── collaboration.py
+│   │   ├── comments.py
+│   │   ├── dashboard.py
+│   │   ├── documents.py
+│   │   ├── kanban.py
+│   │   ├── meeting_note_routes.py
+│   │   ├── meeting_routes.py
+│   │   ├── notification_preferences.py
+│   │   ├── notifications.py
+│   │   ├── payment_router.py
+│   │   ├── project_document_routes.py
+│   │   ├── project_routes.py
+│   │   ├── sla_routes.py
+│   │   ├── subscription_router.py
+│   │   ├── super_admin_routes.py
+│   │   ├── tasks.py
+│   │   ├── team_routes.py
+│   │   ├── tenant_collaboration_settings_routes.py
+│   │   ├── tenant_collaboration_usage_routes.py
+│   │   ├── tenant_onboarding_routes.py
+│   │   ├── tenant_routes.py
+│   │   ├── tenantdashboard_routes.py
+│   │   ├── users.py
+│   │   ├── websocket.py
+│   │   ├── websocket_router.py
+│   │   ├── workspace_member_routes.py
+│   │   └── workspace_routes.py
+│   │
+│   ├── schemas
+│   │   ├── ai_meeting_summary.py
+│   │   ├── analytics.py
+│   │   ├── approval.py
+│   │   ├── approval_delegation.py
+│   │   ├── approval_escalation.py
+│   │   ├── audit.py
+│   │   ├── channel.py
+│   │   ├── channel_member.py
+│   │   ├── collaboration.py
+│   │   ├── comment.py
+│   │   ├── dashboard.py
+│   │   ├── document.py
+│   │   ├── kanban.py
+│   │   ├── meeting.py
+│   │   ├── meeting_attendee.py
+│   │   ├── meeting_note.py
+│   │   ├── notification.py
+│   │   ├── notification_preferences.py
+│   │   ├── project.py
+│   │   ├── project_document.py
+│   │   ├── project_team.py
+│   │   ├── sla.py
+│   │   ├── subscription.py
+│   │   ├── super_admin.py
+│   │   ├── task.py
+│   │   ├── team.py
+│   │   ├── team_member.py
+│   │   ├── tenant.py
+│   │   ├── tenant_collaboration_settings.py
+│   │   ├── tenant_collaboration_usage.py
+│   │   ├── tenant_onboarding.py
+│   │   ├── user.py
+│   │   ├── workspace.py
+│   │   └── workspace_member.py
+│   │
+│   ├── services
+│   │   ├── activity_service.py
+│   │   ├── ai_meeting_summary_service.py
+│   │   ├── ai_service.py
+│   │   ├── analytics_service.py
+│   │   ├── approval_delegation_service.py
+│   │   ├── approval_escalation_service.py
+│   │   ├── approval_service.py
+│   │   ├── audit_service.py
+│   │   ├── auth_service.py
+│   │   ├── calendar_service.py
+│   │   ├── channel_member_service.py
+│   │   ├── channel_service.py
+│   │   ├── collaboration_service.py
+│   │   ├── comment_service.py
+│   │   ├── dashboard_service.py
+│   │   ├── document_service.py
+│   │   ├── email_service.py
+│   │   ├── meeting_attendee_service.py
+│   │   ├── meeting_note_service.py
+│   │   ├── meeting_service.py
+│   │   ├── notification_preferences_service.py
+│   │   ├── notification_service.py
+│   │   ├── payment_service.py
+│   │   ├── project_document_service.py
+│   │   ├── project_service.py
+│   │   ├── project_team_service.py
+│   │   ├── sample_workflow_service.py
+│   │   ├── sla_monitor_service.py
+│   │   ├── sla_service.py
+│   │   ├── subscription_service.py
+│   │   ├── super_admin_service.py
+│   │   ├── task_service.py
+│   │   ├── team_member_service.py
+│   │   ├── team_service.py
+│   │   ├── tenant_collaboration_settings_service.py
+│   │   ├── tenant_collaboration_usage_service.py
+│   │   ├── tenant_onboarding_service.py
+│   │   ├── tenant_service.py
+│   │   ├── websocket_service.py
+│   │   ├── workflow_service.py
+│   │   ├── workload_dashboard_service.py
+│   │   ├── workspace_member_service.py
+│   │   └── workspace_service.py
+│   │
+│   ├── websocket
+│   ├── database.py
+│   ├── main.py
+│   └── scheduler.py
 │
 ├── frontend
+│   ├── public
+│   ├── build
+│   ├── node_modules
 │   │
-│   └── src
-│       ├── api
-│       │   └── axios.js
-│       │
-│       ├── components
-│       │   ├── BackToDashboard.jsx
-│       │   ├── ForgotPassword.jsx
-│       │   ├── Navbar.jsx
-│       │   ├── PageLayout.jsx
-│       │   ├── PrivateRoute.jsx
-│       │   ├── ResetPassword.jsx
-│       │   ├── Sidebar.jsx
-│       │   ├── SuperAdminRoute.jsx
-│       │   ├── Topbar.jsx
-│       │   └── UIComponents.jsx
-│       │
-│       ├── context
-│       │   ├── AuthContext.jsx
-│       │   └── TenantContext.jsx
-│       │
-│       ├── pages
-│       │   ├── Login.jsx
-│       │   ├── Register.jsx
-│       │   ├── Dashboard.jsx
-│       │   ├── DashboardStats.jsx
-│       │   ├── Analytics.jsx
-│       │   ├── AllInsights.jsx
-│       │   ├── Billing.jsx
-│       │   ├── BillingSuccess.jsx
-│       │   ├── BillingCancel.jsx
-│       │   ├── Pricing.jsx
-│       │   ├── Subscriptions.jsx
-│       │   ├── TenantList.jsx
-│       │   ├── TenantCreate.jsx
-│       │   ├── TenantDetails.jsx
-│       │   ├── TenantDashboard.jsx
-│       │   ├── TenantOnboarding.jsx
-│       │   ├── TenantOnboardCreate.jsx
-│       │   ├── CollaborationSettings.jsx
-│       │   ├── CollaborationUsage.jsx
-│       │   ├── WorkspaceList.jsx
-│       │   ├── WorkspaceCreate.jsx
-│       │   ├── WorkspaceDetails.jsx
-│       │   ├── WorkspaceMembers.jsx
-│       │   ├── ChannelList.jsx
-│       │   ├── ChannelCreate.jsx
-│       │   ├── ChannelDetails.jsx
-│       │   ├── ChannelMembers.jsx
-│       │   ├── KanbanBoard.jsx
-│       │   ├── TaskComments.jsx
-│       │   ├── CreateTask.jsx
-│       │   ├── EditTask.jsx
-│       │   ├── DocumentManager.jsx
-│       │   ├── Approvals.jsx
-│       │   ├── ApprovalDelegations.jsx
-│       │   ├── ApprovalEscalations.jsx
-│       │   ├── NotificationCenter.jsx
-│       │   ├── notification-preferences.jsx
-│       │   ├── SlaDashboard.jsx
-│       │   └── SlaRules.jsx
-│       │
-│       ├── services
-│       ├── App.js
-│       ├── App.css
-│       ├── index.js
-│       ├── index.css
-│       ├── reportWebVitals.js
-│       └── setupTests.js
+│   ├── src
+│   │
+│   │── api
+│   │   └── axios.js
+│   │
+│   │── components
+│   │   ├── BackToDashboard.jsx
+│   │   ├── ForgotPassword.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── PageLayout.jsx
+│   │   ├── PrivateRoute.jsx
+│   │   ├── ResetPassword.jsx
+│   │   ├── Sidebar.jsx
+│   │   ├── SuperAdminRoute.jsx
+│   │   ├── Topbar.jsx
+│   │   └── UIComponents.jsx
+│   │
+│   │── context
+│   │   ├── AuthContext.jsx
+│   │   └── TenantContext.jsx
+│   │
+│   │── pages
+│   │   ├── AIInsights.jsx
+│   │   ├── Analytics.jsx
+│   │   ├── ApprovalDelegations.jsx
+│   │   ├── ApprovalEscalations.jsx
+│   │   ├── Approvals.jsx
+│   │   ├── AuditLogs.jsx
+│   │   ├── Billing.jsx
+│   │   ├── BillingCancel.jsx
+│   │   ├── BillingSuccess.jsx
+│   │   ├── ChannelCreate.jsx
+│   │   ├── ChannelDetails.jsx
+│   │   ├── ChannelList.jsx
+│   │   ├── ChannelMembers.jsx
+│   │   ├── CollaborationSettings.jsx
+│   │   ├── CollaborationUsage.jsx
+│   │   ├── CreateTask.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── DashboardStats.jsx
+│   │   ├── DocumentManager.jsx
+│   │   ├── EditTask.jsx
+│   │   ├── KanbanBoard.jsx
+│   │   ├── Login.jsx
+│   │   ├── MeetingDetails.jsx
+│   │   ├── Meetings.jsx
+│   │   ├── NotificationCenter.jsx
+│   │   ├── OAuthSuccess.jsx
+│   │   ├── Pricing.jsx
+│   │   ├── ProjectCalendar.jsx
+│   │   ├── ProjectDetails.jsx
+│   │   ├── Projects.jsx
+│   │   ├── ProjectWorkload.jsx
+│   │   ├── Register.jsx
+│   │   ├── SlaDashboard.jsx
+│   │   ├── SlaRules.jsx
+│   │   ├── Subscriptions.jsx
+│   │   ├── TaskComments.jsx
+│   │   ├── TeamDetails.jsx
+│   │   ├── Teams.jsx
+│   │   ├── TeamWorkload.jsx
+│   │   ├── TenantCreate.jsx
+│   │   ├── TenantDashboard.jsx
+│   │   ├── TenantDetails.jsx
+│   │   ├── TenantList.jsx
+│   │   ├── TenantOnboardCreate.jsx
+│   │   ├── TenantOnboarding.jsx
+│   │   ├── WorkspaceCreate.jsx
+│   │   ├── WorkspaceDetails.jsx
+│   │   ├── WorkspaceList.jsx
+│   │   └── WorkspaceMembers.jsx
+│   │
+│   │── services
+│   │
+│   ├── App.js
+│   ├── App.css
+│   ├── index.js
+│   ├── index.css
+│   ├── App.test.js
+│   ├── reportWebVitals.js
+│   └── setupTests.js
 │
 ├── .gitignore
+├── package.json
+├── package-lock.json
+├── tailwind.config.js
+├── postcss.config.js
 └── README.md
 ```
+
+### Architecture
+
+- **Backend:** FastAPI, SQLAlchemy, Alembic, MySQL
+- **Frontend:** React.js, Tailwind CSS, Axios
+- **Authentication:** JWT Authentication
+- **Database:** MySQL
+- **ORM:** SQLAlchemy
+- **API Documentation:** Swagger UI
+- **Architecture Pattern:** Repository → Service → Router → API
+- **Current Phase:** Phase 10C – Enterprise Project, Team & Meeting Management
 
 ## Architecture Pattern
 
@@ -977,6 +1056,162 @@ Examples:
 - Invoices
 - Vendor Quotations
 - Supporting Evidence
+
+
+#  Phase 10C – Enterprise Project Management & Team Collaboration Checklist
+
+##  1. Project Management
+
+-  Create Project
+-  Update Project
+-  Delete Project
+-  Archive Project
+-  Restore Project
+-  View Project Details
+-  List Projects
+-  Tenant Isolation
+-  Workspace-wise Projects
+-  Project Owner Assignment
+
+---
+
+##  2. Team Management
+
+-  Create Team
+-  Update Team
+-  Archive Team
+-  Restore Team
+-  Delete Team
+-  List Teams
+-  View Team Details
+-  Team Active/Inactive Status
+
+---
+
+##  3. Team Member Management
+
+-  Add Team Members
+-  Remove Team Members
+-  List Team Members
+-  Role Assignment
+-  Tenant Validation
+-  Workspace Validation
+
+---
+
+##  4. Project-Team Assignment
+
+-  Assign Team to Project
+-  Remove Team from Project
+-  List Assigned Teams
+-  Multiple Teams per Project
+-  Repository Layer
+-  Service Layer
+-  API Endpoints
+
+---
+
+##  5. Project Document Management
+
+-  Upload Documents
+-  Download Documents
+-  Delete Documents
+-  List Documents
+-  Store File Metadata
+-  Upload Folder Support
+
+---
+
+##  6. Meeting Management
+
+-  Schedule Meeting
+-  Update Meeting
+-  Cancel Meeting
+-  Complete Meeting
+-  View Meeting
+-  List Meetings
+-  Project-wise Meetings
+
+---
+
+##  7. Meeting Attendees
+
+-  Add Attendee
+-  Remove Attendee
+-  List Attendees
+-  Tenant Validation
+-  Meeting Validation
+
+---
+
+##  8. Meeting Notes
+
+-  Create Meeting Notes
+-  View Meeting Notes
+-  Update Notes
+-  Repository Layer
+-  Service Layer
+
+---
+
+##  9. Meeting Summary
+
+-  Generate Summary
+-  Store Summary
+-  Action Items
+-  Risks
+-  Decisions
+-  Retrieve Summary
+
+---
+
+##  10. Workload Dashboard
+
+-  Team Workload
+-  User Workload
+-  Pending Tasks
+-  Completed Tasks
+-  Overdue Tasks
+-  Dashboard Service
+-  Dashboard API
+
+---
+
+##  11. Calendar Service
+
+-  Project Calendar
+-  Meeting Calendar
+-  Due Date Tracking
+-  Upcoming Events
+
+---
+
+##  12. Enterprise Security
+
+-  Project Access Control
+-  Team Access Control
+-  Meeting Access Control
+-  Workspace Validation
+-  Tenant Isolation
+-  Role-based Authorization
+
+---
+
+## 13. Database
+
+-  Projects Table
+-  Teams Table
+-  Team Members Table
+-  Project Teams Table
+-  Project Documents Table
+-  Meetings Table
+-  Meeting Attendees Table
+-  Meeting Notes Table
+-  Meeting Summaries Table
+-  Alembic Migrations
+
+
+---
 ```
 
 ```
@@ -1333,7 +1568,113 @@ DELETE /approval-documents/{document_id}
 
 ---
 
+#  Phase 10C API Endpoints
 
+---
+
+# 👥 Teams APIs
+
+| Method | Endpoint | Description | Status |
+|---------|----------|-------------|--------|
+| POST | `/teams/` | Create Team | ✅ |
+| GET | `/teams/` | List Teams | ✅ |
+| GET | `/teams/{team_id}` | Get Team Details | ✅ |
+| PUT | `/teams/{team_id}` | Update Team | ✅ |
+| DELETE | `/teams/{team_id}` | Archive Team | ✅ |
+| PATCH | `/teams/{team_id}/restore` | Restore Team | ✅ |
+| POST | `/teams/{team_id}/members` | Add Team Member | ✅ |
+| GET | `/teams/{team_id}/members` | List Team Members | ✅ |
+| DELETE | `/teams/{team_id}/members/{user_id}` | Remove Team Member | ✅ |
+| GET | `/teams/{team_id}/workload` | Team Workload Dashboard | ✅ |
+
+---
+
+# 📁 Projects APIs
+
+| Method | Endpoint | Description | Status |
+|---------|----------|-------------|--------|
+| POST | `/projects/` | Create Project | ✅ |
+| GET | `/projects/` | List Projects | ✅ |
+| GET | `/projects/{project_id}` | Get Project Details | ✅ |
+| PUT | `/projects/{project_id}` | Update Project | ✅ |
+| DELETE | `/projects/{project_id}` | Archive Project | ✅ |
+| PATCH | `/projects/{project_id}/restore` | Restore Project | ✅ |
+| POST | `/projects/{project_id}/teams` | Assign Team to Project | ✅ |
+| GET | `/projects/{project_id}/teams` | List Project Teams | ✅ |
+| DELETE | `/projects/{project_id}/teams/{team_id}` | Remove Team from Project | ✅ |
+| POST | `/projects/{project_id}/documents` | Upload Project Document | ✅ |
+| GET | `/projects/{project_id}/documents` | List Project Documents | ✅ |
+| GET | `/projects/{project_id}/calendar` | Project Calendar | ✅ |
+| GET | `/projects/{project_id}/workload` | Project Workload Dashboard | ✅ |
+
+---
+
+# 📂 Project Document APIs
+
+| Method | Endpoint | Description | Status |
+|---------|----------|-------------|--------|
+| GET | `/project-documents/{document_id}/download` | Download Project Document | ✅ |
+| DELETE | `/project-documents/{document_id}` | Delete Project Document | ✅ |
+
+---
+
+# 📅 Meeting APIs
+
+| Method | Endpoint | Description | Status |
+|---------|----------|-------------|--------|
+| POST | `/meetings/` | Create Meeting | ✅ |
+| GET | `/meetings/` | List Meetings | ✅ |
+| GET | `/meetings/{meeting_id}` | Get Meeting Details | ✅ |
+| PUT | `/meetings/{meeting_id}` | Update Meeting | ✅ |
+| DELETE | `/meetings/{meeting_id}` | Cancel Meeting | ✅ |
+| PATCH | `/meetings/{meeting_id}/complete` | Complete Meeting | ✅ |
+| POST | `/meetings/{meeting_id}/attendees` | Add Meeting Attendee | ✅ |
+| GET | `/meetings/{meeting_id}/attendees` | List Meeting Attendees | ✅ |
+| DELETE | `/meetings/{meeting_id}/attendees/{user_id}` | Remove Meeting Attendee | ✅ |
+| POST | `/meetings/{meeting_id}/notes` | Add Meeting Note | ✅ |
+| GET | `/meetings/{meeting_id}/notes` | List Meeting Notes | ✅ |
+| POST | `/meetings/{meeting_id}/summary` | Generate AI Meeting Summary | ✅ |
+| GET | `/meetings/{meeting_id}/summary` | Get AI Meeting Summary | ✅ |
+
+---
+
+#  Meeting Note APIs
+
+| Method | Endpoint | Description | Status |
+|---------|----------|-------------|--------|
+| PUT | `/meeting-notes/{note_id}` | Update Meeting Note | ✅ |
+
+---
+
+#  Phase 10C API Summary
+
+| Module | Total APIs |
+|---------|-----------:|
+| Teams | 10 |
+| Projects | 13 |
+| Project Documents | 2 |
+| Meetings | 13 |
+| Meeting Notes | 1 |
+| **Total APIs** | **39** |
+
+---
+
+#  Phase 10C API Status
+
+-  Team Management APIs
+-  Team Member Management APIs
+-  Project Management APIs
+-  Project-Team Assignment APIs
+-  Project Document APIs
+-  Meeting Management APIs
+-  Meeting Attendee APIs
+-  Meeting Notes APIs
+-   Meeting Summary APIs
+-  Project Calendar API
+- Team Workload API
+-  Project Workload API
+
+##  
 
 🌐 Default APIs
 Method	Endpoint	Description
@@ -1369,6 +1710,7 @@ Task Priorities
 Due Dates
 Comments System
 Task Workflow Management
+
 📊 Dashboard Features
 👨‍💼 Admin Dashboard
 Total Users
@@ -1580,6 +1922,108 @@ Join Channel
 Leave Channel
 Channel Membership Management
 
+# 🚀 Phase 10C Features
+
+## 📁 Project Management
+- Create, Update, Archive, Restore and Delete Projects
+- View Project Details
+- Project Lifecycle Management
+- Project Status & Priority Tracking
+- Project Ownership Management
+
+---
+
+## 👥 Team Management
+- Create and Manage Teams
+- Archive & Restore Teams
+- View Team Details
+- Team Status Management
+
+---
+
+## 👤 Team Member Management
+- Add Team Members
+- Remove Team Members
+- View Team Members
+- Role-Based Team Assignment
+
+---
+
+## 🔗 Project-Team Assignment
+- Assign Multiple Teams to a Project
+- Remove Teams from Projects
+- View Assigned Teams
+- Many-to-Many Project-Team Mapping
+
+---
+
+## 📂 Project Document Management
+- Upload Project Documents
+- Download Project Documents
+- Delete Project Documents
+- View Project Documents
+
+---
+
+## 📅 Meeting Management
+- Schedule Meetings
+- Update Meeting Details
+- Cancel Meetings
+- Complete Meetings
+- Project-Based Meetings
+
+---
+
+## 👥 Meeting Attendee Management
+- Add Meeting Attendees
+- Remove Meeting Attendees
+- View Meeting Attendees
+
+---
+
+## 📝 Meeting Notes
+- Create Meeting Notes
+- Update Meeting Notes
+- View Meeting Notes
+
+---
+
+## 🤖 AI Meeting Summary
+- Generate AI Meeting Summaries
+- Capture Action Items
+- Record Decisions
+- Identify Risks
+- Retrieve Meeting Summaries
+
+---
+
+## 📆 Project Calendar
+- Project Calendar View
+- Meeting Schedule Tracking
+- Upcoming Events
+
+---
+
+## 📊 Workload Dashboard
+- Team Workload Dashboard
+- Project Workload Dashboard
+- User Task Distribution
+- Completed Tasks
+- Pending Tasks
+- Overdue Tasks
+
+---
+
+## 🔐 Enterprise Security
+- Role-Based Access Control (RBAC)
+- Tenant Isolation
+- Workspace Access Validation
+- Project Access Validation
+- Team Access Validation
+- Meeting Access Validation
+
+
+```
 
 ## Workspace Collaboration
 
